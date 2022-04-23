@@ -1,0 +1,1567 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>GameLib</name>
+    </assembly>
+    <members>
+        <member name="T:GameLib.Base.Actor">
+            <summary>ゲーム上で、描画されたりイベントを送ったりする抽象クラス</summary>
+        </member>
+        <member name="T:GameLib.Base.Actor.ActorActionEventHandler">
+            <summary>actorActionEventHandlerのDelegate</summary>
+        </member>
+        <member name="E:GameLib.Base.Actor.actorActionHandler">
+            <summary>属しているSceneオブジェクトに対するイベント</summary>
+        </member>
+        <member name="F:GameLib.Base.Actor.getGameSize">
+            <summary>ゲームサイズを取得する関数。戻り値Size</summary>
+        </member>
+        <member name="P:GameLib.Base.Actor.hasCollision">
+            <summary>当たり判定を持つかを表すプロパティ</summary>
+        </member>
+        <member name="F:GameLib.Base.Actor.centerX">
+            <summary>中央X座標</summary>
+        </member>
+        <member name="F:GameLib.Base.Actor.centerY">
+            <summary>中央Y座標</summary>
+        </member>
+        <member name="F:GameLib.Base.Actor.hitArea">
+            <summary>当たり判定領域</summary>
+        </member>
+        <member name="F:GameLib.Base.Actor.tags">
+            <summary>このオブジェくのと特徴を示すタグ情報</summary>
+        </member>
+        <member name="M:GameLib.Base.Actor.#ctor(System.Int32,System.Int32,System.Drawing.Rectangle,System.String[])">
+            <summary>コンストラクタ</summary>
+            <param name="x">中央X座標</param>
+            <param name="y">中央Y座標</param>
+            <param name="hitArea">中央X座標</param>
+            <param name="tags">このActorオブジェクトの特徴を表すタグ情報</param>
+        </member>
+        <member name="M:GameLib.Base.Actor.draw(System.Drawing.Graphics)">
+            <summary>描画関数。オーバーライドする。</summary>
+            <param name="g">描画に使用するグラフィクス</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.Base.Actor.update(GameLib.GameInformations.Input,System.Nullable{System.Drawing.Point})">
+            <summary>毎フレーム呼び出される関数</summary>
+            <param name="input">入力情報を保持しているInputオブジェクト</param>
+            <param name="clickPoint">クリック座標Point。クリックされていない場合はnull</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.Base.Actor.init">
+            <summary>シーンに属したときに呼び出される関数</summary>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.Base.Actor.collision(GameLib.Base.Actor)">
+            <summary>他のActorオブジェクトと重なった時に呼び出される関数</summary>
+            <param name="other">このオブジェクトと衝突したActorオブジェクト</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.Base.Actor.clicked(System.Drawing.Point)">
+            <summary>クリックされたときに呼び出される関数</summary>
+            <param name="p">クリックされたゲーム座標。</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.Base.Actor.mouseEnter(System.Drawing.Point)">
+            <summary>マウスがこのオブジェクトに入っているときに呼び出される関数</summary>
+            <param name="p">マウスのゲーム座標。</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.Base.Actor.hasTag(System.String)">
+            <summary>このオブジェクトに指定されたタグが含まれるかを判定する関数</summary>
+            <param name="tag">検索するタグ</param>
+            <returns>bool型。含まれていたらtrue</returns>
+        </member>
+        <member name="M:GameLib.Base.Actor.move(System.Int32,System.Int32)">
+            <summary>このオブジェクトを移動させる関数</summary>
+            <param name="dx">移動させるx座標の量</param>
+            <param name="dy">移動させるy座標の量</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.Base.Actor.actToScene(GameLib.GameEventsArgs.ActorActEventArgs)">
+            <summary>このオブジェクトからこのオブジェクトが属するSceneに対してイベントを送る</summary>
+            <param name="e">イベントに送るActorEventArgs</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.Base.Actor.spawnActor(GameLib.Base.Actor)">
+            <summary>このオブジェクトからこのオブジェクトが属するSceneに対してActorを加えるイベントを送る</summary>
+            <param name="actor">追加するActorオブジェクト</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.Base.Actor.destroy">
+            <summary>このオブジェクトからこのオブジェクトが属するSceneに対して自分を削除するイベントを送る</summary>
+            <returns>void型</returns>
+        </member>
+        <member name="T:GameLib.Base.GetGameSize">
+            <summary>ゲームサイズを取得する関数Delegate</summary>
+        </member>
+        <member name="T:GameLib.Base.Game">
+            <summary>ゲーム抽象クラス</summary>
+            <example>
+            <code>
+            public class MyGame: Game {
+            	[STAThread]
+            	public static void Main(string[] args) {
+            		Application.Run( new MyGame(new Size(480, 360), 30) );
+            	}
+            	MyGame(Size size, int fps): base(size, fps) {
+            		Scene[] s = new Scene[1];
+            		s[0] = Scene01("Scene01");    // Sceneクラスを継承したクラス
+            		setScenes(s);
+            	}
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:GameLib.Base.Game.#ctor(System.Drawing.Size,System.Int32)">
+            <summary>コンストラクタ</summary>
+            <param name="size">ゲームのサイズ</param>
+            <param name="fps">ゲームのfps</param>
+        </member>
+        <member name="M:GameLib.Base.Game.#ctor(System.Drawing.Size,System.Int32,System.Drawing.Icon)">
+            <summary>コンストラクタ</summary>
+            <param name="size">ゲームのサイズ</param>
+            <param name="fps">ゲームのfps</param>
+            <param name="ico">ウィンドウのIcon</param>
+        </member>
+        <member name="M:GameLib.Base.Game.OnPaint(System.Windows.Forms.PaintEventArgs)">
+            <summary>Formから継承した関数</summary>
+            <param name="e">PaintArgs</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.Base.Game.OnPaintBackground(System.Windows.Forms.PaintEventArgs)">
+            <summary>Formから継承した関数</summary>
+            <param name="e">PaintArgs</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.Base.Game.update(GameLib.GameInformations.Input)">
+            <summary>毎フレーム呼び出される関数</summary>
+            <param name="input">入力情報を保持しているInputオブジェクト</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.Base.Game.setScenes(GameLib.Base.Scene[])">
+            <summary>シーンを登録する関数</summary>
+            <param name="s">このゲームで使用するSceneオブジェクトの配列</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.Base.Game.getDrawArea">
+            <summary>最終的にウィンドウに描画されるゲームの領域を取得する関数</summary>
+            <returns>RectangleF型。描画されるゲームの領域</returns>
+        </member>
+        <member name="M:GameLib.Base.Game.getGameSize">
+            <summary>ゲームのサイズを取得する関数。ウィンドウがリサイズされてもこの値は変化しない。</summary>
+            <returns>Size型。ゲームのサイズ</returns>
+        </member>
+        <member name="T:GameLib.Base.Scene">
+            <summary> ゲームのシーンを扱うための抽象クラス </summary>
+        </member>
+        <member name="T:GameLib.Base.Scene.changeSceneEventHandler`1">
+            <summary>シーン遷移イベントのDelegate</summary>
+        </member>
+        <member name="E:GameLib.Base.Scene.changeSceneHandler">
+            <summary>シーン遷移を行うイベント</summary>
+        </member>
+        <member name="F:GameLib.Base.Scene.getGameSize">
+            <summary>ゲーム画面のサイズを取得する関数</summary>
+        </member>
+        <member name="F:GameLib.Base.Scene.name">
+            <summary>シーンの名前を表す変数</summary>
+        </member>
+        <member name="F:GameLib.Base.Scene.actors">
+            <summary>このシーンで描画するActorオブジェクトのArrayList型配列</summary>
+        </member>
+        <member name="F:GameLib.Base.Scene.destroyedActors">
+            <summary>このシーンで描画をやめるActorオブジェクトのArrayList型配列</summary>
+        </member>
+        <member name="T:GameLib.Base.Scene.NextFrameAction">
+            <summary>つぎのフレームに行いたい処理を示すデリゲート。 void NextFrameAction() </summary>
+        </member>
+        <member name="F:GameLib.Base.Scene.nextFrameActions">
+            <summary>つぎのフレームに行いたい処理リスト</summary>
+        </member>
+        <member name="M:GameLib.Base.Scene.#ctor(System.String)">
+            <summary>シーンの名前を指定するコンストラクタ</summary>
+            <param name="name">このシーンの名前</param>
+        </member>
+        <member name="M:GameLib.Base.Scene.init">
+            <summary>このシーンに切り替わった時に一度だけ呼び出される関数。オーバーライドして使用。リソース等をここで読み込むとメモリを節約可能！！</summary>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.Base.Scene.init(System.Object)">
+            <summary>このシーンに切り替わった時に一度だけ呼び出される関数。オーバーライドして使用。リソース等をここで読み込むとメモリを節約可能！！</summary>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.Base.Scene.update(System.Drawing.Graphics,GameLib.GameInformations.Input,System.Drawing.Point,System.Nullable{System.Drawing.Point})">
+            <summary>毎フレーム呼び出される関数。オーバーライド可能</summary>
+            <param name="g">描画に使用するGraphicsオブジェクト</param>
+            <param name="input">入力情報を保持しているInputオブジェクト</param>
+            <param name="mousePos">マウスの位置情報</param>
+            <param name="clickPoint">クリック座標。クリックされていない場合はnull</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.Base.Scene.bgDraw(System.Drawing.Graphics)">
+            <summary>描画関数</summary>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.Base.Scene.addActor(GameLib.Base.Actor)">
+            <summary>描画するActorオブジェクトを追加する関数</summary>
+            <param name="actor">追加するActorオブジェクト</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.Base.Scene.changeSceneByOrder(System.Int32,System.Object)">
+            <summary>インデックスを指定してシーンを変更</summary>
+            <param name="order">遷移先のシーンのインデックス</param>
+            <param name="deliveryObject">遷移先のシーンのinit関数に送るオブジェクト</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.Base.Scene.changeSceneByOrder(System.Int32)">
+            <summary>インデックスを指定してシーンを変更</summary>
+            <param name="order">遷移先のシーンのインデックス</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.Base.Scene.changeSceneByName(System.String,System.Object)">
+            <summary>名前を指定してシーンを変更</summary>
+            <param name="name">遷移先のシーンの名前</param>
+            <param name="deliveryObject">遷移先のシーンのinit関数に送るオブジェクト</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.Base.Scene.changeSceneByName(System.String)">
+            <summary>名前を指定してシーンを変更</summary>
+            <param name="name">遷移先のシーンの名前</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.Base.Scene.actorAction(System.Object,GameLib.GameEventsArgs.ActorActEventArgs)">
+            <summary>このシーンに属したActorオブジェクトがイベントを起こしたときに呼ばれる関数</summary>
+            <param name="sender">このイベントを送ったActorオブジェクト</param>
+            <param name="e">ActorEventArgsオブジェクト</param>
+            <returns>void型</returns>
+        </member>
+        <member name="T:GameLib.GameEventsArgs.ActorActEventArgs">
+            <summary>Actorオブジェクトが自分の属するSceneにイベントを送る際に使用する引数</summary>
+        </member>
+        <member name="P:GameLib.GameEventsArgs.ActorActEventArgs.receiveObject">
+            <summary>受け取ったオブジェクト</summary>
+        </member>
+        <member name="F:GameLib.GameEventsArgs.ActorActEventArgs.eventName">
+            <summary>このイベントの名前。イベントの識別に使用する。</summary>
+        </member>
+        <member name="M:GameLib.GameEventsArgs.ActorActEventArgs.#ctor(System.String,System.Object)">
+            <summary>コンストラクタ</summary>
+            <param name="eName">イベントを識別する際に使用する名前</param>
+            <param name="sendObject">イベント送信先に送りたいオブジェクト</param>
+        </member>
+        <member name="T:GameLib.GameEventsArgs.AddControlEventArgs">
+            <summary>SceneオブジェクトがGame(Form)に対してコントロールを追加するイベントを送る際に使用する引数</summary>
+        </member>
+        <member name="P:GameLib.GameEventsArgs.AddControlEventArgs.ctrl">
+            <summary>追加するControl</summary>
+        </member>
+        <member name="M:GameLib.GameEventsArgs.AddControlEventArgs.#ctor(System.Windows.Forms.Control)">
+            <summary>コンストラクタ</summary>
+            <param name="ctrl">追加するコントロール</param>
+        </member>
+        <member name="T:GameLib.GameEventsArgs.ChangeSceneEventArgs">
+            <summary>SceneオブジェクトがGameに対してシーン遷移のイベントを送る際に使用する引数</summary>
+        </member>
+        <member name="F:GameLib.GameEventsArgs.ChangeSceneEventArgs.order">
+            <summary>遷移先Sceneのインデックス</summary>
+        </member>
+        <member name="F:GameLib.GameEventsArgs.ChangeSceneEventArgs.eventName">
+            <summary>イベントを識別するための名前</summary>
+        </member>
+        <member name="F:GameLib.GameEventsArgs.ChangeSceneEventArgs.sceneName">
+            <summary>遷移先のSceneの名前</summary>
+        </member>
+        <member name="F:GameLib.GameEventsArgs.ChangeSceneEventArgs.deliveryObject">
+            <summary>遷移先のSceneのinit関数に送りたいオブジェクト</summary>
+        </member>
+        <member name="M:GameLib.GameEventsArgs.ChangeSceneEventArgs.#ctor(System.String,System.Int32,System.Object)">
+            <summary>コンストラクタ</summary>
+            <param name="eName">イベント識別用の名前</param>
+            <param name="order">遷移先のSceneのインデックス</param>
+            <param name="deliveryObject">遷移先のSceneのinit関数に送りたいオブジェクト</param>
+        </member>
+        <member name="M:GameLib.GameEventsArgs.ChangeSceneEventArgs.#ctor(System.String,System.String,System.Object)">
+            <summary>コンストラクタ</summary>
+            <param name="eName">イベント識別用の名前</param>
+            <param name="name">遷移先のSceneの名前</param>
+            <param name="deliveryObject">遷移先のSceneのinit関数に送りたいオブジェクト</param>
+        </member>
+        <member name="T:GameLib.GameInformations.GameInfo">
+            <summary>Game全体に関する情報クラス</summary>
+        </member>
+        <member name="P:GameLib.GameInformations.GameInfo.fps">
+            <summary>fpsプロパティ</summary>
+        </member>
+        <member name="M:GameLib.GameInformations.GameInfo.getInput">
+            <summary>キー入力情報を取得する関数</summary>
+            <returns>Input型。キー入力情報</returns>
+        </member>
+        <member name="M:GameLib.GameInformations.GameInfo.addImage(System.String,System.Drawing.Image)">
+            <summary>画像を名前を付けて保持する関数</summary>
+            <param name="name">名前</param>
+            <param name="img">読み込む画像</param>
+            <returns>void型。</returns>
+        </member>
+        <member name="M:GameLib.GameInformations.GameInfo.addImage(System.String,System.String)">
+            <summary>画像を名前を付けて読み込む</summary>
+            <param name="name">名前</param>
+            <param name="path">読み込む画像のファイルパス</param>
+            <returns>void型。</returns>
+        </member>
+        <member name="M:GameLib.GameInformations.GameInfo.getImage(System.String)">
+            <summary>名前を付けて読み込み保持した画像を取得する関数</summary>
+            <param name="name">名前</param>
+            <returns>Iamge型。</returns>
+        </member>
+        <member name="T:GameLib.GameInformations.Input">
+            <summary>キー入力情報を保持するクラス</summary>
+        </member>
+        <member name="F:GameLib.GameInformations.Input.keyHash">
+            <summary>このフレームのキー入力情報</summary>
+        </member>
+        <member name="F:GameLib.GameInformations.Input.preKeyHash">
+            <summary>前のフレームのキー入力情報</summary>
+        </member>
+        <member name="M:GameLib.GameInformations.Input.#ctor(System.Collections.Hashtable,System.Collections.Hashtable)">
+            <summary>コンストラクタ</summary>
+            <param name="keyHash">このフレームのキー入力情報</param>
+            <param name="preKeyHash">前のフレームのキー入力情報</param>
+        </member>
+        <member name="M:GameLib.GameInformations.Input.getKey(System.Windows.Forms.Keys)">
+            <summary>指定されたキーが押されているかを取得する関数</summary>
+            <param name="key">押されているかを確認するキー</param>
+            <returns>bool型。押されていたらtrue</returns>
+        </member>
+        <member name="M:GameLib.GameInformations.Input.getKeyDown(System.Windows.Forms.Keys)">
+            <summary>指定されたキーが押されたかを取得する関数</summary>
+            <param name="key">押されたかを確認するキー</param>
+            <returns>bool型。押されたらtrue</returns>
+        </member>
+        <member name="M:GameLib.GameInformations.Input.getKeyUp(System.Windows.Forms.Keys)">
+            <summary>指定されたキーが離されたかを取得する関数</summary>
+            <param name="key">離されたかを確認するキー</param>
+            <returns>bool型。離されたらtrue</returns>
+        </member>
+        <member name="T:GameLib.TopView.AtlasLayer">
+            <summary>Atlasオブジェクトで扱うレイヤークラス。使用する画像の、RGB(0,0,0) の黒の部分は、透過されて表示されます。</summary>
+        </member>
+        <member name="F:GameLib.TopView.AtlasLayer.ENTERABLE">
+            <summary>全方向から進入可能なマスであることを表すシンボル文字</summary>
+        </member>
+        <member name="F:GameLib.TopView.AtlasLayer.NONENTERABLE">
+            <summary>全方向から進入不可能なマスであることを表すシンボル文字</summary>
+        </member>
+        <member name="F:GameLib.TopView.AtlasLayer.HCROSS">
+            <summary>左右から進入可能なマスであることを表すシンボル文字</summary>
+        </member>
+        <member name="F:GameLib.TopView.AtlasLayer.VCROSS">
+            <summary>上下から進入可能なマスであることを表すシンボル文字</summary>
+        </member>
+        <member name="F:GameLib.TopView.AtlasLayer.FROM_1_ABLE">
+            <summary>左下から進入可能なマスであることを表すシンボル文字</summary>
+        </member>
+        <member name="F:GameLib.TopView.AtlasLayer.FROM_2_ABLE">
+            <summary>真下から進入可能なマスであることを表すシンボル文字</summary>
+        </member>
+        <member name="F:GameLib.TopView.AtlasLayer.FROM_3_ABLE">
+            <summary>右下から進入可能なマスであることを表すシンボル文字</summary>
+        </member>
+        <member name="F:GameLib.TopView.AtlasLayer.FROM_4_ABLE">
+            <summary>左から進入可能なマスであることを表すシンボル文字</summary>
+        </member>
+        <member name="F:GameLib.TopView.AtlasLayer.FROM_6_ABLE">
+            <summary>右から進入可能なマスであることを表すシンボル文字</summary>
+        </member>
+        <member name="F:GameLib.TopView.AtlasLayer.FROM_7_ABLE">
+            <summary>左上から進入可能なマスであることを表すシンボル文字</summary>
+        </member>
+        <member name="F:GameLib.TopView.AtlasLayer.FROM_8_ABLE">
+            <summary>上から進入可能なマスであることを表すシンボル文字</summary>
+        </member>
+        <member name="F:GameLib.TopView.AtlasLayer.FROM_9_ABLE">
+            <summary>右上から進入可能なマスであることを表すシンボル文字</summary>
+        </member>
+        <member name="F:GameLib.TopView.AtlasLayer.road">
+            <summary>進入可能かどうかを表す</summary>
+        </member>
+        <member name="M:GameLib.TopView.AtlasLayer.#ctor(System.String[][],System.Int32[][],System.Int32[][])">
+            <summary>コンストラクタ</summary>
+            <param name="road">どこのマスから進入可能であるかを示した配列。マップのマス＋上下左右1マス分多く指定します。</param>
+            <param name="mapChipIdxs">各マスで描画するタイルを MapChip.init() で指定したどのマップチップ画像から使用するかを、MapChip.init() の引数で指定した Bitmap 配列のインデックスで指定します</param>
+            <param name="tileNums">各マスで描画するタイルを第二引数で指定したマップチップ画像のどこにあるかを指定します。左上から右下に数えて何番目かを指定します。</param>
+        </member>
+        <member name="M:GameLib.TopView.AtlasLayer.draw(System.Drawing.Graphics,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>描画関数。オーバーライド可能。</summary>
+            <param name="g">描画に使用するグラフィックスオブジェクト</param>
+            <param name="gameWidth">ゲームの横幅</param>
+            <param name="gameHeight">ゲームの縦幅</param>
+            <param name="viewTileNumWidth">ゲーム画面内に表示されるタイルの横の数</param>
+            <param name="viewTileNumHeight">ゲーム画面内に表示されるタイルの縦の数</param>
+            <param name="playerX">プレイヤーの現在位置のX座標</param>
+            <param name="playerY">プレイヤーの現在位置のY座標</param>
+            <param name="tileSize">１マスの大きさ</param>;
+            <returns>void型。</returns>
+        </member>
+        <member name="M:GameLib.TopView.AtlasLayer.getRoad">
+            <summary>各マスの進入状態を表した二次元ジャグ配列を返します</summary>
+            <returns>string[][]型。各マスの進入状態を表した二次元ジャグ配列</returns>
+        </member>
+        <member name="T:GameLib.TopView.Base.Atlas">
+            <summary>2D見下ろしマップを描画するScene派生クラス</summary>
+        </member>
+        <member name="P:GameLib.TopView.Base.Atlas.bgBrush">
+            <summary>マップが表示されていない部分に見える背景色</summary>
+        </member>
+        <member name="F:GameLib.TopView.Base.Atlas.viewImage">
+            <summary>レイヤーがすべて描画された結果の画像</summary>
+        </member>
+        <member name="F:GameLib.TopView.Base.Atlas.characters">
+            <summary>この2D見下ろしマップに描画するCharactorのList配列</summary>
+        </member>
+        <member name="F:GameLib.TopView.Base.Atlas.layers">
+            <summary>このマップのレイヤー</summary>
+        </member>
+        <member name="P:GameLib.TopView.Base.Atlas.tileSize">
+            <summary>１マスの大きさプロパティ</summary>
+        </member>
+        <member name="P:GameLib.TopView.Base.Atlas.viewTileNumWidth">
+            <summary>表示される横のマスの個数プロパティ</summary>
+        </member>
+        <member name="P:GameLib.TopView.Base.Atlas.viewTileNumHeight">
+            <summary>表示される縦のマスの個数プロパティ</summary>
+        </member>
+        <member name="P:GameLib.TopView.Base.Atlas.player">
+            <summary>プレイヤーオブジェクトプロパティ</summary>
+        </member>
+        <member name="M:GameLib.TopView.Base.Atlas.#ctor(System.String,GameLib.TopView.AtlasLayer[],GameLib.TopView.Base.Player)">
+            <summary>コンストラクタ</summary>
+            <param name="name">このシーンの名前</param>
+            <param name="layers">このAtlasオブジェクトの持つレイヤーオブジェクト</param>
+            <param name="player">プレイヤーオブジェクト</param>
+        </member>
+        <member name="M:GameLib.TopView.Base.Atlas.#ctor(System.String)">
+            <summary>コンストラクタ</summary>
+            <param name="name">このシーンの名前</param>
+        </member>
+        <member name="M:GameLib.TopView.Base.Atlas.init">
+            <summary>シーンが切り替わった最初のフレームに行われる処理</summary>
+        </member>
+        <member name="M:GameLib.TopView.Base.Atlas.bgDraw(System.Drawing.Graphics)">
+            <summary>描画関数。Sceneクラスからの継承関数。</summary>
+            <param name="g">描画に使用するGraphicsオブジェクト</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.TopView.Base.Atlas.update(System.Drawing.Graphics,GameLib.GameInformations.Input,System.Drawing.Point,System.Nullable{System.Drawing.Point})">
+            <summary>毎フレーム呼び出される関数。Sceneクラスからの継承関数。</summary>
+            <param name="g">描画に使用するGraphicsオブジェクト</param>
+            <param name="input">入力情報を保持したInputオブジェクト</param>
+            <param name="mousePos">マウスのゲーム座標</param>
+            <param name="clickPoint">クリックされたゲーム座標。されていない場合はnull</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.TopView.Base.Atlas.changeSceneByName(System.String,System.Object)">
+            <summary>名前を指定してシーンを変更</summary>
+            <param name="name">遷移先のシーンの名前</param>
+            <param name="deliveryObject">遷移先のシーンのinit関数に送るオブジェクト</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.TopView.Base.Atlas.changeSceneByOrder(System.Int32,System.Object)">
+            <summary>インデックスを指定してシーンを変更</summary>
+            <param name="order">遷移先のシーンのインデックス</param>
+            <param name="deliveryObject">遷移先のシーンのinit関数に送るオブジェクト</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.TopView.Base.Atlas.characterEventReceiver(GameLib.TopView.Base.Character,GameLib.TopView.EventArgs.CharacterEventArgs)">
+            <summary>Charactorからのイベントがあったら呼び出される関数。オーバーライド可能。</summary>
+            <param name="sender">イベントを起こしたCharactorオブジェクト</param>
+            <param name="e">Charactorからのイベントの引数</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.TopView.Base.Atlas.showMessageWindowAccount(GameLib.TopView.MessageWindow)">
+            <summary>表示したいMessageWindowオブジェクトを登録します。登録された順に表示されます。</summary>
+            <param name="msgWindow">MessageWindowオブジェクト</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.TopView.Base.Atlas.addCharactor(GameLib.TopView.Base.Character)">
+            <summary>指定したCharactorをこのAtlasオブジェクトに追加します</summary>
+            <param name="character">このオブジェクトに追加するCharactorオブジェクト</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.TopView.Base.Atlas.addCharactors(GameLib.TopView.Base.Character[])">
+            <summary>指定したCharactorをこのAtlasオブジェクトに追加します</summary>
+            <param name="characters">このオブジェクトに追加するCharactor[]オブジェクト</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.TopView.Base.Atlas.addCharactors(System.Collections.Generic.List{GameLib.TopView.Base.Character})">
+            <summary>指定したCharactorをこのAtlasオブジェクトに追加します</summary>
+            <param name="characters">このオブジェクトに追加するCharactorのListオブジェクト</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.TopView.Base.Atlas.getPlayer">
+            <summary>プレイヤオブジェクトを取得します</summary>
+            <returns>プレイヤオブジェクト</returns>
+        </member>
+        <member name="M:GameLib.TopView.Base.Atlas.setPlayer(GameLib.TopView.Base.Player)">
+            <summary>プレイヤオブジェクトをセットします</summary>
+            <param name="player">セットするプレイヤオブジェクト</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.TopView.Base.Atlas.setBgBrush(System.Drawing.Brush)">
+            <summary>背景色をセットします</summary>
+            <param name="value">背景色Brush</param>
+        </member>
+        <member name="M:GameLib.TopView.Base.Atlas.getBgBrush">
+            <summary>背景色を取得します</summary>
+            <returns>Brush型。背景色のBrushオブジェクト</returns>
+        </member>
+        <member name="M:GameLib.TopView.Base.Atlas.Dispose(System.Boolean)">
+            <summary>リソースを開放します</summary>
+            <param name="disposing">デストラクタから呼ばれたらfalse</param>
+        </member>
+        <member name="M:GameLib.TopView.Base.Atlas.Dispose">
+            <summary>リソースを開放します</summary>
+        </member>
+        <member name="T:GameLib.TopView.Base.Character">
+            <summary>Charactorクラス</summary>
+        </member>
+        <member name="T:GameLib.TopView.Base.Character.Directions">
+            <summary>Charactorの方向を表すEnum</summary>
+        </member>
+        <member name="F:GameLib.TopView.Base.Character.Directions.FRONT">
+            <summary>顔がこちらを向いている</summary>
+        </member>
+        <member name="F:GameLib.TopView.Base.Character.Directions.LEFT">
+            <summary>顔が左を向いている</summary>
+        </member>
+        <member name="F:GameLib.TopView.Base.Character.Directions.RIGHT">
+            <summary>顔が右を向いている</summary>
+        </member>
+        <member name="F:GameLib.TopView.Base.Character.Directions.BACK">
+            <summary>顔が向こう側を向いている</summary>
+        </member>
+        <member name="F:GameLib.TopView.Base.Character.Directions.FLEFT">
+            <summary>顔がコチラ向き左を向いている</summary>
+        </member>
+        <member name="F:GameLib.TopView.Base.Character.Directions.FRIGHT">
+            <summary>顔がコチラ向き右を向いている</summary>
+        </member>
+        <member name="F:GameLib.TopView.Base.Character.Directions.BLEFT">
+            <summary>顔が向こう向き左を向いている</summary>
+        </member>
+        <member name="F:GameLib.TopView.Base.Character.Directions.BRIGHT">
+            <summary>顔が向こう向き右を向いている</summary>
+        </member>
+        <member name="T:GameLib.TopView.Base.Character.DirectionsEx">
+            <summary>GameLib.TopOfView.Charactor.Directions Enumを便利に使う為のクラス</summary>
+        </member>
+        <member name="M:GameLib.TopView.Base.Character.DirectionsEx.rotate45(GameLib.TopView.Base.Character.Directions)">
+            <summary>指定された向きから、時計回りに45°回転した場合の方向を取得します</summary>
+            <param name="direction">回転の基準になる方向</param>
+            <returns>GameLib.TopOfView.Charactor.Directions型。回転後の方向</returns>
+        </member>
+        <member name="M:GameLib.TopView.Base.Character.DirectionsEx.rotate90(GameLib.TopView.Base.Character.Directions)">
+            <summary>指定された向きから、時計回りに90°回転した場合の方向を取得します</summary>
+            <param name="direction">回転の基準になる方向</param>
+            <returns>GameLib.TopOfView.Charactor.Directions型。回転後の方向</returns>
+        </member>
+        <member name="M:GameLib.TopView.Base.Character.DirectionsEx.rotate180(GameLib.TopView.Base.Character.Directions)">
+            <summary>指定された向きから、180°回転した場合の方向を取得します</summary>
+            <param name="direction">回転の基準になる方向</param>
+            <returns>GameLib.TopOfView.Charactor.Directions型。回転後の方向</returns>
+        </member>
+        <member name="T:GameLib.TopView.Base.Character.ImageType">
+            <summary>キャラクターチップ画像の種類を示す</summary>
+        </member>
+        <member name="F:GameLib.TopView.Base.Character.ImageType.FOUR_DIRECTION">
+            <summary>4方向分</summary>
+        </member>
+        <member name="F:GameLib.TopView.Base.Character.ImageType.EIGHT_DIRECTION">
+            <summary>8方向分</summary>
+        </member>
+        <member name="M:GameLib.TopView.Base.Character.Dispose(System.Boolean)">
+            <summary>リソースを開放します</summary>
+            <param name="disposing">デストラクタから呼ばれたらfalse</param>
+        </member>
+        <member name="M:GameLib.TopView.Base.Character.Dispose">
+            <summary>リソースを開放します</summary>
+        </member>
+        <member name="T:GameLib.TopView.Base.Character.canEnterHandler">
+            <summary>指定された座標のマスに進入可能かを判定する関数Delegate型</summary>
+        </member>
+        <member name="F:GameLib.TopView.Base.Character.canEnter">
+            <summary>指定された座標のマスに進入可能かを判定する関数オブジェクト。 bool canEnter(int x, int y, int z, Charactor.Directions direction)</summary>
+        </member>
+        <member name="F:GameLib.TopView.Base.Character.charachip">
+            <summary>このキャラクターのキャラチップ画像
+            　上記の順に各方向に向いた画像を用意する
+            　パターン１　　　パターン２
+            　　↓↓↓　　　　　　↓↓↓↙↙↙
+            　　←←←　　　　　　←←←↘↘↘
+            　　→→→　　　　　　→→→↖↖↖
+            　　↑↑↑　　　　　　→→→↗↗↗
+            </summary>
+        </member>
+        <member name="F:GameLib.TopView.Base.Character.faceImage">
+            <summary>このキャラクターの顔画像</summary>
+        </member>
+        <member name="F:GameLib.TopView.Base.Character.x">
+            <summary>x座標</summary>
+        </member>
+        <member name="F:GameLib.TopView.Base.Character.y">
+            <summary>y座標</summary>
+        </member>
+        <member name="F:GameLib.TopView.Base.Character.z">
+            <summary>z座標</summary>
+        </member>
+        <member name="F:GameLib.TopView.Base.Character.direction">
+            <summary>このキャラクタの方向</summary>
+        </member>
+        <member name="F:GameLib.TopView.Base.Character.imType">
+            <summary>このオブジェクトのキャラチップの画像のタイプ</summary>
+        </member>
+        <member name="F:GameLib.TopView.Base.Character.drawX">
+            <summary>描画するX座標</summary>
+        </member>
+        <member name="F:GameLib.TopView.Base.Character.drawY">
+            <summary>描画するY座標</summary>
+        </member>
+        <member name="P:GameLib.TopView.Base.Character.hasCollision">
+            <summary>このオブジェクトのあたり判定</summary>
+        </member>
+        <member name="F:GameLib.TopView.Base.Character.alwaysVisible">
+            <summary>このキャラクターのZ座標に関係なく常に最前面に表示します</summary>
+        </member>
+        <member name="F:GameLib.TopView.Base.Character.getGameSize">
+            <summary>ゲームサイズを取得する関数。戻り値Size</summary>
+        </member>
+        <member name="M:GameLib.TopView.Base.Character.#ctor(System.Drawing.Bitmap,System.Drawing.Bitmap,System.Int32,System.Int32,System.Int32,GameLib.TopView.Base.Character.ImageType,System.Collections.Generic.List{System.String})">
+            <summary>コンストラクタ</summary>
+            <param name="faceImage">顔画像</param>
+            <param name="charachip">キャラチップ画像</param>
+            <param name="x">x座標</param>
+            <param name="y">y座標</param>
+            <param name="z">z座標</param>
+            <param name="imType">このオブジェクトのキャラチップの画像のタイプ</param>
+            <param name="tags">このCharactorの特徴を示すタグ</param>
+        </member>
+        <member name="M:GameLib.TopView.Base.Character.#ctor(System.Drawing.Bitmap,System.Drawing.Bitmap,System.Int32,System.Int32,System.Int32,GameLib.TopView.Base.Character.ImageType,System.String[])">
+            <summary>コンストラクタ</summary>
+            <param name="faceImage">顔画像</param>
+            <param name="charachip">キャラチップ画像</param>
+            <param name="x">x座標</param>
+            <param name="y">y座標</param>
+            <param name="z">z座標</param>
+            <param name="imType">このオブジェクトのキャラチップの画像のタイプ</param>
+            <param name="tags">このCharactorの特徴を示すタグ</param>
+        </member>
+        <member name="M:GameLib.TopView.Base.Character.#ctor(System.Drawing.Bitmap,System.Int32,System.Int32,System.Int32,GameLib.TopView.Base.Character.ImageType,System.Collections.Generic.List{System.String})">
+            <summary>コンストラクタ</summary>
+            <param name="charachip">キャラチップ画像</param>
+            <param name="x">x座標</param>
+            <param name="y">y座標</param>
+            <param name="z">z座標</param>
+            <param name="imType">このオブジェクトのキャラチップの画像のタイプ</param>
+            <param name="tags">このCharactorの特徴を示すタグ</param>
+        </member>
+        <member name="M:GameLib.TopView.Base.Character.#ctor(System.Drawing.Bitmap,System.Int32,System.Int32,System.Int32,GameLib.TopView.Base.Character.ImageType,System.String[])">
+            <summary>コンストラクタ</summary>
+            <param name="charachip">キャラチップ画像</param>
+            <param name="x">x座標</param>
+            <param name="y">y座標</param>
+            <param name="z">z座標</param>
+            <param name="imType">このオブジェクトのキャラチップの画像のタイプ</param>
+            <param name="tags">このCharactorの特徴を示すタグ</param>
+        </member>
+        <member name="M:GameLib.TopView.Base.Character.#ctor(System.Drawing.Bitmap,System.Int32,System.Int32,System.Int32,GameLib.TopView.Base.Character.ImageType)">
+            <summary>コンストラクタ</summary>
+            <param name="charachip">キャラチップ画像</param>
+            <param name="x">x座標</param>
+            <param name="y">y座標</param>
+            <param name="z">z座標</param>
+            <param name="imType">このオブジェクトのキャラチップの画像のタイプ</param>
+        </member>
+        <member name="M:GameLib.TopView.Base.Character.draw(System.Drawing.Graphics,System.Int32)">
+            <summary>描画関数。 override可能</summary>
+            <param name="g">描画に用いるGraphicsオブジェクト</param>
+            <param name="tileSize">１マスの大きさ</param>;
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.TopView.Base.Character.update(GameLib.GameInformations.Input,System.Int32)">
+            <summary>毎フレーム呼び出される関数。 override可能</summary>
+            <param name="input">入力情報を保持しているInputオブジェクト</param>
+            <param name="tileSize">１マスの大きさ</param>;
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.TopView.Base.Character.talked(GameLib.TopView.Base.Character,System.String)">
+            <summary>話しかけられた時に呼び出される関数。 override可能</summary>
+            <param name="talker">話しかけてきたCharactorオブジェクト(talk関数呼び出した関数)</param>
+            <param name="message">talk関数で引数として渡した文字列</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.TopView.Base.Character.charactorEventDispath(GameLib.TopView.Base.Character,GameLib.TopView.EventArgs.CharacterEventArgs)">
+            <summary>他のCharactorが起こしたイベントを受け取る関数。 override可能</summary>
+            <param name="sender">イベントを起こしたCharactor</param>
+            <param name="e">起こされたイベントのCharactorEventArgs</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.TopView.Base.Character.move(System.Int32,System.Int32,System.Int32,GameLib.TopView.Base.Character.Directions)">
+            <summary>座標を移動する関数。現在位置からの相対座標で指定する</summary>
+            <param name="x">移動するx座標の量</param>
+            <param name="y">移動するy座標の量</param>
+            <param name="z">移動するz座標の量</param>
+            <param name="direction">移動後に向く方向</param>
+        </member>
+        <member name="M:GameLib.TopView.Base.Character.say(System.String)">
+            <summary>発言関数。自分の顔と指定した文字列を表示するMessageWindowを表示します</summary>
+            <param name="message">表示する文字列</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.TopView.Base.Character.talk(System.Int32,System.Int32,System.Int32,System.String)">
+            <summary>話しかける関数。指定した座標のCharactorのtalked関数を呼び出します</summary>
+            <param name="x">話しかけるCharactorのx座標の量</param>
+            <param name="y">話しかけるCharactorのy座標の量</param>
+            <param name="z">話しかけるCharactorのz座標の量</param>
+            <param name="message">対象Charactorオブジェクトのtalked関数に送るメッセージ</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.TopView.Base.Character.talk(System.String)">
+            <summary>話しかける関数。同じz座標で向いている方向の隣にいるCharactorオブジェクトのtalked関数を呼び出す関数。</summary>
+            <param name="message">対象Charactorオブジェクトのtalked関数に送るメッセージ</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.TopView.Base.Character.walk(GameLib.TopView.Base.Character.Directions)">
+            <summary>指定した方向にあるく関数。オーバーライド可能</summary>
+            <param name="direction">あるく方向</param>
+            <returns>bool型。指定した方向に歩けたら、Trueを返す。</returns>
+        </member>
+        <member name="M:GameLib.TopView.Base.Character.animate">
+            <summary>キャラチップの画像を動かします</summary>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.TopView.Base.Character.turnTo(GameLib.TopView.Base.Character.Directions)">
+            <summary>指定した方向に向けます</summary>
+            <param name="direction">向く方向</param>
+            <returns>指定したImageType(imType)の値では向くことが出来ない方向を指定した場合Falseが返ります</returns>
+        </member>
+        <member name="M:GameLib.TopView.Base.Character.rotateRight">
+            <summary>右方向に回転させます</summary>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.TopView.Base.Character.sendEvent(GameLib.TopView.EventArgs.CharacterEventArgs)">
+            <summary>イベントを発生させます。AtlasのreceiveEvent関数が呼び出され、CharactorのDicpatchEvent関数が呼び出されます</summary>
+            <param name="e">イベントに対して送るCharactorEventArgs</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.TopView.Base.Character.addTag(System.String)">
+            <summary>このキャラクターの特徴であるタグを追加します</summary>
+            <param name="tag">追加するタグ</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.TopView.Base.Character.addTags(System.String[])">
+            <summary>このキャラクターの特徴であるタグを追加します</summary>
+            <param name="tags">追加するタグ</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.TopView.Base.Character.addTags(System.Collections.Generic.List{System.String})">
+            <summary>このキャラクターの特徴であるタグを追加します</summary>
+            <param name="tags">追加するタグ</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.TopView.Base.Character.hasTag(System.String)">
+            <summary>このキャラクターの特徴であるタグを検索します</summary>
+            <param name="tag">検索するタグ</param>
+            <returns>bool型。指定したタグが含まれるかを返します。</returns>
+        </member>
+        <member name="M:GameLib.TopView.Base.Character.getCurrentFrameImageRect">
+            <summary>現在キャラチップのうち描画される領域を返します</summary>
+            <returns>RectangleF型。現在キャラチップのうち描画される領域</returns>
+        </member>
+        <member name="M:GameLib.TopView.Base.Character.getX">
+            <summary>x座標を返します</summary>
+            <returns>int型。x座標</returns>
+        </member>
+        <member name="M:GameLib.TopView.Base.Character.getY">
+            <summary>y座標を返します</summary>
+            <returns>int型。y座標</returns>
+        </member>
+        <member name="M:GameLib.TopView.Base.Character.getZ">
+            <summary>z座標を返します</summary>
+            <returns>int型。z座標</returns>
+        </member>
+        <member name="M:GameLib.TopView.Base.Character.getFaceImage">
+            <summary>このオブジェクトの顔画像を返します</summary>
+            <returns>Image型。このオブジェクトの顔画像</returns>
+        </member>
+        <member name="M:GameLib.TopView.Base.Character.getDirection">
+            <summary>このオブジェクトの向いている方向を返します</summary>
+            <returns>Charactor.Direction型。このオブジェクトの向いている方向</returns>
+        </member>
+        <member name="M:GameLib.TopView.Base.Character.setPosition(System.Int32,System.Int32,System.Int32)">
+            <summary>指定した座標に移動させます</summary>
+            <param name="x">x座標</param>
+            <param name="y">y座標</param>
+            <param name="z">z座標</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.TopView.Base.Character.setZ(System.Int32)">
+            <summary>指定したZ座標に移動させます</summary>
+            <param name="z">z座標</param>
+            <returns>void型</returns>
+        </member>
+        <member name="T:GameLib.TopView.Base.Player">
+            <summary>2D見下ろしマップにおけるプレイヤーを表すクラス</summary>
+        </member>
+        <member name="F:GameLib.TopView.Base.Player.PLAYER_TAG">
+            <summary>プレイヤーであることを示すデフォルトで付けられるタグの内容</summary>
+        </member>
+        <member name="P:GameLib.TopView.Base.Player.scroll">
+            <summary>walkメソッド呼び出し時の画面のスクロールサイズ</summary>
+        </member>
+        <member name="M:GameLib.TopView.Base.Player.#ctor(System.Drawing.Bitmap,System.Drawing.Bitmap,System.Int32,System.Int32,System.Int32,GameLib.TopView.Base.Character.ImageType)">
+            <summary>コンストラクタ</summary>
+            <param name="faceImage">このプレイヤーの顔画像(メッセージウィンドウ等に使用)</param>
+            <param name="charachip">このプレイヤーのキャラクターチップ画像。画像のフォーマットは、Wolf Editorなどの形式</param>
+            <param name="x">このプレイヤーのx座標</param>
+            <param name="y">このプレイヤーのy座標</param>
+            <param name="z">このプレイヤーのz座標</param>
+            <param name="imType">このプレイヤーのキャラクターチップ画像の形式。</param>
+        </member>
+        <member name="M:GameLib.TopView.Base.Player.#ctor(System.Drawing.Bitmap,System.Drawing.Bitmap,System.Int32,System.Int32,System.Int32,GameLib.TopView.Base.Character.ImageType,System.String[])">
+            <summary>コンストラクタ</summary>
+            <param name="faceImage">このプレイヤーの顔画像(メッセージウィンドウ等に使用)</param>
+            <param name="charachip">このプレイヤーのキャラクターチップ画像。画像のフォーマットは、Wolf Editorなどの形式</param>
+            <param name="x">このプレイヤーのx座標</param>
+            <param name="y">このプレイヤーのy座標</param>
+            <param name="z">このプレイヤーのz座標</param>
+            <param name="imType">このプレイヤーのキャラクターチップ画像の形式。</param>
+            <param name="tags">このプレイヤーの特徴を表すタグ</param>
+        </member>
+        <member name="M:GameLib.TopView.Base.Player.#ctor(System.Drawing.Bitmap,System.Drawing.Bitmap,System.Int32,System.Int32,System.Int32,GameLib.TopView.Base.Character.ImageType,System.Collections.Generic.List{System.String})">
+            <summary>コンストラクタ</summary>
+            <param name="faceImage">このプレイヤーの顔画像(メッセージウィンドウ等に使用)</param>
+            <param name="charachip">このプレイヤーのキャラクターチップ画像。画像のフォーマットは、Wolf Editorなどの形式</param>
+            <param name="x">このプレイヤーのx座標</param>
+            <param name="y">このプレイヤーのy座標</param>
+            <param name="z">このプレイヤーのz座標</param>
+            <param name="imType">このプレイヤーのキャラクターチップ画像の形式。</param>
+            <param name="tags">このプレイヤーの特徴を表すタグ</param>
+        </member>
+        <member name="M:GameLib.TopView.Base.Player.#ctor(System.Drawing.Bitmap,System.Int32,System.Int32,System.Int32,GameLib.TopView.Base.Character.ImageType)">
+            <summary>コンストラクタ</summary>
+            <param name="charachip">このプレイヤーのキャラクターチップ画像。画像のフォーマットは、Wolf Editorなどの形式</param>
+            <param name="x">このプレイヤーのx座標</param>
+            <param name="y">このプレイヤーのy座標</param>
+            <param name="z">このプレイヤーのz座標</param>
+            <param name="imType">このプレイヤーのキャラクターチップ画像の形式。</param>
+        </member>
+        <member name="M:GameLib.TopView.Base.Player.#ctor(System.Drawing.Bitmap,System.Int32,System.Int32,System.Int32,GameLib.TopView.Base.Character.ImageType,System.String[])">
+            <summary>コンストラクタ</summary>
+            <param name="charachip">このプレイヤーのキャラクターチップ画像。画像のフォーマットは、Wolf Editorなどの形式</param>
+            <param name="x">このプレイヤーのx座標</param>
+            <param name="y">このプレイヤーのy座標</param>
+            <param name="z">このプレイヤーのz座標</param>
+            <param name="imType">このプレイヤーのキャラクターチップ画像の形式。</param>
+            <param name="tags">このプレイヤーの特徴を表すタグ</param>
+        </member>
+        <member name="M:GameLib.TopView.Base.Player.#ctor(System.Drawing.Bitmap,System.Int32,System.Int32,System.Int32,GameLib.TopView.Base.Character.ImageType,System.Collections.Generic.List{System.String})">
+            <summary>コンストラクタ</summary>
+            <param name="charachip">このプレイヤーのキャラクターチップ画像。画像のフォーマットは、Wolf Editorなどの形式</param>
+            <param name="x">このプレイヤーのx座標</param>
+            <param name="y">このプレイヤーのy座標</param>
+            <param name="z">このプレイヤーのz座標</param>
+            <param name="imType">このプレイヤーのキャラクターチップ画像の形式。</param>
+            <param name="tags">このプレイヤーの特徴を表すタグ</param>
+        </member>
+        <member name="M:GameLib.TopView.Base.Player.update(GameLib.GameInformations.Input,System.Int32)">
+            <summary>毎フレーム呼ばれる関数。オーバーライド可能。Charactorクラスからの継承。</summary>
+            <param name="input">入力情報を保持したInputオブジェクト</param>
+            <param name="tileSize">１マスの大きさ</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.TopView.Base.Player.walk(GameLib.TopView.Base.Character.Directions)">
+            <summary>あるく関数。オーバーライド可能。スクロールしながら移動します。Charactorクラスからの継承。</summary>
+            <param name="direction">移動する方向</param>
+            <returns>bool型。移動に成功した場合、True。</returns>
+        </member>
+        <member name="T:GameLib.TopView.EventArgs.CharacterEventType">
+            <summary>Characterがデフォルトで起こすイベントを定義したEnum</summary>
+        </member>
+        <member name="F:GameLib.TopView.EventArgs.CharacterEventType.CEVENT_TALK">
+            <summary>Characterがデフォルトで起こす「話しかける」イベント</summary>
+        </member>
+        <member name="F:GameLib.TopView.EventArgs.CharacterEventType.CEVENT_SAY">
+            <summary>Characterがデフォルトで起こす「発言」イベント</summary>
+        </member>
+        <member name="T:GameLib.TopView.EventArgs.CharacterEventArgs">
+            <summary>キャラクターが起こすイベントの引数</summary>
+        </member>
+        <member name="F:GameLib.TopView.EventArgs.CharacterEventArgs.target">
+            <summary>イベントを他のマスのCharactorに働きかける場合にそのターゲットとなる座標</summary>
+        </member>
+        <member name="F:GameLib.TopView.EventArgs.CharacterEventArgs.type">
+            <summary>イベントを識別するための名前</summary>
+        </member>
+        <member name="F:GameLib.TopView.EventArgs.CharacterEventArgs.message">
+            <summary>送るメッセージ</summary>
+        </member>
+        <member name="M:GameLib.TopView.EventArgs.CharacterEventArgs.#ctor(GameLib.Util.Coords,System.String,System.String)">
+            <summary>コンストラクタ</summary>
+            <param name="target">イベントを他のマスのCharactorに働きかける場合にそのターゲットとなる座標</param>
+            <param name="type">イベントを識別するための名前</param>
+            <param name="message">送るメッセージ</param>
+        </member>
+        <member name="M:GameLib.TopView.EventArgs.CharacterEventArgs.#ctor(System.Int32,System.Int32,System.String,System.String)">
+            <summary>コンストラクタ</summary>
+            <param name="x">イベントを他のマスのCharactorに働きかける場合にそのターゲットとなるX座標</param>
+            <param name="y">イベントを他のマスのCharactorに働きかける場合にそのターゲットとなるY座標</param>
+            <param name="type">イベントを識別するための名前</param>
+            <param name="message">送るメッセージ</param>
+        </member>
+        <member name="T:GameLib.TopView.CharacterEventHander">
+            <summary>Charactorが起こしたイベントのイベントハンドラ。</summary>
+            <param name="sender">イベントを起こしたCharactor</param>
+            <param name="e">Charactorが起こしたイベントのCharactorEventArgs</param>
+            <returns>void型</returns>
+        </member>
+        <member name="T:GameLib.TopView.Informations.TopViewInfo">
+            <summary>見下ろし2Dマップに関する情報クラス</summary>
+        </member>
+        <member name="T:GameLib.TopView.MapChip">
+            <summary>マップチップを管理、描画するクラス</summary>
+        </member>
+        <member name="M:GameLib.TopView.MapChip.init(System.Drawing.Bitmap[],System.Int32[],System.Int32[])">
+            <summary>マップチップを初期化します</summary>
+            <param name="imgs">マップチップ画像を指定します</param>
+            <param name="tileNumHorizontals">指定したマップチップ画像でいくつタイルが横に並んでいるかを指定します</param>
+            <param name="tileNumVerticals">指定したマップチップ画像でいくつタイルが縦に並んでいるかを指定します</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.TopView.MapChip.drawChip(System.Drawing.Graphics,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>指定したマップチップ画像から指定したタイルを描画します</summary>
+            <param name="g">描画に使用するグラフィクスオブジェクト</param>
+            <param name="idx">描画するマップチップ画像を initで指定した マップチップ画像の Bitmap 配列 のインデックスで指定します。</param>
+            <param name="chipX">描画するタイルがマップチップ画像の左からいくつめに、あるかを指定します</param>
+            <param name="chipY">描画するタイルがマップチップ画像の上からいくつめに、あるかを指定します</param>
+            <param name="dstX">左から何マス目に描画するかを指定します</param>
+            <param name="dstY">上から何マス目に描画するかを指定します</param>
+            <param name="gameWidth">ゲームの横幅を指定します。Scene.getGameSize().Width などで取得できます</param>
+            <param name="gameHeight">ゲームの縦幅を指定します。Scene.getGameSize().Height などで取得できます</param>
+            <param name="tileSize">描画するタイルの大きさをしていします。</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.TopView.MapChip.drawChip(System.Drawing.Graphics,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>指定したマップチップ画像から指定したタイルを描画します</summary>
+            <param name="g">描画に使用するグラフィクスオブジェクト</param>
+            <param name="idx">描画するマップチップ画像を initで指定した マップチップ画像の Bitmap 配列 のインデックスで指定します。</param>
+            <param name="chipNum">描画するタイルがマップチップ画像の左上から右下に数えた時いくつめに、あるかを指定します</param>
+            <param name="dstX">左から何マス目に描画するかを指定します</param>
+            <param name="dstY">上から何マス目に描画するかを指定します</param>
+            <param name="gameWidth">ゲームの横幅を指定します。Scene.getGameSize().Width などで取得できます</param>
+            <param name="gameHeight">ゲームの縦幅を指定します。Scene.getGameSize().Height などで取得できます</param>
+            <param name="tileSize">描画するタイルの大きさをしていします。</param>
+            <returns>void型</returns>
+        </member>
+        <member name="T:GameLib.TopView.MessageWindow">
+            <summary>メッセージウィンドウクラス</summary>
+        </member>
+        <member name="F:GameLib.TopView.MessageWindow.MSGWINDOW_TAG">
+            <summary>メッセージウィンドウであることを示すタグの内容</summary>
+        </member>
+        <member name="P:GameLib.TopView.MessageWindow.isAnyMessageWinsowShow">
+            <summary>現在、MessageWindowが表示されている状態かを示すプロパティ</summary>
+        </member>
+        <member name="P:GameLib.TopView.MessageWindow.nowShowingMessageWindow">
+            <summary>現在、表示されているMessageWindowを示すプロパティ</summary>
+        </member>
+        <member name="F:GameLib.TopView.MessageWindow.padding">
+            <summary>文字を表示する行の間隔 </summary>
+        </member>
+        <member name="F:GameLib.TopView.MessageWindow.textLineHeight">
+            <summary>文字を表示する行の間隔 </summary>
+        </member>
+        <member name="P:GameLib.TopView.MessageWindow.bgBrush">
+            <summary>背景色Brushオブジェクト</summary>
+        </member>
+        <member name="P:GameLib.TopView.MessageWindow.border">
+            <summary>枠線Penオブジェクト</summary>
+        </member>
+        <member name="P:GameLib.TopView.MessageWindow.font">
+            <summary>描画に使用するFontオブジェクト</summary>
+        </member>
+        <member name="F:GameLib.TopView.MessageWindow.txtCol">
+            <summary>文字色</summary>
+        </member>
+        <member name="P:GameLib.TopView.MessageWindow.isMeShow">
+            <summary>このMessageWindowが表示されているかを示すプロパティ</summary>
+        </member>
+        <member name="F:GameLib.TopView.MessageWindow.icon">
+            <summary>メッセージウィンドウに表示するアイコン(左側に) </summary>
+        </member>
+        <member name="M:GameLib.TopView.MessageWindow.#ctor(System.Drawing.Image,System.String[])">
+            <summary>コンストラクタ</summary>
+            <param name="icon">メッセージとともに表示したい顔などの画像</param>
+            <param name="message">表示したいメッセージ文字列。改行ごとに配列</param>
+        </member>
+        <member name="M:GameLib.TopView.MessageWindow.init">
+            <summary>Actorクラスから継承された関数</summary>
+            <returns>void型。</returns>
+        </member>
+        <member name="M:GameLib.TopView.MessageWindow.draw(System.Drawing.Graphics)">
+            <summary>Acotrからの継承。描画関数</summary>
+            <param name="g">描画に使用するGraohics</param>
+        </member>
+        <member name="M:GameLib.TopView.MessageWindow.update(GameLib.GameInformations.Input,System.Nullable{System.Drawing.Point})">
+            <summary>Actorクラスから継承された関数</summary>
+            <param name="input">入力情報を保持しているInputオブジェクト</param>
+            <param name="clickPoint">クリック座標</param>
+            <returns>void型。</returns>
+        </member>
+        <member name="M:GameLib.TopView.MessageWindow.destroy">
+            <summary>Actorクラスから継承。</summary>
+        </member>
+        <member name="M:GameLib.TopView.MessageWindow.next">
+            <summary>3行以上表示させるメッセージがある場合は、次のメッセージが表示されます。無い場合は、このオブジェクトは描画されなくなります。</summary>
+            <returns>void型。</returns>
+        </member>
+        <member name="M:GameLib.TopView.MessageWindow.setBgBrush(System.Drawing.Brush)">
+            <summary>背景色をセットします。</summary>
+            <param name="value">背景色として使うBrushオブジェクト</param>
+        </member>
+        <member name="M:GameLib.TopView.MessageWindow.getBgBrush">
+            <summary>背景色を取得します</summary>
+            <returns>Brush型。背景色</returns>
+        </member>
+        <member name="M:GameLib.TopView.MessageWindow.setBorder(System.Drawing.Pen)">
+            <summary>枠線Penオブジェクトをセットします</summary>
+            <param name="value">枠線Penオブジェクト</param>
+        </member>
+        <member name="M:GameLib.TopView.MessageWindow.getBorder">
+            <summary>枠線Penオブジェクトを取得します</summary>
+            <returns>Brush型。枠線Penオブジェクト</returns>
+        </member>
+        <member name="M:GameLib.TopView.MessageWindow.setFont(System.Drawing.Font)">
+            <summary>描画に使用するFontをセットします</summary>
+            <param name="value">描画したいFont</param>
+        </member>
+        <member name="M:GameLib.TopView.MessageWindow.getFont">
+            <summary>描画に使用するFontを取得します</summary>
+            <returns>Font型。描画に使用するFont</returns>
+        </member>
+        <member name="M:GameLib.TopView.MessageWindow.Dispose(System.Boolean)">
+            <summary>リソースを破棄します</summary>
+            <param name="disposing">デストラクタから呼ぶ場合はtrue</param>
+        </member>
+        <member name="M:GameLib.TopView.MessageWindow.Dispose">
+            <summary>リソースを破棄します</summary>
+        </member>
+        <member name="T:GameLib.UI.DialogCloseType">
+            <summary>DialogWindow の閉じる設定</summary>
+        </member>
+        <member name="F:GameLib.UI.DialogCloseType.NOT_CLOSE">
+            <summary>DialogWindow の destroy関数が呼ばれるまで 閉じることはありません</summary>
+        </member>
+        <member name="F:GameLib.UI.DialogCloseType.NG_CLOSE">
+            <summary>DialogWindow でアイテムが選択されなかった場合閉じます</summary>
+        </member>
+        <member name="F:GameLib.UI.DialogCloseType.OK_NG_CLOSE">
+            <summary>DialogWindow でアイテムが選択されてもされなくても閉じます</summary>
+        </member>
+        <member name="F:GameLib.UI.DialogCloseType.OK_CLOSE">
+            <summary>DialogWindow でアイテムが選択された場合閉じます</summary>
+        </member>
+        <member name="T:GameLib.UI.ForcusedDialogItemDrawStyle">
+            <summary>DialogWindowItem がフォーカスされているときの状態を表します</summary>
+        </member>
+        <member name="F:GameLib.UI.ForcusedDialogItemDrawStyle.NONE">
+            <summary>なにもしませｎ</summary>
+        </member>
+        <member name="F:GameLib.UI.ForcusedDialogItemDrawStyle.HIGHLIGHT">
+            <summary>光ります</summary>
+        </member>
+        <member name="F:GameLib.UI.ForcusedDialogItemDrawStyle.MARK">
+            <summary>マークがアイテムの左側に表示されます。DialogWindow の mark で表示するマークを設定します</summary>
+        </member>
+        <member name="F:GameLib.UI.ForcusedDialogItemDrawStyle.BORDER">
+            <summary>枠線が表示されます</summary>
+        </member>
+        <member name="F:GameLib.UI.ForcusedDialogItemDrawStyle.BLINK">
+            <summary>点滅します</summary>
+        </member>
+        <member name="T:GameLib.UI.DialogWindow">
+            <summary>アイテムを選択するダイアログ。Actorクラスを継承しています。</summary>
+        </member>
+        <member name="F:GameLib.UI.DialogWindow.DIALOG_TAG">
+            <summary>Actorクラスの tags に含める このクラスのオブジェクトであることを示すための文字列</summary>
+        </member>
+        <member name="F:GameLib.UI.DialogWindow.OK_KEY">
+            <summary>このクラスのオブジェクトで 選択 を意味するキー</summary>
+        </member>
+        <member name="F:GameLib.UI.DialogWindow.NG_KEY">
+            <summary>このクラスのオブジェクトで キャンセル を意味するキー</summary>
+        </member>
+        <member name="F:GameLib.UI.DialogWindow.UP_KEY">
+            <summary>このクラスのオブジェクトで アイテムのフォーカスを上方向に移動 を意味するキー</summary>
+        </member>
+        <member name="F:GameLib.UI.DialogWindow.DOWN_KEY">
+            <summary>このクラスのオブジェクトで アイテムのフォーカスを下方向に移動 を意味するキー</summary>
+        </member>
+        <member name="F:GameLib.UI.DialogWindow.LEFT_KEY">
+            <summary>このクラスのオブジェクトで アイテムのフォーカスを左方向に移動 を意味するキー</summary>
+        </member>
+        <member name="F:GameLib.UI.DialogWindow.RIGHT_KEY">
+            <summary>このクラスのオブジェクトで アイテムのフォーカスを右方向に移動 を意味するキー</summary>
+        </member>
+        <member name="P:GameLib.UI.DialogWindow.font">
+            <summary>このオブジェクトに属しているDialogWindowItemで使用するフォント</summary>
+        </member>
+        <member name="P:GameLib.UI.DialogWindow.bgBrush">
+            <summary>背景色</summary>
+        </member>
+        <member name="P:GameLib.UI.DialogWindow.highlight">
+            <summary>forcusItemDraw が ForcusedDialogItemDrawStyle.HIGHLIGHT、 ForcusedDialogItemDrawStyle.BLINK の時に使用する色</summary>
+        </member>
+        <member name="P:GameLib.UI.DialogWindow.borderPen">
+            <summary>枠線色</summary>
+        </member>
+        <member name="P:GameLib.UI.DialogWindow.selectBorder">
+            <summary>forcusItemDraw が ForcusedDialogItemDrawStyle.BORDER の時に使用する枠線色</summary>
+        </member>
+        <member name="F:GameLib.UI.DialogWindow.forcusItemDraw">
+            <summary>フォーカスされているアイテムに対する書式設定</summary>
+        </member>
+        <member name="F:GameLib.UI.DialogWindow.blinkInterval">
+            <summary>forcusItemDraw が ForcusedDialogItemDrawStyle.BLINK の時の点滅スピード</summary>
+        </member>
+        <member name="F:GameLib.UI.DialogWindow.mark">
+            <summary>forcusItemDraw が ForcusedDialogItemDrawStyle.MARK の時に使用するマーク</summary>
+        </member>
+        <member name="F:GameLib.UI.DialogWindow.enable">
+            <summary>このダイアログの有効無効を示す</summary>
+        </member>
+        <member name="F:GameLib.UI.DialogWindow.mouseEnable">
+            <summary>このダイアログがマウス操作を受け付けるかを示す</summary>
+        </member>
+        <member name="E:GameLib.UI.DialogWindow.OK">
+            <summary>DialogWindow でアイテムが選択されたときのイベント</summary>
+        </member>
+        <member name="E:GameLib.UI.DialogWindow.NG">
+            <summary>DialogWindow でアイテムが選択されなかったときのイベント</summary>
+        </member>
+        <member name="F:GameLib.UI.DialogWindow.items">
+            <summary>描画するアイテム</summary>
+        </member>
+        <member name="F:GameLib.UI.DialogWindow.selectX">
+            <summary>選択中のアイテムが左からいくつめにあるか</summary>
+        </member>
+        <member name="F:GameLib.UI.DialogWindow.selectY">
+            <summary>選択中のアイテムが上からいくつめにあるか</summary>
+        </member>
+        <member name="F:GameLib.UI.DialogWindow.blinkCnt">
+            <summary>点滅のカウンター</summary>
+        </member>
+        <member name="F:GameLib.UI.DialogWindow.hItemNum">
+            <summary>縦に並べるアイテムの数</summary>
+        </member>
+        <member name="F:GameLib.UI.DialogWindow.wItemNum">
+            <summary>横に並べるアイテムの数</summary>
+        </member>
+        <member name="F:GameLib.UI.DialogWindow.itemWidth">
+            <summary>並べるアイテムの横幅</summary>
+        </member>
+        <member name="F:GameLib.UI.DialogWindow.itemHeight">
+            <summary>並べるアイテムの縦幅</summary>
+        </member>
+        <member name="M:GameLib.UI.DialogWindow.#ctor(System.Drawing.Rectangle,GameLib.UI.DialogWindowItem[],System.Int32,System.Int32,GameLib.UI.DialogCloseType)">
+            <summary>コンストラクタ</summary>
+            <param name="rect">このオブジェクト領域</param>
+            <param name="items">このオブジェクトが持つアイテム</param>
+            <param name="hItemNum">縦に並べるアイテム数</param>
+            <param name="wItemNum">横に並べるアイテム数</param>
+            <param name="closeType">閉じる条件</param>
+        </member>
+        <member name="M:GameLib.UI.DialogWindow.draw(System.Drawing.Graphics)">
+            <summary>描画関数。オーバーライド可能。Actorクラスから継承</summary>
+            <param name="g">描画に使用するグラフィクス</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.UI.DialogWindow.update(GameLib.GameInformations.Input,System.Nullable{System.Drawing.Point})">
+            <summary>毎フレーム呼び出される関数。オーバーライド可能。Actorクラスから継承</summary>
+            <param name="input">入力情報を保持しているInputオブジェクト</param>
+            <param name="clickPoint">クリックされた座標。されて無い時はnull</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.UI.DialogWindow.mouseEnter(System.Drawing.Point)">
+            <summary>マウスがこのオブジェクトに入っている時に呼び出される関数。Actorクラスから継承</summary>
+            <param name="p">マウス座標</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.UI.DialogWindow.clicked(System.Drawing.Point)">
+            <summary>このオブジェクトがクリックされた時に呼び出される関数。Actorクラスから継承</summary>
+            <param name="p">マウス座標</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.UI.DialogWindow.destroy">
+            <summary>Actorクラスからの継承。リソースを開放しながらdestroyをします。</summary>
+        </member>
+        <member name="M:GameLib.UI.DialogWindow.drawHighlight(System.Drawing.Graphics)">
+            <summary>フォーカスされているアイテムをハイライト表示する際に呼び出される関数。オーバーライド可能</summary>
+        </member>
+        <member name="M:GameLib.UI.DialogWindow.drawMark(System.Drawing.Graphics,System.Drawing.PointF)">
+            <summary>フォーカスされているアイテムにマークを表示する際に呼び出される関数。オーバーライド可能</summary>
+        </member>
+        <member name="M:GameLib.UI.DialogWindow.drawBorder(System.Drawing.Graphics)">
+            <summary>フォーカスされているアイテムに枠線を表示する際に呼び出される関数。オーバーライド可能</summary>
+        </member>
+        <member name="M:GameLib.UI.DialogWindow.drawBlink(System.Drawing.Graphics)">
+            <summary>フォーカスされているアイテムを点滅表示する際に呼び出される関数。オーバーライド可能</summary>
+        </member>
+        <member name="M:GameLib.UI.DialogWindow.Dispose(System.Boolean)">
+            <summary>リソースを開放します</summary>
+            <param name="disposing">デストラクタから呼ばれたらfalse</param>
+        </member>
+        <member name="M:GameLib.UI.DialogWindow.Dispose">
+            <summary>リソースを開放します</summary>
+        </member>
+        <member name="M:GameLib.UI.DialogWindow.setFont(System.Drawing.Font)">
+            <summary>描画に使用するフォントをセットします</summary>
+            <param name="value">描画に使用するフォント</param>
+        </member>
+        <member name="M:GameLib.UI.DialogWindow.getFont">
+            <summary>描画に使用するフォントをゲットします</summary>
+            <returns>Font型。描画に使用しているフォント</returns>
+        </member>
+        <member name="M:GameLib.UI.DialogWindow.setBgBrush(System.Drawing.Brush)">
+            <summary>背景色をセットします</summary>
+            <param name="value">指定する背景色Brush</param>
+        </member>
+        <member name="M:GameLib.UI.DialogWindow.getBgBrush">
+            <summary>背景色をゲットします</summary>
+            <returns>Brush型。背景色Brush</returns>
+        </member>
+        <member name="M:GameLib.UI.DialogWindow.setHightlightBrush(System.Drawing.Brush)">
+            <summary>forcusItemDraw が ForcusedDialogItemDrawStyle.HIGHLIGHT、 ForcusedDialogItemDrawStyle.BLINK の時に使用する色を指定します</summary>
+            <param name="value">指定するBrush</param>
+        </member>
+        <member name="M:GameLib.UI.DialogWindow.getHighlightBrush">
+            <summary>forcusItemDraw が ForcusedDialogItemDrawStyle.HIGHLIGHT、 ForcusedDialogItemDrawStyle.BLINK の時に使用する色を取得します</summary>
+            <returns>Brush型。使用されるBrush</returns>
+        </member>
+        <member name="M:GameLib.UI.DialogWindow.setBorderPen(System.Drawing.Pen)">
+            <summary>枠線色をセットします</summary>
+            <param name="value">セットする枠線Pen</param>
+        </member>
+        <member name="M:GameLib.UI.DialogWindow.getBorderPen">
+            <summary>枠線色を取得します</summary>
+            <returns>Pen型。枠線色Pen</returns>
+        </member>
+        <member name="M:GameLib.UI.DialogWindow.setSelectBorder(System.Drawing.Pen)">
+            <summary>forcusItemDraw が ForcusedDialogItemDrawStyle.BORDER の時に使用する枠線色をセットします</summary>
+            <param name="value">forcusItemDraw が ForcusedDialogItemDrawStyle.BORDER の時に使用する枠線色Brush</param>
+        </member>
+        <member name="M:GameLib.UI.DialogWindow.getSelectBorder">
+            <summary>forcusItemDraw が ForcusedDialogItemDrawStyle.BORDER の時に使用する枠線色をゲットします</summary>
+            <returns>Brush型。forcusItemDraw が ForcusedDialogItemDrawStyle.BORDER の時に使用する枠線色Brush</returns>
+        </member>
+        <member name="T:GameLib.UI.DialogWindowItem">
+            <summary>DialogWindowに表示するアイテム</summary>
+        </member>
+        <member name="P:GameLib.UI.DialogWindowItem.name">
+            <summary>このオブジェクトの名前、表示テキスト。</summary>
+        </member>
+        <member name="P:GameLib.UI.DialogWindowItem.isSelected">
+            <summary>このオブジェクトがフォーカスされているかを示す。</summary>
+        </member>
+        <member name="E:GameLib.UI.DialogWindowItem.toggleSelected">
+            <summary>DialogWindowItem のフォーカスが変わった時のイベント</summary>
+        </member>
+        <member name="M:GameLib.UI.DialogWindowItem.#ctor(System.String)">
+            <summary>コンストラクタ</summary>
+            <param name="str">このオブジェクトの名前、表示テキスト。</param>
+        </member>
+        <member name="M:GameLib.UI.DialogWindowItem.draw(System.Drawing.Graphics,System.Drawing.Font,System.Drawing.RectangleF)">
+            <summary>描画関数</summary>
+            <param name="g">描画に使用するグラフィクス</param>
+            <param name="font">このアイテムが属している DialogWindow オブジェクトで設定されているフォント</param>
+            <param name="area">このアイテムが描画に使用できるRectangleF</param>
+            <returns>SizeF型。描画に使用した領域のサイズ</returns>
+        </member>
+        <member name="M:GameLib.UI.DialogWindowItem.onToggleSelected(System.Boolean)">
+            <summary>選択状態を切り替える関数</summary>
+            <param name="selected">選択状態</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.UI.DialogWindowItem.setName(System.String)">
+            <summary>このアイテムの名前、表示テキストを変更します</summary>
+            <param name="name">このアイテムの名前、表示テキスト</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.UI.DialogWindowItem.Dispose(System.Boolean)">
+            <summary>リソースを開放します</summary>
+            <param name="disposing">デストラクタから呼ばれるとfalse</param>
+        </member>
+        <member name="M:GameLib.UI.DialogWindowItem.Dispose">
+            <summary>リソースを開放します</summary>
+        </member>
+        <member name="T:GameLib.UI.EventArgs.DialogWindowOKEventArgs">
+            <summary>DialogWindow でアイテムが選択されたときのイベントの引数クラス</summary>
+        </member>
+        <member name="F:GameLib.UI.EventArgs.DialogWindowOKEventArgs.selectedItem">
+            <summary>DialogWindow で選択されたアイテム</summary>
+        </member>
+        <member name="M:GameLib.UI.EventArgs.DialogWindowOKEventArgs.#ctor(GameLib.UI.DialogWindowItem)">
+            <summary>コンストラクタ</summary>
+            <param name="selectedItem">DialogWindow で選択されたアイテム</param>
+        </member>
+        <member name="T:GameLib.UI.EventArgs.DialogWindowNGEventArgs">
+            <summary>DialogWindow でアイテムが選択されなかったときのイベントの引数クラス</summary>
+        </member>
+        <member name="T:GameLib.UI.OkEventHandler">
+            <summary>DialogWindow でアイテムが選択されたときのイベントの Delegate。　void OkEventHandler(DialogWindow sender, DialogWindowOKEventArgs e)</summary>
+        </member>
+        <member name="T:GameLib.UI.NgEventHandler">
+            <summary>DialogWindow でアイテムが選択されなかったときのイベントの Delegate。　void NgEventHandler(DialogWindow sender, DialogWindowNGEventArgs e)</summary>
+        </member>
+        <member name="T:GameLib.UI.ToggleSelectedEventHandler">
+            <summary>DialogWindowItem のフォーカスが変わった時のイベント Delegate。　void ToggleSelectedEventHandler(DialogWindowItem sender, EventArgs e)</summary>
+        </member>
+        <member name="T:GameLib.Util.Coords">
+            <summary>座標データクラス</summary>
+        </member>
+        <member name="P:GameLib.Util.Coords.x">
+            <summary>x座標プロパティ</summary>
+        </member>
+        <member name="P:GameLib.Util.Coords.y">
+            <summary>y座標プロパティ</summary>
+        </member>
+        <member name="P:GameLib.Util.Coords.z">
+            <summary>z座標プロパティ</summary>
+        </member>
+        <member name="M:GameLib.Util.Coords.#ctor(System.Int32,System.Int32)">
+            <summary>コンストラクタ</summary>
+            <param name="x">x座標</param>
+            <param name="y">y座標</param>
+        </member>
+        <member name="M:GameLib.Util.Coords.#ctor(System.Int32,System.Int32,System.Int32)">
+            <summary>コンストラクタ</summary>
+            <param name="x">x座標</param>
+            <param name="y">y座標</param>
+            <param name="z">z座標</param>
+        </member>
+        <member name="M:GameLib.Util.Coords.ToString">
+            <summary>文字列表現を返します。object 型 からのオーバーライド</summary>
+        </member>
+        <member name="T:GameLib.Util.Easing">
+            <summary>イージング関数群クラス</summary>
+        </member>
+        <member name="M:GameLib.Util.Easing.inSine(System.Double)">
+            <summary>イージング関数</summary>
+            <param name="x">0.0~1.0 の値</param>
+        </member>
+        <member name="M:GameLib.Util.Easing.outSine(System.Double)">
+            <summary>イージング関数</summary>
+            <param name="x">0.0~1.0 の値</param>
+        </member>
+        <member name="M:GameLib.Util.Easing.inOutSine(System.Double)">
+            <summary>イージング関数</summary>
+            <param name="x">0.0~1.0 の値</param>
+        </member>
+        <member name="M:GameLib.Util.Easing.inQuad(System.Double)">
+            <summary>イージング関数</summary>
+            <param name="x">0.0~1.0 の値</param>
+        </member>
+        <member name="M:GameLib.Util.Easing.outQuad(System.Double)">
+            <summary>イージング関数</summary>
+            <param name="x">0.0~1.0 の値</param>
+        </member>
+        <member name="M:GameLib.Util.Easing.inOutQuad(System.Double)">
+            <summary>イージング関数</summary>
+            <param name="x">0.0~1.0 の値</param>
+        </member>
+        <member name="M:GameLib.Util.Easing.inCubic(System.Double)">
+            <summary>イージング関数</summary>
+            <param name="x">0.0~1.0 の値</param>
+        </member>
+        <member name="M:GameLib.Util.Easing.outCubic(System.Double)">
+            <summary>イージング関数</summary>
+            <param name="x">0.0~1.0 の値</param>
+        </member>
+        <member name="M:GameLib.Util.Easing.inOutCubic(System.Double)">
+            <summary>イージング関数</summary>
+            <param name="x">0.0~1.0 の値</param>
+        </member>
+        <member name="M:GameLib.Util.Easing.inQuard(System.Double)">
+            <summary>イージング関数</summary>
+            <param name="x">0.0~1.0 の値</param>
+        </member>
+        <member name="M:GameLib.Util.Easing.outQuard(System.Double)">
+            <summary>イージング関数</summary>
+            <param name="x">0.0~1.0 の値</param>
+        </member>
+        <member name="M:GameLib.Util.Easing.inOutQuard(System.Double)">
+            <summary>イージング関数</summary>
+            <param name="x">0.0~1.0 の値</param>
+        </member>
+        <member name="M:GameLib.Util.Easing.inQuint(System.Double)">
+            <summary>イージング関数</summary>
+            <param name="x">0.0~1.0 の値</param>
+        </member>
+        <member name="M:GameLib.Util.Easing.outQuint(System.Double)">
+            <summary>イージング関数</summary>
+            <param name="x">0.0~1.0 の値</param>
+        </member>
+        <member name="M:GameLib.Util.Easing.inOutQuint(System.Double)">
+            <summary>イージング関数</summary>
+            <param name="x">0.0~1.0 の値</param>
+        </member>
+        <member name="M:GameLib.Util.Easing.inExpo(System.Double)">
+            <summary>イージング関数</summary>
+            <param name="x">0.0~1.0 の値</param>
+        </member>
+        <member name="M:GameLib.Util.Easing.outExpo(System.Double)">
+            <summary>イージング関数</summary>
+            <param name="x">0.0~1.0 の値</param>
+        </member>
+        <member name="M:GameLib.Util.Easing.inOutExpo(System.Double)">
+            <summary>イージング関数</summary>
+            <param name="x">0.0~1.0 の値</param>
+        </member>
+        <member name="M:GameLib.Util.Easing.inCirc(System.Double)">
+            <summary>イージング関数</summary>
+            <param name="x">0.0~1.0 の値</param>
+        </member>
+        <member name="M:GameLib.Util.Easing.outCirc(System.Double)">
+            <summary>イージング関数</summary>
+            <param name="x">0.0~1.0 の値</param>
+        </member>
+        <member name="M:GameLib.Util.Easing.inOutCirc(System.Double)">
+            <summary>イージング関数</summary>
+            <param name="x">0.0~1.0 の値</param>
+        </member>
+        <member name="M:GameLib.Util.Easing.inBack(System.Double)">
+            <summary>イージング関数</summary>
+            <param name="x">0.0~1.0 の値</param>
+        </member>
+        <member name="M:GameLib.Util.Easing.outBack(System.Double)">
+            <summary>イージング関数</summary>
+            <param name="x">0.0~1.0 の値</param>
+        </member>
+        <member name="M:GameLib.Util.Easing.inOutBack(System.Double)">
+            <summary>イージング関数</summary>
+            <param name="x">0.0~1.0 の値</param>
+        </member>
+        <member name="M:GameLib.Util.Easing.inElastic(System.Double)">
+            <summary>イージング関数</summary>
+            <param name="x">0.0~1.0 の値</param>
+        </member>
+        <member name="M:GameLib.Util.Easing.outElastic(System.Double)">
+            <summary>イージング関数</summary>
+            <param name="x">0.0~1.0 の値</param>
+        </member>
+        <member name="M:GameLib.Util.Easing.inOutElastic(System.Double)">
+            <summary>イージング関数</summary>
+            <param name="x">0.0~1.0 の値</param>
+        </member>
+        <member name="M:GameLib.Util.Easing.inBounce(System.Double)">
+            <summary>イージング関数</summary>
+            <param name="x">0.0~1.0 の値</param>
+        </member>
+        <member name="M:GameLib.Util.Easing.outBounce(System.Double)">
+            <summary>イージング関数</summary>
+            <param name="x">0.0~1.0 の値</param>
+        </member>
+        <member name="M:GameLib.Util.Easing.inOutBounce(System.Double)">
+            <summary>イージング関数</summary>
+            <param name="x">0.0~1.0 の値</param>
+        </member>
+        <member name="T:GameLib.Util.Vector">
+            <summary>二次元ベクトルを表すクラス</summary>
+        </member>
+        <member name="F:GameLib.Util.Vector.x">
+            <summary>x成分</summary>
+        </member>
+        <member name="F:GameLib.Util.Vector.y">
+            <summary>y成分</summary>
+        </member>
+        <member name="M:GameLib.Util.Vector.#ctor(System.Double,System.Double)">
+            <summary>コンストラクタ</summary>
+            <summary>x成分</summary>
+            <summary>y成分</summary>
+        </member>
+        <member name="M:GameLib.Util.Vector.add(GameLib.Util.Vector)">
+            <summary>ベクトルを足す</summary>
+            <param name="vec">このオブジェクトに足されるベクトル</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.Util.Vector.sub(GameLib.Util.Vector)">
+            <summary>ベクトルを引く</summary>
+            <param name="vec">このオブジェクトから引かれるベクトル</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.Util.Vector.mul(System.Double)">
+            <summary>ベクトルをかける</summary>
+            <param name="n">このオブジェクトにかけられる数値</param>
+            <returns>void型</returns>
+        </member>
+        <member name="M:GameLib.Util.Vector.getLength">
+            <summary>このベクトルの長さを取得</summary>
+            <returns>double型。ベクトルの長さ</returns>
+        </member>
+        <member name="M:GameLib.Util.Vector.getDegree">
+            <summary>このベクトルの角度を取得</summary>
+            <returns>double型。このベクトルの角度。度数</returns>
+        </member>
+        <member name="M:GameLib.Util.Vector.getRadian">
+            <summary>このベクトルの角度を取得</summary>
+            <returns>double型。このベクトルの角度。Radian度数</returns>
+        </member>
+        <member name="M:GameLib.Util.Vector.op_Addition(GameLib.Util.Vector,GameLib.Util.Vector)">
+            <summary>オペレーターオーバーロード</summary>
+        </member>
+        <member name="M:GameLib.Util.Vector.op_Subtraction(GameLib.Util.Vector,GameLib.Util.Vector)">
+            <summary>オペレーターオーバーロード</summary>
+        </member>
+        <member name="M:GameLib.Util.Vector.op_Multiply(GameLib.Util.Vector,System.Double)">
+            <summary>オペレーターオーバーロード</summary>
+        </member>
+        <member name="M:GameLib.Util.Vector.op_Division(GameLib.Util.Vector,System.Double)">
+            <summary>オペレーターオーバーロード</summary>
+        </member>
+        <member name="T:GameLib.Util.PositionVector">
+            <summary>位置ベクトルを表すクラス</summary>
+        </member>
+        <member name="F:GameLib.Util.PositionVector.point">
+            <summary>この位置ベクトルの原点座標</summary>
+        </member>
+        <member name="F:GameLib.Util.PositionVector.vector">
+            <summary>この位置ベクトルのベクトル</summary>
+        </member>
+        <member name="M:GameLib.Util.PositionVector.#ctor(System.Drawing.Point,GameLib.Util.Vector)">
+            <summary>コンストラクタ</summary>
+            <param name="p">この位置ベクトルの原点座標</param>
+            <param name="vec">この位置ベクトルのベクトル</param>
+        </member>
+        <member name="M:GameLib.Util.PositionVector.#ctor(System.Drawing.Point,System.Drawing.Point)">
+            <summary>コンストラクタ</summary>
+            <param name="start">この位置ベクトルの原点座標</param>
+            <param name="end">この位置ベクトルの終点座標</param>
+        </member>
+        <member name="M:GameLib.Util.PositionVector.getBeginX">
+            <summary>この位置ベルトルの原点X座標を取得する</summary>
+            <returns>double型。この位置ベルトルの原点X座標</returns>
+        </member>
+        <member name="M:GameLib.Util.PositionVector.getBeginY">
+            <summary>この位置ベルトルの原点y座標を取得する</summary>
+            <returns>double型。この位置ベルトルの原点Y座標</returns>
+        </member>
+        <member name="M:GameLib.Util.PositionVector.getEndX">
+            <summary>この位置ベルトルの終点X座標を取得する</summary>
+            <returns>double型。この位置ベルトルの終点X座標</returns>
+        </member>
+        <member name="M:GameLib.Util.PositionVector.getEndY">
+            <summary>この位置ベルトルの終点y座標を取得する</summary>
+            <returns>double型。この位置ベルトルの終点y座標</returns>
+        </member>
+    </members>
+</doc>

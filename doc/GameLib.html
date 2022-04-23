@@ -1,0 +1,5167 @@
+﻿<html>
+  <head>
+    <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Gamelib</title>
+    <style type="text/css">
+                .class {
+                    padding-left: 0.5em;
+                }
+                .method {
+                    padding-left: 1.5em;
+                    border: solid 1px black;
+                }
+                .property {
+                    padding-left: 1.5em;
+                    border: solid 1px black;
+                }
+                .field {
+                    padding-left: 3em;
+                }
+                .event {
+                    border: solid 1px black;
+                    padding-left: 1.5em;
+                }
+                pre.code {
+                    background-color: #ccf;
+                }
+                .nav-item {
+                    border: solid 1px black;
+                    font-weight: 300;
+                }
+
+                main {
+                    position:relative;
+                    top:1.5em;
+                    left: 0px;
+                    width: 100%;
+                    height: 100%;
+                }
+                header {
+                    padding:10px;
+                    background: #ccc;
+                    position: fixed; /* 要素の位置を固定する */
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 1.5em;
+                    z-index: 99;
+                    font-weight: 900;
+                }
+
+                #nav-drawer {
+                    position: relative;
+                }
+
+                /*チェックボックス等は非表示に*/
+                .nav-unshown {
+                    display:none;
+                }
+
+                /*アイコンのスペース*/
+                #nav-open {
+                    display: inline-block;
+                    width: 30px;
+                    height: 22px;
+                    vertical-align: middle;
+                }
+
+                /*ハンバーガーの形をCSSで表現*/
+                #nav-open span, #nav-open span:before, #nav-open span:after {
+                    position: absolute;
+                    height: 3px;/*線の太さ*/
+                    width: 25px;/*長さ*/
+                    border-radius: 3px;
+                    background: #555;
+                    display: block;
+                    content: '';
+                    cursor: pointer;
+                }
+                #nav-open span:before {
+                    bottom: -8px;
+                }
+                #nav-open span:after {
+                    bottom: -16px;
+                }
+
+                /*閉じる用の薄黒箇所*/
+                #nav-close {
+                    display: none;
+                    position: fixed;
+                    z-index: 99;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: black;
+                    opacity: 0;
+                    transition: .3s ease-in-out;
+                }
+
+                /*メニューの中身*/
+                #nav-content {
+                    overflow: auto;
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    z-index: 9999;
+                    width: 90%;
+                    max-width: 330px;/*最大幅（お好みで調整を）*/
+                    height: 100%;
+                    background: #fff;
+                    transition: .3s ease-in-out;
+                    -webkit-transform: translateX(-105%);
+                    transform: translateX(-105%);
+                }
+
+                /*チェックがついたら表示させる*/
+                #nav-input:checked ~ #nav-close {
+                    display: block;
+                    opacity: .5;
+                }
+
+                #nav-input:checked ~ #nav-content {
+                    -webkit-transform: translateX(0%);
+                    transform: translateX(0%);
+                    box-shadow: 6px 0 25px rgba(0,0,0,.15);
+                }
+
+                .header-logo-menu{
+                    display: flex;
+                    display: -moz-flex;
+                    display: -o-flex;
+                    display: -webkit-flex;
+                    display: -ms-flex;
+                    flex-direction: row;
+                    -moz-flex-direction: row;
+                    -o-flex-direction: row;
+                    -webkit-flex-direction: row;
+                    -ms-flex-direction: row;
+                }
+
+                .logo-area{text-align:center;margin:auto;}
+            </style>
+  </head>
+  <body><header><div class="header-logo-menu">
+        <div id="nav-drawer"><input id="nav-input" type="checkbox" class="nav-unshown"><label id="nav-open" for="nav-input"><span></span></label><label class="nav-unshown" id="nav-close" for="nav-input"></label><div id="nav-content">
+            <div class="nav-item"><a href="#1">T:GameLib.Base.Actor</a><div style="padding-left: 1.5em;">ゲーム上で、描画されたりイベントを送ったりする抽象クラス</div>
+            </div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"><a href="#7">M:GameLib.Base.Actor.#ctor(System.Int32,System.Int32,System.Drawing.Rectangle,System.String[])</a><div style="padding-left: 1.5em;">コンストラクタ</div>
+            </div>
+            <div class="nav-item"><a href="#8">M:GameLib.Base.Actor.draw(System.Drawing.Graphics)</a><div style="padding-left: 1.5em;">描画関数。オーバーライドする。</div>
+            </div>
+            <div class="nav-item"><a href="#9">M:GameLib.Base.Actor.update(GameLib.GameInformations.Input,System.Nullable{System.Drawing.Point})</a><div style="padding-left: 1.5em;">毎フレーム呼び出される関数</div>
+            </div>
+            <div class="nav-item"><a href="#10">M:GameLib.Base.Actor.init</a><div style="padding-left: 1.5em;">シーンに属したときに呼び出される関数</div>
+            </div>
+            <div class="nav-item"><a href="#11">M:GameLib.Base.Actor.collision(GameLib.Base.Actor)</a><div style="padding-left: 1.5em;">他のActorオブジェクトと重なった時に呼び出される関数</div>
+            </div>
+            <div class="nav-item"><a href="#12">M:GameLib.Base.Actor.clicked(System.Drawing.Point)</a><div style="padding-left: 1.5em;">クリックされたときに呼び出される関数</div>
+            </div>
+            <div class="nav-item"><a href="#13">M:GameLib.Base.Actor.mouseEnter(System.Drawing.Point)</a><div style="padding-left: 1.5em;">マウスがこのオブジェクトに入っているときに呼び出される関数</div>
+            </div>
+            <div class="nav-item"><a href="#14">M:GameLib.Base.Actor.hasTag(System.String)</a><div style="padding-left: 1.5em;">このオブジェクトに指定されたタグが含まれるかを判定する関数</div>
+            </div>
+            <div class="nav-item"><a href="#15">M:GameLib.Base.Actor.move(System.Int32,System.Int32)</a><div style="padding-left: 1.5em;">このオブジェクトを移動させる関数</div>
+            </div>
+            <div class="nav-item"><a href="#16">M:GameLib.Base.Actor.actToScene(GameLib.GameEventsArgs.ActorActEventArgs)</a><div style="padding-left: 1.5em;">このオブジェクトからこのオブジェクトが属するSceneに対してイベントを送る</div>
+            </div>
+            <div class="nav-item"><a href="#17">M:GameLib.Base.Actor.spawnActor(GameLib.Base.Actor)</a><div style="padding-left: 1.5em;">このオブジェクトからこのオブジェクトが属するSceneに対してActorを加えるイベントを送る</div>
+            </div>
+            <div class="nav-item"><a href="#18">M:GameLib.Base.Actor.destroy</a><div style="padding-left: 1.5em;">このオブジェクトからこのオブジェクトが属するSceneに対して自分を削除するイベントを送る</div>
+            </div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"><a href="#21">T:GameLib.Base.Actor.ActorActionEventHandler</a><div style="padding-left: 1.5em;">actorActionEventHandlerのDelegate</div>
+            </div>
+            <div class="nav-item"><a href="#22">T:GameLib.Base.GetGameSize</a><div style="padding-left: 1.5em;">ゲームサイズを取得する関数Delegate</div>
+            </div>
+            <div class="nav-item"><a href="#23">T:GameLib.Base.Game</a><div style="padding-left: 1.5em;">ゲーム抽象クラス</div>
+            </div>
+            <div class="nav-item"><a href="#24">M:GameLib.Base.Game.#ctor(System.Drawing.Size,System.Int32)</a><div style="padding-left: 1.5em;">コンストラクタ</div>
+            </div>
+            <div class="nav-item"><a href="#25">M:GameLib.Base.Game.#ctor(System.Drawing.Size,System.Int32,System.Drawing.Icon)</a><div style="padding-left: 1.5em;">コンストラクタ</div>
+            </div>
+            <div class="nav-item"><a href="#26">M:GameLib.Base.Game.OnPaint(System.Windows.Forms.PaintEventArgs)</a><div style="padding-left: 1.5em;">Formから継承した関数</div>
+            </div>
+            <div class="nav-item"><a href="#27">M:GameLib.Base.Game.OnPaintBackground(System.Windows.Forms.PaintEventArgs)</a><div style="padding-left: 1.5em;">Formから継承した関数</div>
+            </div>
+            <div class="nav-item"><a href="#28">M:GameLib.Base.Game.update(GameLib.GameInformations.Input)</a><div style="padding-left: 1.5em;">毎フレーム呼び出される関数</div>
+            </div>
+            <div class="nav-item"><a href="#29">M:GameLib.Base.Game.setScenes(GameLib.Base.Scene[])</a><div style="padding-left: 1.5em;">シーンを登録する関数</div>
+            </div>
+            <div class="nav-item"><a href="#30">M:GameLib.Base.Game.getDrawArea</a><div style="padding-left: 1.5em;">最終的にウィンドウに描画されるゲームの領域を取得する関数</div>
+            </div>
+            <div class="nav-item"><a href="#31">M:GameLib.Base.Game.getGameSize</a><div style="padding-left: 1.5em;">ゲームのサイズを取得する関数。ウィンドウがリサイズされてもこの値は変化しない。</div>
+            </div>
+            <div class="nav-item"><a href="#32">T:GameLib.Base.Scene</a><div style="padding-left: 1.5em;"> ゲームのシーンを扱うための抽象クラス </div>
+            </div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"><a href="#38">M:GameLib.Base.Scene.#ctor(System.String)</a><div style="padding-left: 1.5em;">シーンの名前を指定するコンストラクタ</div>
+            </div>
+            <div class="nav-item"><a href="#39">M:GameLib.Base.Scene.init</a><div style="padding-left: 1.5em;">このシーンに切り替わった時に一度だけ呼び出される関数。オーバーライドして使用。リソース等をここで読み込むとメモリを節約可能！！</div>
+            </div>
+            <div class="nav-item"><a href="#40">M:GameLib.Base.Scene.init(System.Object)</a><div style="padding-left: 1.5em;">このシーンに切り替わった時に一度だけ呼び出される関数。オーバーライドして使用。リソース等をここで読み込むとメモリを節約可能！！</div>
+            </div>
+            <div class="nav-item"><a href="#41">M:GameLib.Base.Scene.update(System.Drawing.Graphics,GameLib.GameInformations.Input,System.Drawing.Point,System.Nullable{System.Drawing.Point})</a><div style="padding-left: 1.5em;">毎フレーム呼び出される関数。オーバーライド可能</div>
+            </div>
+            <div class="nav-item"><a href="#42">M:GameLib.Base.Scene.bgDraw(System.Drawing.Graphics)</a><div style="padding-left: 1.5em;">描画関数</div>
+            </div>
+            <div class="nav-item"><a href="#43">M:GameLib.Base.Scene.addActor(GameLib.Base.Actor)</a><div style="padding-left: 1.5em;">描画するActorオブジェクトを追加する関数</div>
+            </div>
+            <div class="nav-item"><a href="#44">M:GameLib.Base.Scene.changeSceneByOrder(System.Int32,System.Object)</a><div style="padding-left: 1.5em;">インデックスを指定してシーンを変更</div>
+            </div>
+            <div class="nav-item"><a href="#45">M:GameLib.Base.Scene.changeSceneByOrder(System.Int32)</a><div style="padding-left: 1.5em;">インデックスを指定してシーンを変更</div>
+            </div>
+            <div class="nav-item"><a href="#46">M:GameLib.Base.Scene.changeSceneByName(System.String,System.Object)</a><div style="padding-left: 1.5em;">名前を指定してシーンを変更</div>
+            </div>
+            <div class="nav-item"><a href="#47">M:GameLib.Base.Scene.changeSceneByName(System.String)</a><div style="padding-left: 1.5em;">名前を指定してシーンを変更</div>
+            </div>
+            <div class="nav-item"><a href="#48">M:GameLib.Base.Scene.actorAction(System.Object,GameLib.GameEventsArgs.ActorActEventArgs)</a><div style="padding-left: 1.5em;">このシーンに属したActorオブジェクトがイベントを起こしたときに呼ばれる関数</div>
+            </div>
+            <div class="nav-item"></div>
+            <div class="nav-item"><a href="#50">T:GameLib.Base.Scene.changeSceneEventHandler`1</a><div style="padding-left: 1.5em;">シーン遷移イベントのDelegate</div>
+            </div>
+            <div class="nav-item"><a href="#51">T:GameLib.Base.Scene.NextFrameAction</a><div style="padding-left: 1.5em;">つぎのフレームに行いたい処理を示すデリゲート。 void NextFrameAction() </div>
+            </div>
+            <div class="nav-item"><a href="#52">T:GameLib.GameEventsArgs.ActorActEventArgs</a><div style="padding-left: 1.5em;">Actorオブジェクトが自分の属するSceneにイベントを送る際に使用する引数</div>
+            </div>
+            <div class="nav-item"></div>
+            <div class="nav-item"><a href="#54">M:GameLib.GameEventsArgs.ActorActEventArgs.#ctor(System.String,System.Object)</a><div style="padding-left: 1.5em;">コンストラクタ</div>
+            </div>
+            <div class="nav-item"></div>
+            <div class="nav-item"><a href="#56">T:GameLib.GameEventsArgs.AddControlEventArgs</a><div style="padding-left: 1.5em;">SceneオブジェクトがGame(Form)に対してコントロールを追加するイベントを送る際に使用する引数</div>
+            </div>
+            <div class="nav-item"><a href="#57">M:GameLib.GameEventsArgs.AddControlEventArgs.#ctor(System.Windows.Forms.Control)</a><div style="padding-left: 1.5em;">コンストラクタ</div>
+            </div>
+            <div class="nav-item"></div>
+            <div class="nav-item"><a href="#59">T:GameLib.GameEventsArgs.ChangeSceneEventArgs</a><div style="padding-left: 1.5em;">SceneオブジェクトがGameに対してシーン遷移のイベントを送る際に使用する引数</div>
+            </div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"><a href="#64">M:GameLib.GameEventsArgs.ChangeSceneEventArgs.#ctor(System.String,System.Int32,System.Object)</a><div style="padding-left: 1.5em;">コンストラクタ</div>
+            </div>
+            <div class="nav-item"><a href="#65">M:GameLib.GameEventsArgs.ChangeSceneEventArgs.#ctor(System.String,System.String,System.Object)</a><div style="padding-left: 1.5em;">コンストラクタ</div>
+            </div>
+            <div class="nav-item"><a href="#66">T:GameLib.GameInformations.GameInfo</a><div style="padding-left: 1.5em;">Game全体に関する情報クラス</div>
+            </div>
+            <div class="nav-item"><a href="#67">M:GameLib.GameInformations.GameInfo.getInput</a><div style="padding-left: 1.5em;">キー入力情報を取得する関数</div>
+            </div>
+            <div class="nav-item"><a href="#68">M:GameLib.GameInformations.GameInfo.addImage(System.String,System.Drawing.Image)</a><div style="padding-left: 1.5em;">画像を名前を付けて保持する関数</div>
+            </div>
+            <div class="nav-item"><a href="#69">M:GameLib.GameInformations.GameInfo.addImage(System.String,System.String)</a><div style="padding-left: 1.5em;">画像を名前を付けて読み込む</div>
+            </div>
+            <div class="nav-item"><a href="#70">M:GameLib.GameInformations.GameInfo.getImage(System.String)</a><div style="padding-left: 1.5em;">名前を付けて読み込み保持した画像を取得する関数</div>
+            </div>
+            <div class="nav-item"></div>
+            <div class="nav-item"><a href="#72">T:GameLib.GameInformations.Input</a><div style="padding-left: 1.5em;">キー入力情報を保持するクラス</div>
+            </div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"><a href="#75">M:GameLib.GameInformations.Input.#ctor(System.Collections.Hashtable,System.Collections.Hashtable)</a><div style="padding-left: 1.5em;">コンストラクタ</div>
+            </div>
+            <div class="nav-item"><a href="#76">M:GameLib.GameInformations.Input.getKey(System.Windows.Forms.Keys)</a><div style="padding-left: 1.5em;">指定されたキーが押されているかを取得する関数</div>
+            </div>
+            <div class="nav-item"><a href="#77">M:GameLib.GameInformations.Input.getKeyDown(System.Windows.Forms.Keys)</a><div style="padding-left: 1.5em;">指定されたキーが押されたかを取得する関数</div>
+            </div>
+            <div class="nav-item"><a href="#78">M:GameLib.GameInformations.Input.getKeyUp(System.Windows.Forms.Keys)</a><div style="padding-left: 1.5em;">指定されたキーが離されたかを取得する関数</div>
+            </div>
+            <div class="nav-item"><a href="#79">T:GameLib.TopView.AtlasLayer</a><div style="padding-left: 1.5em;">Atlasオブジェクトで扱うレイヤークラス。使用する画像の、RGB(0,0,0) の黒の部分は、透過されて表示されます。</div>
+            </div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"><a href="#93">M:GameLib.TopView.AtlasLayer.#ctor(System.String[][],System.Int32[][],System.Int32[][])</a><div style="padding-left: 1.5em;">コンストラクタ</div>
+            </div>
+            <div class="nav-item"><a href="#94">M:GameLib.TopView.AtlasLayer.draw(System.Drawing.Graphics,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)</a><div style="padding-left: 1.5em;">描画関数。オーバーライド可能。</div>
+            </div>
+            <div class="nav-item"><a href="#95">M:GameLib.TopView.AtlasLayer.getRoad</a><div style="padding-left: 1.5em;">各マスの進入状態を表した二次元ジャグ配列を返します</div>
+            </div>
+            <div class="nav-item"><a href="#96">T:GameLib.TopView.CharacterEventHander</a><div style="padding-left: 1.5em;">Charactorが起こしたイベントのイベントハンドラ。</div>
+            </div>
+            <div class="nav-item"><a href="#97">T:GameLib.TopView.MapChip</a><div style="padding-left: 1.5em;">マップチップを管理、描画するクラス</div>
+            </div>
+            <div class="nav-item"><a href="#98">M:GameLib.TopView.MapChip.init(System.Drawing.Bitmap[],System.Int32[],System.Int32[])</a><div style="padding-left: 1.5em;">マップチップを初期化します</div>
+            </div>
+            <div class="nav-item"><a href="#99">M:GameLib.TopView.MapChip.drawChip(System.Drawing.Graphics,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)</a><div style="padding-left: 1.5em;">指定したマップチップ画像から指定したタイルを描画します</div>
+            </div>
+            <div class="nav-item"><a href="#100">M:GameLib.TopView.MapChip.drawChip(System.Drawing.Graphics,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)</a><div style="padding-left: 1.5em;">指定したマップチップ画像から指定したタイルを描画します</div>
+            </div>
+            <div class="nav-item"><a href="#101">T:GameLib.TopView.MessageWindow</a><div style="padding-left: 1.5em;">メッセージウィンドウクラス</div>
+            </div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"><a href="#107">M:GameLib.TopView.MessageWindow.#ctor(System.Drawing.Image,System.String[])</a><div style="padding-left: 1.5em;">コンストラクタ</div>
+            </div>
+            <div class="nav-item"><a href="#108">M:GameLib.TopView.MessageWindow.init</a><div style="padding-left: 1.5em;">Actorクラスから継承された関数</div>
+            </div>
+            <div class="nav-item"><a href="#109">M:GameLib.TopView.MessageWindow.draw(System.Drawing.Graphics)</a><div style="padding-left: 1.5em;">Acotrからの継承。描画関数</div>
+            </div>
+            <div class="nav-item"><a href="#110">M:GameLib.TopView.MessageWindow.update(GameLib.GameInformations.Input,System.Nullable{System.Drawing.Point})</a><div style="padding-left: 1.5em;">Actorクラスから継承された関数</div>
+            </div>
+            <div class="nav-item"><a href="#111">M:GameLib.TopView.MessageWindow.destroy</a><div style="padding-left: 1.5em;">Actorクラスから継承。</div>
+            </div>
+            <div class="nav-item"><a href="#112">M:GameLib.TopView.MessageWindow.next</a><div style="padding-left: 1.5em;">3行以上表示させるメッセージがある場合は、次のメッセージが表示されます。無い場合は、このオブジェクトは描画されなくなります。</div>
+            </div>
+            <div class="nav-item"><a href="#113">M:GameLib.TopView.MessageWindow.setBgBrush(System.Drawing.Brush)</a><div style="padding-left: 1.5em;">背景色をセットします。</div>
+            </div>
+            <div class="nav-item"><a href="#114">M:GameLib.TopView.MessageWindow.getBgBrush</a><div style="padding-left: 1.5em;">背景色を取得します</div>
+            </div>
+            <div class="nav-item"><a href="#115">M:GameLib.TopView.MessageWindow.setBorder(System.Drawing.Pen)</a><div style="padding-left: 1.5em;">枠線Penオブジェクトをセットします</div>
+            </div>
+            <div class="nav-item"><a href="#116">M:GameLib.TopView.MessageWindow.getBorder</a><div style="padding-left: 1.5em;">枠線Penオブジェクトを取得します</div>
+            </div>
+            <div class="nav-item"><a href="#117">M:GameLib.TopView.MessageWindow.setFont(System.Drawing.Font)</a><div style="padding-left: 1.5em;">描画に使用するFontをセットします</div>
+            </div>
+            <div class="nav-item"><a href="#118">M:GameLib.TopView.MessageWindow.getFont</a><div style="padding-left: 1.5em;">描画に使用するFontを取得します</div>
+            </div>
+            <div class="nav-item"><a href="#119">M:GameLib.TopView.MessageWindow.Dispose(System.Boolean)</a><div style="padding-left: 1.5em;">リソースを破棄します</div>
+            </div>
+            <div class="nav-item"><a href="#120">M:GameLib.TopView.MessageWindow.Dispose</a><div style="padding-left: 1.5em;">リソースを破棄します</div>
+            </div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"><a href="#127">T:GameLib.TopView.Base.Atlas</a><div style="padding-left: 1.5em;">2D見下ろしマップを描画するScene派生クラス</div>
+            </div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"><a href="#131">M:GameLib.TopView.Base.Atlas.#ctor(System.String,GameLib.TopView.AtlasLayer[],GameLib.TopView.Base.Player)</a><div style="padding-left: 1.5em;">コンストラクタ</div>
+            </div>
+            <div class="nav-item"><a href="#132">M:GameLib.TopView.Base.Atlas.#ctor(System.String)</a><div style="padding-left: 1.5em;">コンストラクタ</div>
+            </div>
+            <div class="nav-item"><a href="#133">M:GameLib.TopView.Base.Atlas.init</a><div style="padding-left: 1.5em;">シーンが切り替わった最初のフレームに行われる処理</div>
+            </div>
+            <div class="nav-item"><a href="#134">M:GameLib.TopView.Base.Atlas.bgDraw(System.Drawing.Graphics)</a><div style="padding-left: 1.5em;">描画関数。Sceneクラスからの継承関数。</div>
+            </div>
+            <div class="nav-item"><a href="#135">M:GameLib.TopView.Base.Atlas.update(System.Drawing.Graphics,GameLib.GameInformations.Input,System.Drawing.Point,System.Nullable{System.Drawing.Point})</a><div style="padding-left: 1.5em;">毎フレーム呼び出される関数。Sceneクラスからの継承関数。</div>
+            </div>
+            <div class="nav-item"><a href="#136">M:GameLib.TopView.Base.Atlas.changeSceneByName(System.String,System.Object)</a><div style="padding-left: 1.5em;">名前を指定してシーンを変更</div>
+            </div>
+            <div class="nav-item"><a href="#137">M:GameLib.TopView.Base.Atlas.changeSceneByOrder(System.Int32,System.Object)</a><div style="padding-left: 1.5em;">インデックスを指定してシーンを変更</div>
+            </div>
+            <div class="nav-item"><a href="#138">M:GameLib.TopView.Base.Atlas.characterEventReceiver(GameLib.TopView.Base.Character,GameLib.TopView.EventArgs.CharacterEventArgs)</a><div style="padding-left: 1.5em;">Charactorからのイベントがあったら呼び出される関数。オーバーライド可能。</div>
+            </div>
+            <div class="nav-item"><a href="#139">M:GameLib.TopView.Base.Atlas.showMessageWindowAccount(GameLib.TopView.MessageWindow)</a><div style="padding-left: 1.5em;">表示したいMessageWindowオブジェクトを登録します。登録された順に表示されます。</div>
+            </div>
+            <div class="nav-item"><a href="#140">M:GameLib.TopView.Base.Atlas.addCharactor(GameLib.TopView.Base.Character)</a><div style="padding-left: 1.5em;">指定したCharactorをこのAtlasオブジェクトに追加します</div>
+            </div>
+            <div class="nav-item"><a href="#141">M:GameLib.TopView.Base.Atlas.addCharactors(GameLib.TopView.Base.Character[])</a><div style="padding-left: 1.5em;">指定したCharactorをこのAtlasオブジェクトに追加します</div>
+            </div>
+            <div class="nav-item"><a href="#142">M:GameLib.TopView.Base.Atlas.addCharactors(System.Collections.Generic.List{GameLib.TopView.Base.Character})</a><div style="padding-left: 1.5em;">指定したCharactorをこのAtlasオブジェクトに追加します</div>
+            </div>
+            <div class="nav-item"><a href="#143">M:GameLib.TopView.Base.Atlas.getPlayer</a><div style="padding-left: 1.5em;">プレイヤオブジェクトを取得します</div>
+            </div>
+            <div class="nav-item"><a href="#144">M:GameLib.TopView.Base.Atlas.setPlayer(GameLib.TopView.Base.Player)</a><div style="padding-left: 1.5em;">プレイヤオブジェクトをセットします</div>
+            </div>
+            <div class="nav-item"><a href="#145">M:GameLib.TopView.Base.Atlas.setBgBrush(System.Drawing.Brush)</a><div style="padding-left: 1.5em;">背景色をセットします</div>
+            </div>
+            <div class="nav-item"><a href="#146">M:GameLib.TopView.Base.Atlas.getBgBrush</a><div style="padding-left: 1.5em;">背景色を取得します</div>
+            </div>
+            <div class="nav-item"><a href="#147">M:GameLib.TopView.Base.Atlas.Dispose(System.Boolean)</a><div style="padding-left: 1.5em;">リソースを開放します</div>
+            </div>
+            <div class="nav-item"><a href="#148">M:GameLib.TopView.Base.Atlas.Dispose</a><div style="padding-left: 1.5em;">リソースを開放します</div>
+            </div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"><a href="#154">T:GameLib.TopView.Base.Character</a><div style="padding-left: 1.5em;">Charactorクラス</div>
+            </div>
+            <div class="nav-item"><a href="#155">M:GameLib.TopView.Base.Character.Dispose(System.Boolean)</a><div style="padding-left: 1.5em;">リソースを開放します</div>
+            </div>
+            <div class="nav-item"><a href="#156">M:GameLib.TopView.Base.Character.Dispose</a><div style="padding-left: 1.5em;">リソースを開放します</div>
+            </div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"><a href="#169">M:GameLib.TopView.Base.Character.#ctor(System.Drawing.Bitmap,System.Drawing.Bitmap,System.Int32,System.Int32,System.Int32,GameLib.TopView.Base.Character.ImageType,System.Collections.Generic.List{System.String})</a><div style="padding-left: 1.5em;">コンストラクタ</div>
+            </div>
+            <div class="nav-item"><a href="#170">M:GameLib.TopView.Base.Character.#ctor(System.Drawing.Bitmap,System.Drawing.Bitmap,System.Int32,System.Int32,System.Int32,GameLib.TopView.Base.Character.ImageType,System.String[])</a><div style="padding-left: 1.5em;">コンストラクタ</div>
+            </div>
+            <div class="nav-item"><a href="#171">M:GameLib.TopView.Base.Character.#ctor(System.Drawing.Bitmap,System.Int32,System.Int32,System.Int32,GameLib.TopView.Base.Character.ImageType,System.Collections.Generic.List{System.String})</a><div style="padding-left: 1.5em;">コンストラクタ</div>
+            </div>
+            <div class="nav-item"><a href="#172">M:GameLib.TopView.Base.Character.#ctor(System.Drawing.Bitmap,System.Int32,System.Int32,System.Int32,GameLib.TopView.Base.Character.ImageType,System.String[])</a><div style="padding-left: 1.5em;">コンストラクタ</div>
+            </div>
+            <div class="nav-item"><a href="#173">M:GameLib.TopView.Base.Character.#ctor(System.Drawing.Bitmap,System.Int32,System.Int32,System.Int32,GameLib.TopView.Base.Character.ImageType)</a><div style="padding-left: 1.5em;">コンストラクタ</div>
+            </div>
+            <div class="nav-item"><a href="#174">M:GameLib.TopView.Base.Character.draw(System.Drawing.Graphics,System.Int32)</a><div style="padding-left: 1.5em;">描画関数。 override可能</div>
+            </div>
+            <div class="nav-item"><a href="#175">M:GameLib.TopView.Base.Character.update(GameLib.GameInformations.Input,System.Int32)</a><div style="padding-left: 1.5em;">毎フレーム呼び出される関数。 override可能</div>
+            </div>
+            <div class="nav-item"><a href="#176">M:GameLib.TopView.Base.Character.talked(GameLib.TopView.Base.Character,System.String)</a><div style="padding-left: 1.5em;">話しかけられた時に呼び出される関数。 override可能</div>
+            </div>
+            <div class="nav-item"><a href="#177">M:GameLib.TopView.Base.Character.charactorEventDispath(GameLib.TopView.Base.Character,GameLib.TopView.EventArgs.CharacterEventArgs)</a><div style="padding-left: 1.5em;">他のCharactorが起こしたイベントを受け取る関数。 override可能</div>
+            </div>
+            <div class="nav-item"><a href="#178">M:GameLib.TopView.Base.Character.move(System.Int32,System.Int32,System.Int32,GameLib.TopView.Base.Character.Directions)</a><div style="padding-left: 1.5em;">座標を移動する関数。現在位置からの相対座標で指定する</div>
+            </div>
+            <div class="nav-item"><a href="#179">M:GameLib.TopView.Base.Character.say(System.String)</a><div style="padding-left: 1.5em;">発言関数。自分の顔と指定した文字列を表示するMessageWindowを表示します</div>
+            </div>
+            <div class="nav-item"><a href="#180">M:GameLib.TopView.Base.Character.talk(System.Int32,System.Int32,System.Int32,System.String)</a><div style="padding-left: 1.5em;">話しかける関数。指定した座標のCharactorのtalked関数を呼び出します</div>
+            </div>
+            <div class="nav-item"><a href="#181">M:GameLib.TopView.Base.Character.talk(System.String)</a><div style="padding-left: 1.5em;">話しかける関数。同じz座標で向いている方向の隣にいるCharactorオブジェクトのtalked関数を呼び出す関数。</div>
+            </div>
+            <div class="nav-item"><a href="#182">M:GameLib.TopView.Base.Character.walk(GameLib.TopView.Base.Character.Directions)</a><div style="padding-left: 1.5em;">指定した方向にあるく関数。オーバーライド可能</div>
+            </div>
+            <div class="nav-item"><a href="#183">M:GameLib.TopView.Base.Character.animate</a><div style="padding-left: 1.5em;">キャラチップの画像を動かします</div>
+            </div>
+            <div class="nav-item"><a href="#184">M:GameLib.TopView.Base.Character.turnTo(GameLib.TopView.Base.Character.Directions)</a><div style="padding-left: 1.5em;">指定した方向に向けます</div>
+            </div>
+            <div class="nav-item"><a href="#185">M:GameLib.TopView.Base.Character.rotateRight</a><div style="padding-left: 1.5em;">右方向に回転させます</div>
+            </div>
+            <div class="nav-item"><a href="#186">M:GameLib.TopView.Base.Character.sendEvent(GameLib.TopView.EventArgs.CharacterEventArgs)</a><div style="padding-left: 1.5em;">イベントを発生させます。AtlasのreceiveEvent関数が呼び出され、CharactorのDicpatchEvent関数が呼び出されます</div>
+            </div>
+            <div class="nav-item"><a href="#187">M:GameLib.TopView.Base.Character.addTag(System.String)</a><div style="padding-left: 1.5em;">このキャラクターの特徴であるタグを追加します</div>
+            </div>
+            <div class="nav-item"><a href="#188">M:GameLib.TopView.Base.Character.addTags(System.String[])</a><div style="padding-left: 1.5em;">このキャラクターの特徴であるタグを追加します</div>
+            </div>
+            <div class="nav-item"><a href="#189">M:GameLib.TopView.Base.Character.addTags(System.Collections.Generic.List{System.String})</a><div style="padding-left: 1.5em;">このキャラクターの特徴であるタグを追加します</div>
+            </div>
+            <div class="nav-item"><a href="#190">M:GameLib.TopView.Base.Character.hasTag(System.String)</a><div style="padding-left: 1.5em;">このキャラクターの特徴であるタグを検索します</div>
+            </div>
+            <div class="nav-item"><a href="#191">M:GameLib.TopView.Base.Character.getCurrentFrameImageRect</a><div style="padding-left: 1.5em;">現在キャラチップのうち描画される領域を返します</div>
+            </div>
+            <div class="nav-item"><a href="#192">M:GameLib.TopView.Base.Character.getX</a><div style="padding-left: 1.5em;">x座標を返します</div>
+            </div>
+            <div class="nav-item"><a href="#193">M:GameLib.TopView.Base.Character.getY</a><div style="padding-left: 1.5em;">y座標を返します</div>
+            </div>
+            <div class="nav-item"><a href="#194">M:GameLib.TopView.Base.Character.getZ</a><div style="padding-left: 1.5em;">z座標を返します</div>
+            </div>
+            <div class="nav-item"><a href="#195">M:GameLib.TopView.Base.Character.getFaceImage</a><div style="padding-left: 1.5em;">このオブジェクトの顔画像を返します</div>
+            </div>
+            <div class="nav-item"><a href="#196">M:GameLib.TopView.Base.Character.getDirection</a><div style="padding-left: 1.5em;">このオブジェクトの向いている方向を返します</div>
+            </div>
+            <div class="nav-item"><a href="#197">M:GameLib.TopView.Base.Character.setPosition(System.Int32,System.Int32,System.Int32)</a><div style="padding-left: 1.5em;">指定した座標に移動させます</div>
+            </div>
+            <div class="nav-item"><a href="#198">M:GameLib.TopView.Base.Character.setZ(System.Int32)</a><div style="padding-left: 1.5em;">指定したZ座標に移動させます</div>
+            </div>
+            <div class="nav-item"></div>
+            <div class="nav-item"><a href="#200">T:GameLib.TopView.Base.Character.Directions</a><div style="padding-left: 1.5em;">Charactorの方向を表すEnum</div>
+            </div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"><a href="#209">T:GameLib.TopView.Base.Character.DirectionsEx</a><div style="padding-left: 1.5em;">GameLib.TopOfView.Charactor.Directions Enumを便利に使う為のクラス</div>
+            </div>
+            <div class="nav-item"><a href="#210">M:GameLib.TopView.Base.Character.DirectionsEx.rotate45(GameLib.TopView.Base.Character.Directions)</a><div style="padding-left: 1.5em;">指定された向きから、時計回りに45°回転した場合の方向を取得します</div>
+            </div>
+            <div class="nav-item"><a href="#211">M:GameLib.TopView.Base.Character.DirectionsEx.rotate90(GameLib.TopView.Base.Character.Directions)</a><div style="padding-left: 1.5em;">指定された向きから、時計回りに90°回転した場合の方向を取得します</div>
+            </div>
+            <div class="nav-item"><a href="#212">M:GameLib.TopView.Base.Character.DirectionsEx.rotate180(GameLib.TopView.Base.Character.Directions)</a><div style="padding-left: 1.5em;">指定された向きから、180°回転した場合の方向を取得します</div>
+            </div>
+            <div class="nav-item"><a href="#213">T:GameLib.TopView.Base.Character.ImageType</a><div style="padding-left: 1.5em;">キャラクターチップ画像の種類を示す</div>
+            </div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"><a href="#216">T:GameLib.TopView.Base.Character.canEnterHandler</a><div style="padding-left: 1.5em;">指定された座標のマスに進入可能かを判定する関数Delegate型</div>
+            </div>
+            <div class="nav-item"><a href="#217">T:GameLib.TopView.Base.Player</a><div style="padding-left: 1.5em;">2D見下ろしマップにおけるプレイヤーを表すクラス</div>
+            </div>
+            <div class="nav-item"></div>
+            <div class="nav-item"><a href="#219">M:GameLib.TopView.Base.Player.#ctor(System.Drawing.Bitmap,System.Drawing.Bitmap,System.Int32,System.Int32,System.Int32,GameLib.TopView.Base.Character.ImageType)</a><div style="padding-left: 1.5em;">コンストラクタ</div>
+            </div>
+            <div class="nav-item"><a href="#220">M:GameLib.TopView.Base.Player.#ctor(System.Drawing.Bitmap,System.Drawing.Bitmap,System.Int32,System.Int32,System.Int32,GameLib.TopView.Base.Character.ImageType,System.String[])</a><div style="padding-left: 1.5em;">コンストラクタ</div>
+            </div>
+            <div class="nav-item"><a href="#221">M:GameLib.TopView.Base.Player.#ctor(System.Drawing.Bitmap,System.Drawing.Bitmap,System.Int32,System.Int32,System.Int32,GameLib.TopView.Base.Character.ImageType,System.Collections.Generic.List{System.String})</a><div style="padding-left: 1.5em;">コンストラクタ</div>
+            </div>
+            <div class="nav-item"><a href="#222">M:GameLib.TopView.Base.Player.#ctor(System.Drawing.Bitmap,System.Int32,System.Int32,System.Int32,GameLib.TopView.Base.Character.ImageType)</a><div style="padding-left: 1.5em;">コンストラクタ</div>
+            </div>
+            <div class="nav-item"><a href="#223">M:GameLib.TopView.Base.Player.#ctor(System.Drawing.Bitmap,System.Int32,System.Int32,System.Int32,GameLib.TopView.Base.Character.ImageType,System.String[])</a><div style="padding-left: 1.5em;">コンストラクタ</div>
+            </div>
+            <div class="nav-item"><a href="#224">M:GameLib.TopView.Base.Player.#ctor(System.Drawing.Bitmap,System.Int32,System.Int32,System.Int32,GameLib.TopView.Base.Character.ImageType,System.Collections.Generic.List{System.String})</a><div style="padding-left: 1.5em;">コンストラクタ</div>
+            </div>
+            <div class="nav-item"><a href="#225">M:GameLib.TopView.Base.Player.update(GameLib.GameInformations.Input,System.Int32)</a><div style="padding-left: 1.5em;">毎フレーム呼ばれる関数。オーバーライド可能。Charactorクラスからの継承。</div>
+            </div>
+            <div class="nav-item"><a href="#226">M:GameLib.TopView.Base.Player.walk(GameLib.TopView.Base.Character.Directions)</a><div style="padding-left: 1.5em;">あるく関数。オーバーライド可能。スクロールしながら移動します。Charactorクラスからの継承。</div>
+            </div>
+            <div class="nav-item"></div>
+            <div class="nav-item"><a href="#228">T:GameLib.TopView.EventArgs.CharacterEventType</a><div style="padding-left: 1.5em;">Characterがデフォルトで起こすイベントを定義したEnum</div>
+            </div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"><a href="#231">T:GameLib.TopView.EventArgs.CharacterEventArgs</a><div style="padding-left: 1.5em;">キャラクターが起こすイベントの引数</div>
+            </div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"><a href="#235">M:GameLib.TopView.EventArgs.CharacterEventArgs.#ctor(GameLib.Util.Coords,System.String,System.String)</a><div style="padding-left: 1.5em;">コンストラクタ</div>
+            </div>
+            <div class="nav-item"><a href="#236">M:GameLib.TopView.EventArgs.CharacterEventArgs.#ctor(System.Int32,System.Int32,System.String,System.String)</a><div style="padding-left: 1.5em;">コンストラクタ</div>
+            </div>
+            <div class="nav-item"><a href="#237">T:GameLib.TopView.Informations.TopViewInfo</a><div style="padding-left: 1.5em;">見下ろし2Dマップに関する情報クラス</div>
+            </div>
+            <div class="nav-item"><a href="#238">T:GameLib.UI.DialogCloseType</a><div style="padding-left: 1.5em;">DialogWindow の閉じる設定</div>
+            </div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"><a href="#243">T:GameLib.UI.ForcusedDialogItemDrawStyle</a><div style="padding-left: 1.5em;">DialogWindowItem がフォーカスされているときの状態を表します</div>
+            </div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"><a href="#249">T:GameLib.UI.DialogWindow</a><div style="padding-left: 1.5em;">アイテムを選択するダイアログ。Actorクラスを継承しています。</div>
+            </div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"><a href="#270">M:GameLib.UI.DialogWindow.#ctor(System.Drawing.Rectangle,GameLib.UI.DialogWindowItem[],System.Int32,System.Int32,GameLib.UI.DialogCloseType)</a><div style="padding-left: 1.5em;">コンストラクタ</div>
+            </div>
+            <div class="nav-item"><a href="#271">M:GameLib.UI.DialogWindow.draw(System.Drawing.Graphics)</a><div style="padding-left: 1.5em;">描画関数。オーバーライド可能。Actorクラスから継承</div>
+            </div>
+            <div class="nav-item"><a href="#272">M:GameLib.UI.DialogWindow.update(GameLib.GameInformations.Input,System.Nullable{System.Drawing.Point})</a><div style="padding-left: 1.5em;">毎フレーム呼び出される関数。オーバーライド可能。Actorクラスから継承</div>
+            </div>
+            <div class="nav-item"><a href="#273">M:GameLib.UI.DialogWindow.mouseEnter(System.Drawing.Point)</a><div style="padding-left: 1.5em;">マウスがこのオブジェクトに入っている時に呼び出される関数。Actorクラスから継承</div>
+            </div>
+            <div class="nav-item"><a href="#274">M:GameLib.UI.DialogWindow.clicked(System.Drawing.Point)</a><div style="padding-left: 1.5em;">このオブジェクトがクリックされた時に呼び出される関数。Actorクラスから継承</div>
+            </div>
+            <div class="nav-item"><a href="#275">M:GameLib.UI.DialogWindow.destroy</a><div style="padding-left: 1.5em;">Actorクラスからの継承。リソースを開放しながらdestroyをします。</div>
+            </div>
+            <div class="nav-item"><a href="#276">M:GameLib.UI.DialogWindow.drawHighlight(System.Drawing.Graphics)</a><div style="padding-left: 1.5em;">フォーカスされているアイテムをハイライト表示する際に呼び出される関数。オーバーライド可能</div>
+            </div>
+            <div class="nav-item"><a href="#277">M:GameLib.UI.DialogWindow.drawMark(System.Drawing.Graphics,System.Drawing.PointF)</a><div style="padding-left: 1.5em;">フォーカスされているアイテムにマークを表示する際に呼び出される関数。オーバーライド可能</div>
+            </div>
+            <div class="nav-item"><a href="#278">M:GameLib.UI.DialogWindow.drawBorder(System.Drawing.Graphics)</a><div style="padding-left: 1.5em;">フォーカスされているアイテムに枠線を表示する際に呼び出される関数。オーバーライド可能</div>
+            </div>
+            <div class="nav-item"><a href="#279">M:GameLib.UI.DialogWindow.drawBlink(System.Drawing.Graphics)</a><div style="padding-left: 1.5em;">フォーカスされているアイテムを点滅表示する際に呼び出される関数。オーバーライド可能</div>
+            </div>
+            <div class="nav-item"><a href="#280">M:GameLib.UI.DialogWindow.Dispose(System.Boolean)</a><div style="padding-left: 1.5em;">リソースを開放します</div>
+            </div>
+            <div class="nav-item"><a href="#281">M:GameLib.UI.DialogWindow.Dispose</a><div style="padding-left: 1.5em;">リソースを開放します</div>
+            </div>
+            <div class="nav-item"><a href="#282">M:GameLib.UI.DialogWindow.setFont(System.Drawing.Font)</a><div style="padding-left: 1.5em;">描画に使用するフォントをセットします</div>
+            </div>
+            <div class="nav-item"><a href="#283">M:GameLib.UI.DialogWindow.getFont</a><div style="padding-left: 1.5em;">描画に使用するフォントをゲットします</div>
+            </div>
+            <div class="nav-item"><a href="#284">M:GameLib.UI.DialogWindow.setBgBrush(System.Drawing.Brush)</a><div style="padding-left: 1.5em;">背景色をセットします</div>
+            </div>
+            <div class="nav-item"><a href="#285">M:GameLib.UI.DialogWindow.getBgBrush</a><div style="padding-left: 1.5em;">背景色をゲットします</div>
+            </div>
+            <div class="nav-item"><a href="#286">M:GameLib.UI.DialogWindow.setHightlightBrush(System.Drawing.Brush)</a><div style="padding-left: 1.5em;">forcusItemDraw が ForcusedDialogItemDrawStyle.HIGHLIGHT、 ForcusedDialogItemDrawStyle.BLINK の時に使用する色を指定します</div>
+            </div>
+            <div class="nav-item"><a href="#287">M:GameLib.UI.DialogWindow.getHighlightBrush</a><div style="padding-left: 1.5em;">forcusItemDraw が ForcusedDialogItemDrawStyle.HIGHLIGHT、 ForcusedDialogItemDrawStyle.BLINK の時に使用する色を取得します</div>
+            </div>
+            <div class="nav-item"><a href="#288">M:GameLib.UI.DialogWindow.setBorderPen(System.Drawing.Pen)</a><div style="padding-left: 1.5em;">枠線色をセットします</div>
+            </div>
+            <div class="nav-item"><a href="#289">M:GameLib.UI.DialogWindow.getBorderPen</a><div style="padding-left: 1.5em;">枠線色を取得します</div>
+            </div>
+            <div class="nav-item"><a href="#290">M:GameLib.UI.DialogWindow.setSelectBorder(System.Drawing.Pen)</a><div style="padding-left: 1.5em;">forcusItemDraw が ForcusedDialogItemDrawStyle.BORDER の時に使用する枠線色をセットします</div>
+            </div>
+            <div class="nav-item"><a href="#291">M:GameLib.UI.DialogWindow.getSelectBorder</a><div style="padding-left: 1.5em;">forcusItemDraw が ForcusedDialogItemDrawStyle.BORDER の時に使用する枠線色をゲットします</div>
+            </div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"><a href="#299">T:GameLib.UI.DialogWindowItem</a><div style="padding-left: 1.5em;">DialogWindowに表示するアイテム</div>
+            </div>
+            <div class="nav-item"><a href="#300">M:GameLib.UI.DialogWindowItem.#ctor(System.String)</a><div style="padding-left: 1.5em;">コンストラクタ</div>
+            </div>
+            <div class="nav-item"><a href="#301">M:GameLib.UI.DialogWindowItem.draw(System.Drawing.Graphics,System.Drawing.Font,System.Drawing.RectangleF)</a><div style="padding-left: 1.5em;">描画関数</div>
+            </div>
+            <div class="nav-item"><a href="#302">M:GameLib.UI.DialogWindowItem.onToggleSelected(System.Boolean)</a><div style="padding-left: 1.5em;">選択状態を切り替える関数</div>
+            </div>
+            <div class="nav-item"><a href="#303">M:GameLib.UI.DialogWindowItem.setName(System.String)</a><div style="padding-left: 1.5em;">このアイテムの名前、表示テキストを変更します</div>
+            </div>
+            <div class="nav-item"><a href="#304">M:GameLib.UI.DialogWindowItem.Dispose(System.Boolean)</a><div style="padding-left: 1.5em;">リソースを開放します</div>
+            </div>
+            <div class="nav-item"><a href="#305">M:GameLib.UI.DialogWindowItem.Dispose</a><div style="padding-left: 1.5em;">リソースを開放します</div>
+            </div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"><a href="#309">T:GameLib.UI.OkEventHandler</a><div style="padding-left: 1.5em;">DialogWindow でアイテムが選択されたときのイベントの Delegate。　void OkEventHandler(DialogWindow sender, DialogWindowOKEventArgs e)</div>
+            </div>
+            <div class="nav-item"><a href="#310">T:GameLib.UI.NgEventHandler</a><div style="padding-left: 1.5em;">DialogWindow でアイテムが選択されなかったときのイベントの Delegate。　void NgEventHandler(DialogWindow sender, DialogWindowNGEventArgs e)</div>
+            </div>
+            <div class="nav-item"><a href="#311">T:GameLib.UI.ToggleSelectedEventHandler</a><div style="padding-left: 1.5em;">DialogWindowItem のフォーカスが変わった時のイベント Delegate。　void ToggleSelectedEventHandler(DialogWindowItem sender, EventArgs e)</div>
+            </div>
+            <div class="nav-item"><a href="#312">T:GameLib.UI.EventArgs.DialogWindowOKEventArgs</a><div style="padding-left: 1.5em;">DialogWindow でアイテムが選択されたときのイベントの引数クラス</div>
+            </div>
+            <div class="nav-item"></div>
+            <div class="nav-item"><a href="#314">M:GameLib.UI.EventArgs.DialogWindowOKEventArgs.#ctor(GameLib.UI.DialogWindowItem)</a><div style="padding-left: 1.5em;">コンストラクタ</div>
+            </div>
+            <div class="nav-item"><a href="#315">T:GameLib.UI.EventArgs.DialogWindowNGEventArgs</a><div style="padding-left: 1.5em;">DialogWindow でアイテムが選択されなかったときのイベントの引数クラス</div>
+            </div>
+            <div class="nav-item"><a href="#316">T:GameLib.Util.Coords</a><div style="padding-left: 1.5em;">座標データクラス</div>
+            </div>
+            <div class="nav-item"><a href="#317">M:GameLib.Util.Coords.#ctor(System.Int32,System.Int32)</a><div style="padding-left: 1.5em;">コンストラクタ</div>
+            </div>
+            <div class="nav-item"><a href="#318">M:GameLib.Util.Coords.#ctor(System.Int32,System.Int32,System.Int32)</a><div style="padding-left: 1.5em;">コンストラクタ</div>
+            </div>
+            <div class="nav-item"><a href="#319">M:GameLib.Util.Coords.ToString</a><div style="padding-left: 1.5em;">文字列表現を返します。object 型 からのオーバーライド</div>
+            </div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"><a href="#323">T:GameLib.Util.Easing</a><div style="padding-left: 1.5em;">イージング関数群クラス</div>
+            </div>
+            <div class="nav-item"><a href="#324">M:GameLib.Util.Easing.inSine(System.Double)</a><div style="padding-left: 1.5em;">イージング関数</div>
+            </div>
+            <div class="nav-item"><a href="#325">M:GameLib.Util.Easing.outSine(System.Double)</a><div style="padding-left: 1.5em;">イージング関数</div>
+            </div>
+            <div class="nav-item"><a href="#326">M:GameLib.Util.Easing.inOutSine(System.Double)</a><div style="padding-left: 1.5em;">イージング関数</div>
+            </div>
+            <div class="nav-item"><a href="#327">M:GameLib.Util.Easing.inQuad(System.Double)</a><div style="padding-left: 1.5em;">イージング関数</div>
+            </div>
+            <div class="nav-item"><a href="#328">M:GameLib.Util.Easing.outQuad(System.Double)</a><div style="padding-left: 1.5em;">イージング関数</div>
+            </div>
+            <div class="nav-item"><a href="#329">M:GameLib.Util.Easing.inOutQuad(System.Double)</a><div style="padding-left: 1.5em;">イージング関数</div>
+            </div>
+            <div class="nav-item"><a href="#330">M:GameLib.Util.Easing.inCubic(System.Double)</a><div style="padding-left: 1.5em;">イージング関数</div>
+            </div>
+            <div class="nav-item"><a href="#331">M:GameLib.Util.Easing.outCubic(System.Double)</a><div style="padding-left: 1.5em;">イージング関数</div>
+            </div>
+            <div class="nav-item"><a href="#332">M:GameLib.Util.Easing.inOutCubic(System.Double)</a><div style="padding-left: 1.5em;">イージング関数</div>
+            </div>
+            <div class="nav-item"><a href="#333">M:GameLib.Util.Easing.inQuard(System.Double)</a><div style="padding-left: 1.5em;">イージング関数</div>
+            </div>
+            <div class="nav-item"><a href="#334">M:GameLib.Util.Easing.outQuard(System.Double)</a><div style="padding-left: 1.5em;">イージング関数</div>
+            </div>
+            <div class="nav-item"><a href="#335">M:GameLib.Util.Easing.inOutQuard(System.Double)</a><div style="padding-left: 1.5em;">イージング関数</div>
+            </div>
+            <div class="nav-item"><a href="#336">M:GameLib.Util.Easing.inQuint(System.Double)</a><div style="padding-left: 1.5em;">イージング関数</div>
+            </div>
+            <div class="nav-item"><a href="#337">M:GameLib.Util.Easing.outQuint(System.Double)</a><div style="padding-left: 1.5em;">イージング関数</div>
+            </div>
+            <div class="nav-item"><a href="#338">M:GameLib.Util.Easing.inOutQuint(System.Double)</a><div style="padding-left: 1.5em;">イージング関数</div>
+            </div>
+            <div class="nav-item"><a href="#339">M:GameLib.Util.Easing.inExpo(System.Double)</a><div style="padding-left: 1.5em;">イージング関数</div>
+            </div>
+            <div class="nav-item"><a href="#340">M:GameLib.Util.Easing.outExpo(System.Double)</a><div style="padding-left: 1.5em;">イージング関数</div>
+            </div>
+            <div class="nav-item"><a href="#341">M:GameLib.Util.Easing.inOutExpo(System.Double)</a><div style="padding-left: 1.5em;">イージング関数</div>
+            </div>
+            <div class="nav-item"><a href="#342">M:GameLib.Util.Easing.inCirc(System.Double)</a><div style="padding-left: 1.5em;">イージング関数</div>
+            </div>
+            <div class="nav-item"><a href="#343">M:GameLib.Util.Easing.outCirc(System.Double)</a><div style="padding-left: 1.5em;">イージング関数</div>
+            </div>
+            <div class="nav-item"><a href="#344">M:GameLib.Util.Easing.inOutCirc(System.Double)</a><div style="padding-left: 1.5em;">イージング関数</div>
+            </div>
+            <div class="nav-item"><a href="#345">M:GameLib.Util.Easing.inBack(System.Double)</a><div style="padding-left: 1.5em;">イージング関数</div>
+            </div>
+            <div class="nav-item"><a href="#346">M:GameLib.Util.Easing.outBack(System.Double)</a><div style="padding-left: 1.5em;">イージング関数</div>
+            </div>
+            <div class="nav-item"><a href="#347">M:GameLib.Util.Easing.inOutBack(System.Double)</a><div style="padding-left: 1.5em;">イージング関数</div>
+            </div>
+            <div class="nav-item"><a href="#348">M:GameLib.Util.Easing.inElastic(System.Double)</a><div style="padding-left: 1.5em;">イージング関数</div>
+            </div>
+            <div class="nav-item"><a href="#349">M:GameLib.Util.Easing.outElastic(System.Double)</a><div style="padding-left: 1.5em;">イージング関数</div>
+            </div>
+            <div class="nav-item"><a href="#350">M:GameLib.Util.Easing.inOutElastic(System.Double)</a><div style="padding-left: 1.5em;">イージング関数</div>
+            </div>
+            <div class="nav-item"><a href="#351">M:GameLib.Util.Easing.inBounce(System.Double)</a><div style="padding-left: 1.5em;">イージング関数</div>
+            </div>
+            <div class="nav-item"><a href="#352">M:GameLib.Util.Easing.outBounce(System.Double)</a><div style="padding-left: 1.5em;">イージング関数</div>
+            </div>
+            <div class="nav-item"><a href="#353">M:GameLib.Util.Easing.inOutBounce(System.Double)</a><div style="padding-left: 1.5em;">イージング関数</div>
+            </div>
+            <div class="nav-item"><a href="#354">T:GameLib.Util.Vector</a><div style="padding-left: 1.5em;">二次元ベクトルを表すクラス</div>
+            </div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"><a href="#357">M:GameLib.Util.Vector.#ctor(System.Double,System.Double)</a><div style="padding-left: 1.5em;">コンストラクタ</div>
+            </div>
+            <div class="nav-item"><a href="#358">M:GameLib.Util.Vector.add(GameLib.Util.Vector)</a><div style="padding-left: 1.5em;">ベクトルを足す</div>
+            </div>
+            <div class="nav-item"><a href="#359">M:GameLib.Util.Vector.sub(GameLib.Util.Vector)</a><div style="padding-left: 1.5em;">ベクトルを引く</div>
+            </div>
+            <div class="nav-item"><a href="#360">M:GameLib.Util.Vector.mul(System.Double)</a><div style="padding-left: 1.5em;">ベクトルをかける</div>
+            </div>
+            <div class="nav-item"><a href="#361">M:GameLib.Util.Vector.getLength</a><div style="padding-left: 1.5em;">このベクトルの長さを取得</div>
+            </div>
+            <div class="nav-item"><a href="#362">M:GameLib.Util.Vector.getDegree</a><div style="padding-left: 1.5em;">このベクトルの角度を取得</div>
+            </div>
+            <div class="nav-item"><a href="#363">M:GameLib.Util.Vector.getRadian</a><div style="padding-left: 1.5em;">このベクトルの角度を取得</div>
+            </div>
+            <div class="nav-item"><a href="#364">M:GameLib.Util.Vector.op_Addition(GameLib.Util.Vector,GameLib.Util.Vector)</a><div style="padding-left: 1.5em;">オペレーターオーバーロード</div>
+            </div>
+            <div class="nav-item"><a href="#365">M:GameLib.Util.Vector.op_Subtraction(GameLib.Util.Vector,GameLib.Util.Vector)</a><div style="padding-left: 1.5em;">オペレーターオーバーロード</div>
+            </div>
+            <div class="nav-item"><a href="#366">M:GameLib.Util.Vector.op_Multiply(GameLib.Util.Vector,System.Double)</a><div style="padding-left: 1.5em;">オペレーターオーバーロード</div>
+            </div>
+            <div class="nav-item"><a href="#367">M:GameLib.Util.Vector.op_Division(GameLib.Util.Vector,System.Double)</a><div style="padding-left: 1.5em;">オペレーターオーバーロード</div>
+            </div>
+            <div class="nav-item"><a href="#368">T:GameLib.Util.PositionVector</a><div style="padding-left: 1.5em;">位置ベクトルを表すクラス</div>
+            </div>
+            <div class="nav-item"></div>
+            <div class="nav-item"></div>
+            <div class="nav-item"><a href="#371">M:GameLib.Util.PositionVector.#ctor(System.Drawing.Point,GameLib.Util.Vector)</a><div style="padding-left: 1.5em;">コンストラクタ</div>
+            </div>
+            <div class="nav-item"><a href="#372">M:GameLib.Util.PositionVector.#ctor(System.Drawing.Point,System.Drawing.Point)</a><div style="padding-left: 1.5em;">コンストラクタ</div>
+            </div>
+            <div class="nav-item"><a href="#373">M:GameLib.Util.PositionVector.getBeginX</a><div style="padding-left: 1.5em;">この位置ベルトルの原点X座標を取得する</div>
+            </div>
+            <div class="nav-item"><a href="#374">M:GameLib.Util.PositionVector.getBeginY</a><div style="padding-left: 1.5em;">この位置ベルトルの原点y座標を取得する</div>
+            </div>
+            <div class="nav-item"><a href="#375">M:GameLib.Util.PositionVector.getEndX</a><div style="padding-left: 1.5em;">この位置ベルトルの終点X座標を取得する</div>
+            </div>
+            <div class="nav-item"><a href="#376">M:GameLib.Util.PositionVector.getEndY</a><div style="padding-left: 1.5em;">この位置ベルトルの終点y座標を取得する</div>
+            </div>
+          </div>
+        </div>
+        <div class="logo-area">Gamelib</div>
+      </div></header><main><hr>
+      <div class="class" id="1">
+        <h2>T:GameLib.Base.Actor</h2>
+        <p>ゲーム上で、描画されたりイベントを送ったりする抽象クラス</p>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="field" id="2">
+        <div>・F:GameLib.Base.Actor.getGameSize　
+                    ゲームサイズを取得する関数。戻り値Size</div>
+      </div>
+      <div class="field" id="3">
+        <div>・F:GameLib.Base.Actor.centerX　
+                    中央X座標</div>
+      </div>
+      <div class="field" id="4">
+        <div>・F:GameLib.Base.Actor.centerY　
+                    中央Y座標</div>
+      </div>
+      <div class="field" id="5">
+        <div>・F:GameLib.Base.Actor.hitArea　
+                    当たり判定領域</div>
+      </div>
+      <div class="field" id="6">
+        <div>・F:GameLib.Base.Actor.tags　
+                    このオブジェくのと特徴を示すタグ情報</div>
+      </div>
+      <div class="method" id="7">
+        <h3>M:GameLib.Base.Actor.#ctor(System.Int32,System.Int32,System.Drawing.Rectangle,System.String[])</h3>
+        <p>コンストラクタ</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>x　中央X座標</li>
+            <li>y　中央Y座標</li>
+            <li>hitArea　中央X座標</li>
+            <li>tags　このActorオブジェクトの特徴を表すタグ情報</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="8">
+        <h3>M:GameLib.Base.Actor.draw(System.Drawing.Graphics)</h3>
+        <p>描画関数。オーバーライドする。</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>g　描画に使用するグラフィクス</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="9">
+        <h3>M:GameLib.Base.Actor.update(GameLib.GameInformations.Input,System.Nullable{System.Drawing.Point})</h3>
+        <p>毎フレーム呼び出される関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>input　入力情報を保持しているInputオブジェクト</li>
+            <li>clickPoint　クリック座標Point。クリックされていない場合はnull</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="10">
+        <h3>M:GameLib.Base.Actor.init</h3>
+        <p>シーンに属したときに呼び出される関数</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="11">
+        <h3>M:GameLib.Base.Actor.collision(GameLib.Base.Actor)</h3>
+        <p>他のActorオブジェクトと重なった時に呼び出される関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>other　このオブジェクトと衝突したActorオブジェクト</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="12">
+        <h3>M:GameLib.Base.Actor.clicked(System.Drawing.Point)</h3>
+        <p>クリックされたときに呼び出される関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>p　クリックされたゲーム座標。</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="13">
+        <h3>M:GameLib.Base.Actor.mouseEnter(System.Drawing.Point)</h3>
+        <p>マウスがこのオブジェクトに入っているときに呼び出される関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>p　マウスのゲーム座標。</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="14">
+        <h3>M:GameLib.Base.Actor.hasTag(System.String)</h3>
+        <p>このオブジェクトに指定されたタグが含まれるかを判定する関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>tag　検索するタグ</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>bool型。含まれていたらtrue</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="15">
+        <h3>M:GameLib.Base.Actor.move(System.Int32,System.Int32)</h3>
+        <p>このオブジェクトを移動させる関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>dx　移動させるx座標の量</li>
+            <li>dy　移動させるy座標の量</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="16">
+        <h3>M:GameLib.Base.Actor.actToScene(GameLib.GameEventsArgs.ActorActEventArgs)</h3>
+        <p>このオブジェクトからこのオブジェクトが属するSceneに対してイベントを送る</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>e　イベントに送るActorEventArgs</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="17">
+        <h3>M:GameLib.Base.Actor.spawnActor(GameLib.Base.Actor)</h3>
+        <p>このオブジェクトからこのオブジェクトが属するSceneに対してActorを加えるイベントを送る</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>actor　追加するActorオブジェクト</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="18">
+        <h3>M:GameLib.Base.Actor.destroy</h3>
+        <p>このオブジェクトからこのオブジェクトが属するSceneに対して自分を削除するイベントを送る</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="event" id="19">
+        <div>
+          <h3>E:GameLib.Base.Actor.actorActionHandler</h3>属しているSceneオブジェクトに対するイベント</div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="property" id="20">
+        <div>・P:GameLib.Base.Actor.hasCollision　
+                    当たり判定を持つかを表すプロパティ</div>
+      </div>
+      <hr>
+      <div class="class" id="21">
+        <h2>T:GameLib.Base.Actor.ActorActionEventHandler</h2>
+        <p>actorActionEventHandlerのDelegate</p>
+        <pre class="code"><code></code></pre>
+      </div>
+      <hr>
+      <div class="class" id="22">
+        <h2>T:GameLib.Base.GetGameSize</h2>
+        <p>ゲームサイズを取得する関数Delegate</p>
+        <pre class="code"><code></code></pre>
+      </div>
+      <hr>
+      <div class="class" id="23">
+        <h2>T:GameLib.Base.Game</h2>
+        <p>ゲーム抽象クラス</p>
+            <pre class="code"><code>
+            public class MyGame: Game {
+            	[STAThread]
+            	public static void Main(string[] args) {
+            		Application.Run( new MyGame(new Size(480, 360), 30) );
+            	}
+            	MyGame(Size size, int fps): base(size, fps) {
+            		Scene[] s = new Scene[1];
+            		s[0] = Scene01("Scene01");    // Sceneクラスを継承したクラス
+            		setScenes(s);
+            	}
+            }
+            </code></pre>
+      </div>
+      <div class="method" id="24">
+        <h3>M:GameLib.Base.Game.#ctor(System.Drawing.Size,System.Int32)</h3>
+        <p>コンストラクタ</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>size　ゲームのサイズ</li>
+            <li>fps　ゲームのfps</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="25">
+        <h3>M:GameLib.Base.Game.#ctor(System.Drawing.Size,System.Int32,System.Drawing.Icon)</h3>
+        <p>コンストラクタ</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>size　ゲームのサイズ</li>
+            <li>fps　ゲームのfps</li>
+            <li>ico　ウィンドウのIcon</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="26">
+        <h3>M:GameLib.Base.Game.OnPaint(System.Windows.Forms.PaintEventArgs)</h3>
+        <p>Formから継承した関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>e　PaintArgs</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="27">
+        <h3>M:GameLib.Base.Game.OnPaintBackground(System.Windows.Forms.PaintEventArgs)</h3>
+        <p>Formから継承した関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>e　PaintArgs</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="28">
+        <h3>M:GameLib.Base.Game.update(GameLib.GameInformations.Input)</h3>
+        <p>毎フレーム呼び出される関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>input　入力情報を保持しているInputオブジェクト</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="29">
+        <h3>M:GameLib.Base.Game.setScenes(GameLib.Base.Scene[])</h3>
+        <p>シーンを登録する関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>s　このゲームで使用するSceneオブジェクトの配列</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="30">
+        <h3>M:GameLib.Base.Game.getDrawArea</h3>
+        <p>最終的にウィンドウに描画されるゲームの領域を取得する関数</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>RectangleF型。描画されるゲームの領域</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="31">
+        <h3>M:GameLib.Base.Game.getGameSize</h3>
+        <p>ゲームのサイズを取得する関数。ウィンドウがリサイズされてもこの値は変化しない。</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>Size型。ゲームのサイズ</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <hr>
+      <div class="class" id="32">
+        <h2>T:GameLib.Base.Scene</h2>
+        <p> ゲームのシーンを扱うための抽象クラス </p>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="field" id="33">
+        <div>・F:GameLib.Base.Scene.getGameSize　
+                    ゲーム画面のサイズを取得する関数</div>
+      </div>
+      <div class="field" id="34">
+        <div>・F:GameLib.Base.Scene.name　
+                    シーンの名前を表す変数</div>
+      </div>
+      <div class="field" id="35">
+        <div>・F:GameLib.Base.Scene.actors　
+                    このシーンで描画するActorオブジェクトのArrayList型配列</div>
+      </div>
+      <div class="field" id="36">
+        <div>・F:GameLib.Base.Scene.destroyedActors　
+                    このシーンで描画をやめるActorオブジェクトのArrayList型配列</div>
+      </div>
+      <div class="field" id="37">
+        <div>・F:GameLib.Base.Scene.nextFrameActions　
+                    つぎのフレームに行いたい処理リスト</div>
+      </div>
+      <div class="method" id="38">
+        <h3>M:GameLib.Base.Scene.#ctor(System.String)</h3>
+        <p>シーンの名前を指定するコンストラクタ</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>name　このシーンの名前</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="39">
+        <h3>M:GameLib.Base.Scene.init</h3>
+        <p>このシーンに切り替わった時に一度だけ呼び出される関数。オーバーライドして使用。リソース等をここで読み込むとメモリを節約可能！！</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="40">
+        <h3>M:GameLib.Base.Scene.init(System.Object)</h3>
+        <p>このシーンに切り替わった時に一度だけ呼び出される関数。オーバーライドして使用。リソース等をここで読み込むとメモリを節約可能！！</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="41">
+        <h3>M:GameLib.Base.Scene.update(System.Drawing.Graphics,GameLib.GameInformations.Input,System.Drawing.Point,System.Nullable{System.Drawing.Point})</h3>
+        <p>毎フレーム呼び出される関数。オーバーライド可能</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>g　描画に使用するGraphicsオブジェクト</li>
+            <li>input　入力情報を保持しているInputオブジェクト</li>
+            <li>mousePos　マウスの位置情報</li>
+            <li>clickPoint　クリック座標。クリックされていない場合はnull</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="42">
+        <h3>M:GameLib.Base.Scene.bgDraw(System.Drawing.Graphics)</h3>
+        <p>描画関数</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="43">
+        <h3>M:GameLib.Base.Scene.addActor(GameLib.Base.Actor)</h3>
+        <p>描画するActorオブジェクトを追加する関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>actor　追加するActorオブジェクト</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="44">
+        <h3>M:GameLib.Base.Scene.changeSceneByOrder(System.Int32,System.Object)</h3>
+        <p>インデックスを指定してシーンを変更</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>order　遷移先のシーンのインデックス</li>
+            <li>deliveryObject　遷移先のシーンのinit関数に送るオブジェクト</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="45">
+        <h3>M:GameLib.Base.Scene.changeSceneByOrder(System.Int32)</h3>
+        <p>インデックスを指定してシーンを変更</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>order　遷移先のシーンのインデックス</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="46">
+        <h3>M:GameLib.Base.Scene.changeSceneByName(System.String,System.Object)</h3>
+        <p>名前を指定してシーンを変更</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>name　遷移先のシーンの名前</li>
+            <li>deliveryObject　遷移先のシーンのinit関数に送るオブジェクト</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="47">
+        <h3>M:GameLib.Base.Scene.changeSceneByName(System.String)</h3>
+        <p>名前を指定してシーンを変更</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>name　遷移先のシーンの名前</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="48">
+        <h3>M:GameLib.Base.Scene.actorAction(System.Object,GameLib.GameEventsArgs.ActorActEventArgs)</h3>
+        <p>このシーンに属したActorオブジェクトがイベントを起こしたときに呼ばれる関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>sender　このイベントを送ったActorオブジェクト</li>
+            <li>e　ActorEventArgsオブジェクト</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="event" id="49">
+        <div>
+          <h3>E:GameLib.Base.Scene.changeSceneHandler</h3>シーン遷移を行うイベント</div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <hr>
+      <div class="class" id="50">
+        <h2>T:GameLib.Base.Scene.changeSceneEventHandler`1</h2>
+        <p>シーン遷移イベントのDelegate</p>
+        <pre class="code"><code></code></pre>
+      </div>
+      <hr>
+      <div class="class" id="51">
+        <h2>T:GameLib.Base.Scene.NextFrameAction</h2>
+        <p>つぎのフレームに行いたい処理を示すデリゲート。 void NextFrameAction() </p>
+        <pre class="code"><code></code></pre>
+      </div>
+      <hr>
+      <div class="class" id="52">
+        <h2>T:GameLib.GameEventsArgs.ActorActEventArgs</h2>
+        <p>Actorオブジェクトが自分の属するSceneにイベントを送る際に使用する引数</p>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="field" id="53">
+        <div>・F:GameLib.GameEventsArgs.ActorActEventArgs.eventName　
+                    このイベントの名前。イベントの識別に使用する。</div>
+      </div>
+      <div class="method" id="54">
+        <h3>M:GameLib.GameEventsArgs.ActorActEventArgs.#ctor(System.String,System.Object)</h3>
+        <p>コンストラクタ</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>eName　イベントを識別する際に使用する名前</li>
+            <li>sendObject　イベント送信先に送りたいオブジェクト</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="property" id="55">
+        <div>・P:GameLib.GameEventsArgs.ActorActEventArgs.receiveObject　
+                    受け取ったオブジェクト</div>
+      </div>
+      <hr>
+      <div class="class" id="56">
+        <h2>T:GameLib.GameEventsArgs.AddControlEventArgs</h2>
+        <p>SceneオブジェクトがGame(Form)に対してコントロールを追加するイベントを送る際に使用する引数</p>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="57">
+        <h3>M:GameLib.GameEventsArgs.AddControlEventArgs.#ctor(System.Windows.Forms.Control)</h3>
+        <p>コンストラクタ</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>ctrl　追加するコントロール</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="property" id="58">
+        <div>・P:GameLib.GameEventsArgs.AddControlEventArgs.ctrl　
+                    追加するControl</div>
+      </div>
+      <hr>
+      <div class="class" id="59">
+        <h2>T:GameLib.GameEventsArgs.ChangeSceneEventArgs</h2>
+        <p>SceneオブジェクトがGameに対してシーン遷移のイベントを送る際に使用する引数</p>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="field" id="60">
+        <div>・F:GameLib.GameEventsArgs.ChangeSceneEventArgs.order　
+                    遷移先Sceneのインデックス</div>
+      </div>
+      <div class="field" id="61">
+        <div>・F:GameLib.GameEventsArgs.ChangeSceneEventArgs.eventName　
+                    イベントを識別するための名前</div>
+      </div>
+      <div class="field" id="62">
+        <div>・F:GameLib.GameEventsArgs.ChangeSceneEventArgs.sceneName　
+                    遷移先のSceneの名前</div>
+      </div>
+      <div class="field" id="63">
+        <div>・F:GameLib.GameEventsArgs.ChangeSceneEventArgs.deliveryObject　
+                    遷移先のSceneのinit関数に送りたいオブジェクト</div>
+      </div>
+      <div class="method" id="64">
+        <h3>M:GameLib.GameEventsArgs.ChangeSceneEventArgs.#ctor(System.String,System.Int32,System.Object)</h3>
+        <p>コンストラクタ</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>eName　イベント識別用の名前</li>
+            <li>order　遷移先のSceneのインデックス</li>
+            <li>deliveryObject　遷移先のSceneのinit関数に送りたいオブジェクト</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="65">
+        <h3>M:GameLib.GameEventsArgs.ChangeSceneEventArgs.#ctor(System.String,System.String,System.Object)</h3>
+        <p>コンストラクタ</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>eName　イベント識別用の名前</li>
+            <li>name　遷移先のSceneの名前</li>
+            <li>deliveryObject　遷移先のSceneのinit関数に送りたいオブジェクト</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <hr>
+      <div class="class" id="66">
+        <h2>T:GameLib.GameInformations.GameInfo</h2>
+        <p>Game全体に関する情報クラス</p>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="67">
+        <h3>M:GameLib.GameInformations.GameInfo.getInput</h3>
+        <p>キー入力情報を取得する関数</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>Input型。キー入力情報</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="68">
+        <h3>M:GameLib.GameInformations.GameInfo.addImage(System.String,System.Drawing.Image)</h3>
+        <p>画像を名前を付けて保持する関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>name　名前</li>
+            <li>img　読み込む画像</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型。</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="69">
+        <h3>M:GameLib.GameInformations.GameInfo.addImage(System.String,System.String)</h3>
+        <p>画像を名前を付けて読み込む</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>name　名前</li>
+            <li>path　読み込む画像のファイルパス</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型。</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="70">
+        <h3>M:GameLib.GameInformations.GameInfo.getImage(System.String)</h3>
+        <p>名前を付けて読み込み保持した画像を取得する関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>name　名前</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>Iamge型。</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="property" id="71">
+        <div>・P:GameLib.GameInformations.GameInfo.fps　
+                    fpsプロパティ</div>
+      </div>
+      <hr>
+      <div class="class" id="72">
+        <h2>T:GameLib.GameInformations.Input</h2>
+        <p>キー入力情報を保持するクラス</p>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="field" id="73">
+        <div>・F:GameLib.GameInformations.Input.keyHash　
+                    このフレームのキー入力情報</div>
+      </div>
+      <div class="field" id="74">
+        <div>・F:GameLib.GameInformations.Input.preKeyHash　
+                    前のフレームのキー入力情報</div>
+      </div>
+      <div class="method" id="75">
+        <h3>M:GameLib.GameInformations.Input.#ctor(System.Collections.Hashtable,System.Collections.Hashtable)</h3>
+        <p>コンストラクタ</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>keyHash　このフレームのキー入力情報</li>
+            <li>preKeyHash　前のフレームのキー入力情報</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="76">
+        <h3>M:GameLib.GameInformations.Input.getKey(System.Windows.Forms.Keys)</h3>
+        <p>指定されたキーが押されているかを取得する関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>key　押されているかを確認するキー</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>bool型。押されていたらtrue</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="77">
+        <h3>M:GameLib.GameInformations.Input.getKeyDown(System.Windows.Forms.Keys)</h3>
+        <p>指定されたキーが押されたかを取得する関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>key　押されたかを確認するキー</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>bool型。押されたらtrue</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="78">
+        <h3>M:GameLib.GameInformations.Input.getKeyUp(System.Windows.Forms.Keys)</h3>
+        <p>指定されたキーが離されたかを取得する関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>key　離されたかを確認するキー</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>bool型。離されたらtrue</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <hr>
+      <div class="class" id="79">
+        <h2>T:GameLib.TopView.AtlasLayer</h2>
+        <p>Atlasオブジェクトで扱うレイヤークラス。使用する画像の、RGB(0,0,0) の黒の部分は、透過されて表示されます。</p>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="field" id="80">
+        <div>・F:GameLib.TopView.AtlasLayer.ENTERABLE　
+                    全方向から進入可能なマスであることを表すシンボル文字</div>
+      </div>
+      <div class="field" id="81">
+        <div>・F:GameLib.TopView.AtlasLayer.NONENTERABLE　
+                    全方向から進入不可能なマスであることを表すシンボル文字</div>
+      </div>
+      <div class="field" id="82">
+        <div>・F:GameLib.TopView.AtlasLayer.HCROSS　
+                    左右から進入可能なマスであることを表すシンボル文字</div>
+      </div>
+      <div class="field" id="83">
+        <div>・F:GameLib.TopView.AtlasLayer.VCROSS　
+                    上下から進入可能なマスであることを表すシンボル文字</div>
+      </div>
+      <div class="field" id="84">
+        <div>・F:GameLib.TopView.AtlasLayer.FROM_1_ABLE　
+                    左下から進入可能なマスであることを表すシンボル文字</div>
+      </div>
+      <div class="field" id="85">
+        <div>・F:GameLib.TopView.AtlasLayer.FROM_2_ABLE　
+                    真下から進入可能なマスであることを表すシンボル文字</div>
+      </div>
+      <div class="field" id="86">
+        <div>・F:GameLib.TopView.AtlasLayer.FROM_3_ABLE　
+                    右下から進入可能なマスであることを表すシンボル文字</div>
+      </div>
+      <div class="field" id="87">
+        <div>・F:GameLib.TopView.AtlasLayer.FROM_4_ABLE　
+                    左から進入可能なマスであることを表すシンボル文字</div>
+      </div>
+      <div class="field" id="88">
+        <div>・F:GameLib.TopView.AtlasLayer.FROM_6_ABLE　
+                    右から進入可能なマスであることを表すシンボル文字</div>
+      </div>
+      <div class="field" id="89">
+        <div>・F:GameLib.TopView.AtlasLayer.FROM_7_ABLE　
+                    左上から進入可能なマスであることを表すシンボル文字</div>
+      </div>
+      <div class="field" id="90">
+        <div>・F:GameLib.TopView.AtlasLayer.FROM_8_ABLE　
+                    上から進入可能なマスであることを表すシンボル文字</div>
+      </div>
+      <div class="field" id="91">
+        <div>・F:GameLib.TopView.AtlasLayer.FROM_9_ABLE　
+                    右上から進入可能なマスであることを表すシンボル文字</div>
+      </div>
+      <div class="field" id="92">
+        <div>・F:GameLib.TopView.AtlasLayer.road　
+                    進入可能かどうかを表す</div>
+      </div>
+      <div class="method" id="93">
+        <h3>M:GameLib.TopView.AtlasLayer.#ctor(System.String[][],System.Int32[][],System.Int32[][])</h3>
+        <p>コンストラクタ</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>road　どこのマスから進入可能であるかを示した配列。マップのマス＋上下左右1マス分多く指定します。</li>
+            <li>mapChipIdxs　各マスで描画するタイルを MapChip.init() で指定したどのマップチップ画像から使用するかを、MapChip.init() の引数で指定した Bitmap 配列のインデックスで指定します</li>
+            <li>tileNums　各マスで描画するタイルを第二引数で指定したマップチップ画像のどこにあるかを指定します。左上から右下に数えて何番目かを指定します。</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="94">
+        <h3>M:GameLib.TopView.AtlasLayer.draw(System.Drawing.Graphics,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)</h3>
+        <p>描画関数。オーバーライド可能。</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>g　描画に使用するグラフィックスオブジェクト</li>
+            <li>gameWidth　ゲームの横幅</li>
+            <li>gameHeight　ゲームの縦幅</li>
+            <li>viewTileNumWidth　ゲーム画面内に表示されるタイルの横の数</li>
+            <li>viewTileNumHeight　ゲーム画面内に表示されるタイルの縦の数</li>
+            <li>playerX　プレイヤーの現在位置のX座標</li>
+            <li>playerY　プレイヤーの現在位置のY座標</li>
+            <li>tileSize　１マスの大きさ</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型。</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="95">
+        <h3>M:GameLib.TopView.AtlasLayer.getRoad</h3>
+        <p>各マスの進入状態を表した二次元ジャグ配列を返します</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>string[][]型。各マスの進入状態を表した二次元ジャグ配列</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <hr>
+      <div class="class" id="96">
+        <h2>T:GameLib.TopView.CharacterEventHander</h2>
+        <p>Charactorが起こしたイベントのイベントハンドラ。</p>
+        <pre class="code"><code></code></pre>
+      </div>
+      <hr>
+      <div class="class" id="97">
+        <h2>T:GameLib.TopView.MapChip</h2>
+        <p>マップチップを管理、描画するクラス</p>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="98">
+        <h3>M:GameLib.TopView.MapChip.init(System.Drawing.Bitmap[],System.Int32[],System.Int32[])</h3>
+        <p>マップチップを初期化します</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>imgs　マップチップ画像を指定します</li>
+            <li>tileNumHorizontals　指定したマップチップ画像でいくつタイルが横に並んでいるかを指定します</li>
+            <li>tileNumVerticals　指定したマップチップ画像でいくつタイルが縦に並んでいるかを指定します</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="99">
+        <h3>M:GameLib.TopView.MapChip.drawChip(System.Drawing.Graphics,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)</h3>
+        <p>指定したマップチップ画像から指定したタイルを描画します</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>g　描画に使用するグラフィクスオブジェクト</li>
+            <li>idx　描画するマップチップ画像を initで指定した マップチップ画像の Bitmap 配列 のインデックスで指定します。</li>
+            <li>chipX　描画するタイルがマップチップ画像の左からいくつめに、あるかを指定します</li>
+            <li>chipY　描画するタイルがマップチップ画像の上からいくつめに、あるかを指定します</li>
+            <li>dstX　左から何マス目に描画するかを指定します</li>
+            <li>dstY　上から何マス目に描画するかを指定します</li>
+            <li>gameWidth　ゲームの横幅を指定します。Scene.getGameSize().Width などで取得できます</li>
+            <li>gameHeight　ゲームの縦幅を指定します。Scene.getGameSize().Height などで取得できます</li>
+            <li>tileSize　描画するタイルの大きさをしていします。</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="100">
+        <h3>M:GameLib.TopView.MapChip.drawChip(System.Drawing.Graphics,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)</h3>
+        <p>指定したマップチップ画像から指定したタイルを描画します</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>g　描画に使用するグラフィクスオブジェクト</li>
+            <li>idx　描画するマップチップ画像を initで指定した マップチップ画像の Bitmap 配列 のインデックスで指定します。</li>
+            <li>chipNum　描画するタイルがマップチップ画像の左上から右下に数えた時いくつめに、あるかを指定します</li>
+            <li>dstX　左から何マス目に描画するかを指定します</li>
+            <li>dstY　上から何マス目に描画するかを指定します</li>
+            <li>gameWidth　ゲームの横幅を指定します。Scene.getGameSize().Width などで取得できます</li>
+            <li>gameHeight　ゲームの縦幅を指定します。Scene.getGameSize().Height などで取得できます</li>
+            <li>tileSize　描画するタイルの大きさをしていします。</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <hr>
+      <div class="class" id="101">
+        <h2>T:GameLib.TopView.MessageWindow</h2>
+        <p>メッセージウィンドウクラス</p>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="field" id="102">
+        <div>・F:GameLib.TopView.MessageWindow.MSGWINDOW_TAG　
+                    メッセージウィンドウであることを示すタグの内容</div>
+      </div>
+      <div class="field" id="103">
+        <div>・F:GameLib.TopView.MessageWindow.padding　
+                    文字を表示する行の間隔 </div>
+      </div>
+      <div class="field" id="104">
+        <div>・F:GameLib.TopView.MessageWindow.textLineHeight　
+                    文字を表示する行の間隔 </div>
+      </div>
+      <div class="field" id="105">
+        <div>・F:GameLib.TopView.MessageWindow.txtCol　
+                    文字色</div>
+      </div>
+      <div class="field" id="106">
+        <div>・F:GameLib.TopView.MessageWindow.icon　
+                    メッセージウィンドウに表示するアイコン(左側に) </div>
+      </div>
+      <div class="method" id="107">
+        <h3>M:GameLib.TopView.MessageWindow.#ctor(System.Drawing.Image,System.String[])</h3>
+        <p>コンストラクタ</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>icon　メッセージとともに表示したい顔などの画像</li>
+            <li>message　表示したいメッセージ文字列。改行ごとに配列</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="108">
+        <h3>M:GameLib.TopView.MessageWindow.init</h3>
+        <p>Actorクラスから継承された関数</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型。</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="109">
+        <h3>M:GameLib.TopView.MessageWindow.draw(System.Drawing.Graphics)</h3>
+        <p>Acotrからの継承。描画関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>g　描画に使用するGraohics</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="110">
+        <h3>M:GameLib.TopView.MessageWindow.update(GameLib.GameInformations.Input,System.Nullable{System.Drawing.Point})</h3>
+        <p>Actorクラスから継承された関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>input　入力情報を保持しているInputオブジェクト</li>
+            <li>clickPoint　クリック座標</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型。</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="111">
+        <h3>M:GameLib.TopView.MessageWindow.destroy</h3>
+        <p>Actorクラスから継承。</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="112">
+        <h3>M:GameLib.TopView.MessageWindow.next</h3>
+        <p>3行以上表示させるメッセージがある場合は、次のメッセージが表示されます。無い場合は、このオブジェクトは描画されなくなります。</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型。</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="113">
+        <h3>M:GameLib.TopView.MessageWindow.setBgBrush(System.Drawing.Brush)</h3>
+        <p>背景色をセットします。</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>value　背景色として使うBrushオブジェクト</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="114">
+        <h3>M:GameLib.TopView.MessageWindow.getBgBrush</h3>
+        <p>背景色を取得します</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>Brush型。背景色</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="115">
+        <h3>M:GameLib.TopView.MessageWindow.setBorder(System.Drawing.Pen)</h3>
+        <p>枠線Penオブジェクトをセットします</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>value　枠線Penオブジェクト</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="116">
+        <h3>M:GameLib.TopView.MessageWindow.getBorder</h3>
+        <p>枠線Penオブジェクトを取得します</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>Brush型。枠線Penオブジェクト</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="117">
+        <h3>M:GameLib.TopView.MessageWindow.setFont(System.Drawing.Font)</h3>
+        <p>描画に使用するFontをセットします</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>value　描画したいFont</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="118">
+        <h3>M:GameLib.TopView.MessageWindow.getFont</h3>
+        <p>描画に使用するFontを取得します</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>Font型。描画に使用するFont</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="119">
+        <h3>M:GameLib.TopView.MessageWindow.Dispose(System.Boolean)</h3>
+        <p>リソースを破棄します</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>disposing　デストラクタから呼ぶ場合はtrue</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="120">
+        <h3>M:GameLib.TopView.MessageWindow.Dispose</h3>
+        <p>リソースを破棄します</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="property" id="121">
+        <div>・P:GameLib.TopView.MessageWindow.isAnyMessageWinsowShow　
+                    現在、MessageWindowが表示されている状態かを示すプロパティ</div>
+      </div>
+      <div class="property" id="122">
+        <div>・P:GameLib.TopView.MessageWindow.nowShowingMessageWindow　
+                    現在、表示されているMessageWindowを示すプロパティ</div>
+      </div>
+      <div class="property" id="123">
+        <div>・P:GameLib.TopView.MessageWindow.bgBrush　
+                    背景色Brushオブジェクト</div>
+      </div>
+      <div class="property" id="124">
+        <div>・P:GameLib.TopView.MessageWindow.border　
+                    枠線Penオブジェクト</div>
+      </div>
+      <div class="property" id="125">
+        <div>・P:GameLib.TopView.MessageWindow.font　
+                    描画に使用するFontオブジェクト</div>
+      </div>
+      <div class="property" id="126">
+        <div>・P:GameLib.TopView.MessageWindow.isMeShow　
+                    このMessageWindowが表示されているかを示すプロパティ</div>
+      </div>
+      <hr>
+      <div class="class" id="127">
+        <h2>T:GameLib.TopView.Base.Atlas</h2>
+        <p>2D見下ろしマップを描画するScene派生クラス</p>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="field" id="128">
+        <div>・F:GameLib.TopView.Base.Atlas.viewImage　
+                    レイヤーがすべて描画された結果の画像</div>
+      </div>
+      <div class="field" id="129">
+        <div>・F:GameLib.TopView.Base.Atlas.characters　
+                    この2D見下ろしマップに描画するCharactorのList配列</div>
+      </div>
+      <div class="field" id="130">
+        <div>・F:GameLib.TopView.Base.Atlas.layers　
+                    このマップのレイヤー</div>
+      </div>
+      <div class="method" id="131">
+        <h3>M:GameLib.TopView.Base.Atlas.#ctor(System.String,GameLib.TopView.AtlasLayer[],GameLib.TopView.Base.Player)</h3>
+        <p>コンストラクタ</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>name　このシーンの名前</li>
+            <li>layers　このAtlasオブジェクトの持つレイヤーオブジェクト</li>
+            <li>player　プレイヤーオブジェクト</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="132">
+        <h3>M:GameLib.TopView.Base.Atlas.#ctor(System.String)</h3>
+        <p>コンストラクタ</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>name　このシーンの名前</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="133">
+        <h3>M:GameLib.TopView.Base.Atlas.init</h3>
+        <p>シーンが切り替わった最初のフレームに行われる処理</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="134">
+        <h3>M:GameLib.TopView.Base.Atlas.bgDraw(System.Drawing.Graphics)</h3>
+        <p>描画関数。Sceneクラスからの継承関数。</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>g　描画に使用するGraphicsオブジェクト</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="135">
+        <h3>M:GameLib.TopView.Base.Atlas.update(System.Drawing.Graphics,GameLib.GameInformations.Input,System.Drawing.Point,System.Nullable{System.Drawing.Point})</h3>
+        <p>毎フレーム呼び出される関数。Sceneクラスからの継承関数。</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>g　描画に使用するGraphicsオブジェクト</li>
+            <li>input　入力情報を保持したInputオブジェクト</li>
+            <li>mousePos　マウスのゲーム座標</li>
+            <li>clickPoint　クリックされたゲーム座標。されていない場合はnull</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="136">
+        <h3>M:GameLib.TopView.Base.Atlas.changeSceneByName(System.String,System.Object)</h3>
+        <p>名前を指定してシーンを変更</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>name　遷移先のシーンの名前</li>
+            <li>deliveryObject　遷移先のシーンのinit関数に送るオブジェクト</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="137">
+        <h3>M:GameLib.TopView.Base.Atlas.changeSceneByOrder(System.Int32,System.Object)</h3>
+        <p>インデックスを指定してシーンを変更</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>order　遷移先のシーンのインデックス</li>
+            <li>deliveryObject　遷移先のシーンのinit関数に送るオブジェクト</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="138">
+        <h3>M:GameLib.TopView.Base.Atlas.characterEventReceiver(GameLib.TopView.Base.Character,GameLib.TopView.EventArgs.CharacterEventArgs)</h3>
+        <p>Charactorからのイベントがあったら呼び出される関数。オーバーライド可能。</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>sender　イベントを起こしたCharactorオブジェクト</li>
+            <li>e　Charactorからのイベントの引数</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="139">
+        <h3>M:GameLib.TopView.Base.Atlas.showMessageWindowAccount(GameLib.TopView.MessageWindow)</h3>
+        <p>表示したいMessageWindowオブジェクトを登録します。登録された順に表示されます。</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>msgWindow　MessageWindowオブジェクト</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="140">
+        <h3>M:GameLib.TopView.Base.Atlas.addCharactor(GameLib.TopView.Base.Character)</h3>
+        <p>指定したCharactorをこのAtlasオブジェクトに追加します</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>character　このオブジェクトに追加するCharactorオブジェクト</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="141">
+        <h3>M:GameLib.TopView.Base.Atlas.addCharactors(GameLib.TopView.Base.Character[])</h3>
+        <p>指定したCharactorをこのAtlasオブジェクトに追加します</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>characters　このオブジェクトに追加するCharactor[]オブジェクト</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="142">
+        <h3>M:GameLib.TopView.Base.Atlas.addCharactors(System.Collections.Generic.List{GameLib.TopView.Base.Character})</h3>
+        <p>指定したCharactorをこのAtlasオブジェクトに追加します</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>characters　このオブジェクトに追加するCharactorのListオブジェクト</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="143">
+        <h3>M:GameLib.TopView.Base.Atlas.getPlayer</h3>
+        <p>プレイヤオブジェクトを取得します</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>プレイヤオブジェクト</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="144">
+        <h3>M:GameLib.TopView.Base.Atlas.setPlayer(GameLib.TopView.Base.Player)</h3>
+        <p>プレイヤオブジェクトをセットします</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>player　セットするプレイヤオブジェクト</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="145">
+        <h3>M:GameLib.TopView.Base.Atlas.setBgBrush(System.Drawing.Brush)</h3>
+        <p>背景色をセットします</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>value　背景色Brush</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="146">
+        <h3>M:GameLib.TopView.Base.Atlas.getBgBrush</h3>
+        <p>背景色を取得します</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>Brush型。背景色のBrushオブジェクト</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="147">
+        <h3>M:GameLib.TopView.Base.Atlas.Dispose(System.Boolean)</h3>
+        <p>リソースを開放します</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>disposing　デストラクタから呼ばれたらfalse</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="148">
+        <h3>M:GameLib.TopView.Base.Atlas.Dispose</h3>
+        <p>リソースを開放します</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="property" id="149">
+        <div>・P:GameLib.TopView.Base.Atlas.bgBrush　
+                    マップが表示されていない部分に見える背景色</div>
+      </div>
+      <div class="property" id="150">
+        <div>・P:GameLib.TopView.Base.Atlas.tileSize　
+                    １マスの大きさプロパティ</div>
+      </div>
+      <div class="property" id="151">
+        <div>・P:GameLib.TopView.Base.Atlas.viewTileNumWidth　
+                    表示される横のマスの個数プロパティ</div>
+      </div>
+      <div class="property" id="152">
+        <div>・P:GameLib.TopView.Base.Atlas.viewTileNumHeight　
+                    表示される縦のマスの個数プロパティ</div>
+      </div>
+      <div class="property" id="153">
+        <div>・P:GameLib.TopView.Base.Atlas.player　
+                    プレイヤーオブジェクトプロパティ</div>
+      </div>
+      <hr>
+      <div class="class" id="154">
+        <h2>T:GameLib.TopView.Base.Character</h2>
+        <p>Charactorクラス</p>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="155">
+        <h3>M:GameLib.TopView.Base.Character.Dispose(System.Boolean)</h3>
+        <p>リソースを開放します</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>disposing　デストラクタから呼ばれたらfalse</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="156">
+        <h3>M:GameLib.TopView.Base.Character.Dispose</h3>
+        <p>リソースを開放します</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="field" id="157">
+        <div>・F:GameLib.TopView.Base.Character.canEnter　
+                    指定された座標のマスに進入可能かを判定する関数オブジェクト。 bool canEnter(int x, int y, int z, Charactor.Directions direction)</div>
+      </div>
+      <div class="field" id="158">
+        <div>・F:GameLib.TopView.Base.Character.charachip　
+                    このキャラクターのキャラチップ画像<br>            　上記の順に各方向に向いた画像を用意する<br>            　パターン１　　　パターン２<br>            　　↓↓↓　　　　　　↓↓↓↙↙↙<br>            　　←←←　　　　　　←←←↘↘↘<br>            　　→→→　　　　　　→→→↖↖↖<br>            　　↑↑↑　　　　　　→→→↗↗↗<br>            </div>
+      </div>
+      <div class="field" id="159">
+        <div>・F:GameLib.TopView.Base.Character.faceImage　
+                    このキャラクターの顔画像</div>
+      </div>
+      <div class="field" id="160">
+        <div>・F:GameLib.TopView.Base.Character.x　
+                    x座標</div>
+      </div>
+      <div class="field" id="161">
+        <div>・F:GameLib.TopView.Base.Character.y　
+                    y座標</div>
+      </div>
+      <div class="field" id="162">
+        <div>・F:GameLib.TopView.Base.Character.z　
+                    z座標</div>
+      </div>
+      <div class="field" id="163">
+        <div>・F:GameLib.TopView.Base.Character.direction　
+                    このキャラクタの方向</div>
+      </div>
+      <div class="field" id="164">
+        <div>・F:GameLib.TopView.Base.Character.imType　
+                    このオブジェクトのキャラチップの画像のタイプ</div>
+      </div>
+      <div class="field" id="165">
+        <div>・F:GameLib.TopView.Base.Character.drawX　
+                    描画するX座標</div>
+      </div>
+      <div class="field" id="166">
+        <div>・F:GameLib.TopView.Base.Character.drawY　
+                    描画するY座標</div>
+      </div>
+      <div class="field" id="167">
+        <div>・F:GameLib.TopView.Base.Character.alwaysVisible　
+                    このキャラクターのZ座標に関係なく常に最前面に表示します</div>
+      </div>
+      <div class="field" id="168">
+        <div>・F:GameLib.TopView.Base.Character.getGameSize　
+                    ゲームサイズを取得する関数。戻り値Size</div>
+      </div>
+      <div class="method" id="169">
+        <h3>M:GameLib.TopView.Base.Character.#ctor(System.Drawing.Bitmap,System.Drawing.Bitmap,System.Int32,System.Int32,System.Int32,GameLib.TopView.Base.Character.ImageType,System.Collections.Generic.List{System.String})</h3>
+        <p>コンストラクタ</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>faceImage　顔画像</li>
+            <li>charachip　キャラチップ画像</li>
+            <li>x　x座標</li>
+            <li>y　y座標</li>
+            <li>z　z座標</li>
+            <li>imType　このオブジェクトのキャラチップの画像のタイプ</li>
+            <li>tags　このCharactorの特徴を示すタグ</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="170">
+        <h3>M:GameLib.TopView.Base.Character.#ctor(System.Drawing.Bitmap,System.Drawing.Bitmap,System.Int32,System.Int32,System.Int32,GameLib.TopView.Base.Character.ImageType,System.String[])</h3>
+        <p>コンストラクタ</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>faceImage　顔画像</li>
+            <li>charachip　キャラチップ画像</li>
+            <li>x　x座標</li>
+            <li>y　y座標</li>
+            <li>z　z座標</li>
+            <li>imType　このオブジェクトのキャラチップの画像のタイプ</li>
+            <li>tags　このCharactorの特徴を示すタグ</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="171">
+        <h3>M:GameLib.TopView.Base.Character.#ctor(System.Drawing.Bitmap,System.Int32,System.Int32,System.Int32,GameLib.TopView.Base.Character.ImageType,System.Collections.Generic.List{System.String})</h3>
+        <p>コンストラクタ</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>charachip　キャラチップ画像</li>
+            <li>x　x座標</li>
+            <li>y　y座標</li>
+            <li>z　z座標</li>
+            <li>imType　このオブジェクトのキャラチップの画像のタイプ</li>
+            <li>tags　このCharactorの特徴を示すタグ</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="172">
+        <h3>M:GameLib.TopView.Base.Character.#ctor(System.Drawing.Bitmap,System.Int32,System.Int32,System.Int32,GameLib.TopView.Base.Character.ImageType,System.String[])</h3>
+        <p>コンストラクタ</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>charachip　キャラチップ画像</li>
+            <li>x　x座標</li>
+            <li>y　y座標</li>
+            <li>z　z座標</li>
+            <li>imType　このオブジェクトのキャラチップの画像のタイプ</li>
+            <li>tags　このCharactorの特徴を示すタグ</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="173">
+        <h3>M:GameLib.TopView.Base.Character.#ctor(System.Drawing.Bitmap,System.Int32,System.Int32,System.Int32,GameLib.TopView.Base.Character.ImageType)</h3>
+        <p>コンストラクタ</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>charachip　キャラチップ画像</li>
+            <li>x　x座標</li>
+            <li>y　y座標</li>
+            <li>z　z座標</li>
+            <li>imType　このオブジェクトのキャラチップの画像のタイプ</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="174">
+        <h3>M:GameLib.TopView.Base.Character.draw(System.Drawing.Graphics,System.Int32)</h3>
+        <p>描画関数。 override可能</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>g　描画に用いるGraphicsオブジェクト</li>
+            <li>tileSize　１マスの大きさ</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="175">
+        <h3>M:GameLib.TopView.Base.Character.update(GameLib.GameInformations.Input,System.Int32)</h3>
+        <p>毎フレーム呼び出される関数。 override可能</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>input　入力情報を保持しているInputオブジェクト</li>
+            <li>tileSize　１マスの大きさ</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="176">
+        <h3>M:GameLib.TopView.Base.Character.talked(GameLib.TopView.Base.Character,System.String)</h3>
+        <p>話しかけられた時に呼び出される関数。 override可能</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>talker　話しかけてきたCharactorオブジェクト(talk関数呼び出した関数)</li>
+            <li>message　talk関数で引数として渡した文字列</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="177">
+        <h3>M:GameLib.TopView.Base.Character.charactorEventDispath(GameLib.TopView.Base.Character,GameLib.TopView.EventArgs.CharacterEventArgs)</h3>
+        <p>他のCharactorが起こしたイベントを受け取る関数。 override可能</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>sender　イベントを起こしたCharactor</li>
+            <li>e　起こされたイベントのCharactorEventArgs</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="178">
+        <h3>M:GameLib.TopView.Base.Character.move(System.Int32,System.Int32,System.Int32,GameLib.TopView.Base.Character.Directions)</h3>
+        <p>座標を移動する関数。現在位置からの相対座標で指定する</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>x　移動するx座標の量</li>
+            <li>y　移動するy座標の量</li>
+            <li>z　移動するz座標の量</li>
+            <li>direction　移動後に向く方向</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="179">
+        <h3>M:GameLib.TopView.Base.Character.say(System.String)</h3>
+        <p>発言関数。自分の顔と指定した文字列を表示するMessageWindowを表示します</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>message　表示する文字列</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="180">
+        <h3>M:GameLib.TopView.Base.Character.talk(System.Int32,System.Int32,System.Int32,System.String)</h3>
+        <p>話しかける関数。指定した座標のCharactorのtalked関数を呼び出します</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>x　話しかけるCharactorのx座標の量</li>
+            <li>y　話しかけるCharactorのy座標の量</li>
+            <li>z　話しかけるCharactorのz座標の量</li>
+            <li>message　対象Charactorオブジェクトのtalked関数に送るメッセージ</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="181">
+        <h3>M:GameLib.TopView.Base.Character.talk(System.String)</h3>
+        <p>話しかける関数。同じz座標で向いている方向の隣にいるCharactorオブジェクトのtalked関数を呼び出す関数。</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>message　対象Charactorオブジェクトのtalked関数に送るメッセージ</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="182">
+        <h3>M:GameLib.TopView.Base.Character.walk(GameLib.TopView.Base.Character.Directions)</h3>
+        <p>指定した方向にあるく関数。オーバーライド可能</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>direction　あるく方向</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>bool型。指定した方向に歩けたら、Trueを返す。</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="183">
+        <h3>M:GameLib.TopView.Base.Character.animate</h3>
+        <p>キャラチップの画像を動かします</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="184">
+        <h3>M:GameLib.TopView.Base.Character.turnTo(GameLib.TopView.Base.Character.Directions)</h3>
+        <p>指定した方向に向けます</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>direction　向く方向</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>指定したImageType(imType)の値では向くことが出来ない方向を指定した場合Falseが返ります</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="185">
+        <h3>M:GameLib.TopView.Base.Character.rotateRight</h3>
+        <p>右方向に回転させます</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="186">
+        <h3>M:GameLib.TopView.Base.Character.sendEvent(GameLib.TopView.EventArgs.CharacterEventArgs)</h3>
+        <p>イベントを発生させます。AtlasのreceiveEvent関数が呼び出され、CharactorのDicpatchEvent関数が呼び出されます</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>e　イベントに対して送るCharactorEventArgs</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="187">
+        <h3>M:GameLib.TopView.Base.Character.addTag(System.String)</h3>
+        <p>このキャラクターの特徴であるタグを追加します</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>tag　追加するタグ</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="188">
+        <h3>M:GameLib.TopView.Base.Character.addTags(System.String[])</h3>
+        <p>このキャラクターの特徴であるタグを追加します</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>tags　追加するタグ</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="189">
+        <h3>M:GameLib.TopView.Base.Character.addTags(System.Collections.Generic.List{System.String})</h3>
+        <p>このキャラクターの特徴であるタグを追加します</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>tags　追加するタグ</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="190">
+        <h3>M:GameLib.TopView.Base.Character.hasTag(System.String)</h3>
+        <p>このキャラクターの特徴であるタグを検索します</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>tag　検索するタグ</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>bool型。指定したタグが含まれるかを返します。</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="191">
+        <h3>M:GameLib.TopView.Base.Character.getCurrentFrameImageRect</h3>
+        <p>現在キャラチップのうち描画される領域を返します</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>RectangleF型。現在キャラチップのうち描画される領域</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="192">
+        <h3>M:GameLib.TopView.Base.Character.getX</h3>
+        <p>x座標を返します</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>int型。x座標</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="193">
+        <h3>M:GameLib.TopView.Base.Character.getY</h3>
+        <p>y座標を返します</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>int型。y座標</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="194">
+        <h3>M:GameLib.TopView.Base.Character.getZ</h3>
+        <p>z座標を返します</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>int型。z座標</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="195">
+        <h3>M:GameLib.TopView.Base.Character.getFaceImage</h3>
+        <p>このオブジェクトの顔画像を返します</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>Image型。このオブジェクトの顔画像</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="196">
+        <h3>M:GameLib.TopView.Base.Character.getDirection</h3>
+        <p>このオブジェクトの向いている方向を返します</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>Charactor.Direction型。このオブジェクトの向いている方向</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="197">
+        <h3>M:GameLib.TopView.Base.Character.setPosition(System.Int32,System.Int32,System.Int32)</h3>
+        <p>指定した座標に移動させます</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>x　x座標</li>
+            <li>y　y座標</li>
+            <li>z　z座標</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="198">
+        <h3>M:GameLib.TopView.Base.Character.setZ(System.Int32)</h3>
+        <p>指定したZ座標に移動させます</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>z　z座標</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="property" id="199">
+        <div>・P:GameLib.TopView.Base.Character.hasCollision　
+                    このオブジェクトのあたり判定</div>
+      </div>
+      <hr>
+      <div class="class" id="200">
+        <h2>T:GameLib.TopView.Base.Character.Directions</h2>
+        <p>Charactorの方向を表すEnum</p>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="field" id="201">
+        <div>・F:GameLib.TopView.Base.Character.Directions.FRONT　
+                    顔がこちらを向いている</div>
+      </div>
+      <div class="field" id="202">
+        <div>・F:GameLib.TopView.Base.Character.Directions.LEFT　
+                    顔が左を向いている</div>
+      </div>
+      <div class="field" id="203">
+        <div>・F:GameLib.TopView.Base.Character.Directions.RIGHT　
+                    顔が右を向いている</div>
+      </div>
+      <div class="field" id="204">
+        <div>・F:GameLib.TopView.Base.Character.Directions.BACK　
+                    顔が向こう側を向いている</div>
+      </div>
+      <div class="field" id="205">
+        <div>・F:GameLib.TopView.Base.Character.Directions.FLEFT　
+                    顔がコチラ向き左を向いている</div>
+      </div>
+      <div class="field" id="206">
+        <div>・F:GameLib.TopView.Base.Character.Directions.FRIGHT　
+                    顔がコチラ向き右を向いている</div>
+      </div>
+      <div class="field" id="207">
+        <div>・F:GameLib.TopView.Base.Character.Directions.BLEFT　
+                    顔が向こう向き左を向いている</div>
+      </div>
+      <div class="field" id="208">
+        <div>・F:GameLib.TopView.Base.Character.Directions.BRIGHT　
+                    顔が向こう向き右を向いている</div>
+      </div>
+      <hr>
+      <div class="class" id="209">
+        <h2>T:GameLib.TopView.Base.Character.DirectionsEx</h2>
+        <p>GameLib.TopOfView.Charactor.Directions Enumを便利に使う為のクラス</p>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="210">
+        <h3>M:GameLib.TopView.Base.Character.DirectionsEx.rotate45(GameLib.TopView.Base.Character.Directions)</h3>
+        <p>指定された向きから、時計回りに45°回転した場合の方向を取得します</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>direction　回転の基準になる方向</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>GameLib.TopOfView.Charactor.Directions型。回転後の方向</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="211">
+        <h3>M:GameLib.TopView.Base.Character.DirectionsEx.rotate90(GameLib.TopView.Base.Character.Directions)</h3>
+        <p>指定された向きから、時計回りに90°回転した場合の方向を取得します</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>direction　回転の基準になる方向</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>GameLib.TopOfView.Charactor.Directions型。回転後の方向</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="212">
+        <h3>M:GameLib.TopView.Base.Character.DirectionsEx.rotate180(GameLib.TopView.Base.Character.Directions)</h3>
+        <p>指定された向きから、180°回転した場合の方向を取得します</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>direction　回転の基準になる方向</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>GameLib.TopOfView.Charactor.Directions型。回転後の方向</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <hr>
+      <div class="class" id="213">
+        <h2>T:GameLib.TopView.Base.Character.ImageType</h2>
+        <p>キャラクターチップ画像の種類を示す</p>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="field" id="214">
+        <div>・F:GameLib.TopView.Base.Character.ImageType.FOUR_DIRECTION　
+                    4方向分</div>
+      </div>
+      <div class="field" id="215">
+        <div>・F:GameLib.TopView.Base.Character.ImageType.EIGHT_DIRECTION　
+                    8方向分</div>
+      </div>
+      <hr>
+      <div class="class" id="216">
+        <h2>T:GameLib.TopView.Base.Character.canEnterHandler</h2>
+        <p>指定された座標のマスに進入可能かを判定する関数Delegate型</p>
+        <pre class="code"><code></code></pre>
+      </div>
+      <hr>
+      <div class="class" id="217">
+        <h2>T:GameLib.TopView.Base.Player</h2>
+        <p>2D見下ろしマップにおけるプレイヤーを表すクラス</p>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="field" id="218">
+        <div>・F:GameLib.TopView.Base.Player.PLAYER_TAG　
+                    プレイヤーであることを示すデフォルトで付けられるタグの内容</div>
+      </div>
+      <div class="method" id="219">
+        <h3>M:GameLib.TopView.Base.Player.#ctor(System.Drawing.Bitmap,System.Drawing.Bitmap,System.Int32,System.Int32,System.Int32,GameLib.TopView.Base.Character.ImageType)</h3>
+        <p>コンストラクタ</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>faceImage　このプレイヤーの顔画像(メッセージウィンドウ等に使用)</li>
+            <li>charachip　このプレイヤーのキャラクターチップ画像。画像のフォーマットは、Wolf Editorなどの形式</li>
+            <li>x　このプレイヤーのx座標</li>
+            <li>y　このプレイヤーのy座標</li>
+            <li>z　このプレイヤーのz座標</li>
+            <li>imType　このプレイヤーのキャラクターチップ画像の形式。</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="220">
+        <h3>M:GameLib.TopView.Base.Player.#ctor(System.Drawing.Bitmap,System.Drawing.Bitmap,System.Int32,System.Int32,System.Int32,GameLib.TopView.Base.Character.ImageType,System.String[])</h3>
+        <p>コンストラクタ</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>faceImage　このプレイヤーの顔画像(メッセージウィンドウ等に使用)</li>
+            <li>charachip　このプレイヤーのキャラクターチップ画像。画像のフォーマットは、Wolf Editorなどの形式</li>
+            <li>x　このプレイヤーのx座標</li>
+            <li>y　このプレイヤーのy座標</li>
+            <li>z　このプレイヤーのz座標</li>
+            <li>imType　このプレイヤーのキャラクターチップ画像の形式。</li>
+            <li>tags　このプレイヤーの特徴を表すタグ</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="221">
+        <h3>M:GameLib.TopView.Base.Player.#ctor(System.Drawing.Bitmap,System.Drawing.Bitmap,System.Int32,System.Int32,System.Int32,GameLib.TopView.Base.Character.ImageType,System.Collections.Generic.List{System.String})</h3>
+        <p>コンストラクタ</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>faceImage　このプレイヤーの顔画像(メッセージウィンドウ等に使用)</li>
+            <li>charachip　このプレイヤーのキャラクターチップ画像。画像のフォーマットは、Wolf Editorなどの形式</li>
+            <li>x　このプレイヤーのx座標</li>
+            <li>y　このプレイヤーのy座標</li>
+            <li>z　このプレイヤーのz座標</li>
+            <li>imType　このプレイヤーのキャラクターチップ画像の形式。</li>
+            <li>tags　このプレイヤーの特徴を表すタグ</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="222">
+        <h3>M:GameLib.TopView.Base.Player.#ctor(System.Drawing.Bitmap,System.Int32,System.Int32,System.Int32,GameLib.TopView.Base.Character.ImageType)</h3>
+        <p>コンストラクタ</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>charachip　このプレイヤーのキャラクターチップ画像。画像のフォーマットは、Wolf Editorなどの形式</li>
+            <li>x　このプレイヤーのx座標</li>
+            <li>y　このプレイヤーのy座標</li>
+            <li>z　このプレイヤーのz座標</li>
+            <li>imType　このプレイヤーのキャラクターチップ画像の形式。</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="223">
+        <h3>M:GameLib.TopView.Base.Player.#ctor(System.Drawing.Bitmap,System.Int32,System.Int32,System.Int32,GameLib.TopView.Base.Character.ImageType,System.String[])</h3>
+        <p>コンストラクタ</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>charachip　このプレイヤーのキャラクターチップ画像。画像のフォーマットは、Wolf Editorなどの形式</li>
+            <li>x　このプレイヤーのx座標</li>
+            <li>y　このプレイヤーのy座標</li>
+            <li>z　このプレイヤーのz座標</li>
+            <li>imType　このプレイヤーのキャラクターチップ画像の形式。</li>
+            <li>tags　このプレイヤーの特徴を表すタグ</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="224">
+        <h3>M:GameLib.TopView.Base.Player.#ctor(System.Drawing.Bitmap,System.Int32,System.Int32,System.Int32,GameLib.TopView.Base.Character.ImageType,System.Collections.Generic.List{System.String})</h3>
+        <p>コンストラクタ</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>charachip　このプレイヤーのキャラクターチップ画像。画像のフォーマットは、Wolf Editorなどの形式</li>
+            <li>x　このプレイヤーのx座標</li>
+            <li>y　このプレイヤーのy座標</li>
+            <li>z　このプレイヤーのz座標</li>
+            <li>imType　このプレイヤーのキャラクターチップ画像の形式。</li>
+            <li>tags　このプレイヤーの特徴を表すタグ</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="225">
+        <h3>M:GameLib.TopView.Base.Player.update(GameLib.GameInformations.Input,System.Int32)</h3>
+        <p>毎フレーム呼ばれる関数。オーバーライド可能。Charactorクラスからの継承。</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>input　入力情報を保持したInputオブジェクト</li>
+            <li>tileSize　１マスの大きさ</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="226">
+        <h3>M:GameLib.TopView.Base.Player.walk(GameLib.TopView.Base.Character.Directions)</h3>
+        <p>あるく関数。オーバーライド可能。スクロールしながら移動します。Charactorクラスからの継承。</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>direction　移動する方向</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>bool型。移動に成功した場合、True。</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="property" id="227">
+        <div>・P:GameLib.TopView.Base.Player.scroll　
+                    walkメソッド呼び出し時の画面のスクロールサイズ</div>
+      </div>
+      <hr>
+      <div class="class" id="228">
+        <h2>T:GameLib.TopView.EventArgs.CharacterEventType</h2>
+        <p>Characterがデフォルトで起こすイベントを定義したEnum</p>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="field" id="229">
+        <div>・F:GameLib.TopView.EventArgs.CharacterEventType.CEVENT_TALK　
+                    Characterがデフォルトで起こす「話しかける」イベント</div>
+      </div>
+      <div class="field" id="230">
+        <div>・F:GameLib.TopView.EventArgs.CharacterEventType.CEVENT_SAY　
+                    Characterがデフォルトで起こす「発言」イベント</div>
+      </div>
+      <hr>
+      <div class="class" id="231">
+        <h2>T:GameLib.TopView.EventArgs.CharacterEventArgs</h2>
+        <p>キャラクターが起こすイベントの引数</p>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="field" id="232">
+        <div>・F:GameLib.TopView.EventArgs.CharacterEventArgs.target　
+                    イベントを他のマスのCharactorに働きかける場合にそのターゲットとなる座標</div>
+      </div>
+      <div class="field" id="233">
+        <div>・F:GameLib.TopView.EventArgs.CharacterEventArgs.type　
+                    イベントを識別するための名前</div>
+      </div>
+      <div class="field" id="234">
+        <div>・F:GameLib.TopView.EventArgs.CharacterEventArgs.message　
+                    送るメッセージ</div>
+      </div>
+      <div class="method" id="235">
+        <h3>M:GameLib.TopView.EventArgs.CharacterEventArgs.#ctor(GameLib.Util.Coords,System.String,System.String)</h3>
+        <p>コンストラクタ</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>target　イベントを他のマスのCharactorに働きかける場合にそのターゲットとなる座標</li>
+            <li>type　イベントを識別するための名前</li>
+            <li>message　送るメッセージ</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="236">
+        <h3>M:GameLib.TopView.EventArgs.CharacterEventArgs.#ctor(System.Int32,System.Int32,System.String,System.String)</h3>
+        <p>コンストラクタ</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>x　イベントを他のマスのCharactorに働きかける場合にそのターゲットとなるX座標</li>
+            <li>y　イベントを他のマスのCharactorに働きかける場合にそのターゲットとなるY座標</li>
+            <li>type　イベントを識別するための名前</li>
+            <li>message　送るメッセージ</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <hr>
+      <div class="class" id="237">
+        <h2>T:GameLib.TopView.Informations.TopViewInfo</h2>
+        <p>見下ろし2Dマップに関する情報クラス</p>
+        <pre class="code"><code></code></pre>
+      </div>
+      <hr>
+      <div class="class" id="238">
+        <h2>T:GameLib.UI.DialogCloseType</h2>
+        <p>DialogWindow の閉じる設定</p>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="field" id="239">
+        <div>・F:GameLib.UI.DialogCloseType.NOT_CLOSE　
+                    DialogWindow の destroy関数が呼ばれるまで 閉じることはありません</div>
+      </div>
+      <div class="field" id="240">
+        <div>・F:GameLib.UI.DialogCloseType.NG_CLOSE　
+                    DialogWindow でアイテムが選択されなかった場合閉じます</div>
+      </div>
+      <div class="field" id="241">
+        <div>・F:GameLib.UI.DialogCloseType.OK_NG_CLOSE　
+                    DialogWindow でアイテムが選択されてもされなくても閉じます</div>
+      </div>
+      <div class="field" id="242">
+        <div>・F:GameLib.UI.DialogCloseType.OK_CLOSE　
+                    DialogWindow でアイテムが選択された場合閉じます</div>
+      </div>
+      <hr>
+      <div class="class" id="243">
+        <h2>T:GameLib.UI.ForcusedDialogItemDrawStyle</h2>
+        <p>DialogWindowItem がフォーカスされているときの状態を表します</p>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="field" id="244">
+        <div>・F:GameLib.UI.ForcusedDialogItemDrawStyle.NONE　
+                    なにもしませｎ</div>
+      </div>
+      <div class="field" id="245">
+        <div>・F:GameLib.UI.ForcusedDialogItemDrawStyle.HIGHLIGHT　
+                    光ります</div>
+      </div>
+      <div class="field" id="246">
+        <div>・F:GameLib.UI.ForcusedDialogItemDrawStyle.MARK　
+                    マークがアイテムの左側に表示されます。DialogWindow の mark で表示するマークを設定します</div>
+      </div>
+      <div class="field" id="247">
+        <div>・F:GameLib.UI.ForcusedDialogItemDrawStyle.BORDER　
+                    枠線が表示されます</div>
+      </div>
+      <div class="field" id="248">
+        <div>・F:GameLib.UI.ForcusedDialogItemDrawStyle.BLINK　
+                    点滅します</div>
+      </div>
+      <hr>
+      <div class="class" id="249">
+        <h2>T:GameLib.UI.DialogWindow</h2>
+        <p>アイテムを選択するダイアログ。Actorクラスを継承しています。</p>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="field" id="250">
+        <div>・F:GameLib.UI.DialogWindow.DIALOG_TAG　
+                    Actorクラスの tags に含める このクラスのオブジェクトであることを示すための文字列</div>
+      </div>
+      <div class="field" id="251">
+        <div>・F:GameLib.UI.DialogWindow.OK_KEY　
+                    このクラスのオブジェクトで 選択 を意味するキー</div>
+      </div>
+      <div class="field" id="252">
+        <div>・F:GameLib.UI.DialogWindow.NG_KEY　
+                    このクラスのオブジェクトで キャンセル を意味するキー</div>
+      </div>
+      <div class="field" id="253">
+        <div>・F:GameLib.UI.DialogWindow.UP_KEY　
+                    このクラスのオブジェクトで アイテムのフォーカスを上方向に移動 を意味するキー</div>
+      </div>
+      <div class="field" id="254">
+        <div>・F:GameLib.UI.DialogWindow.DOWN_KEY　
+                    このクラスのオブジェクトで アイテムのフォーカスを下方向に移動 を意味するキー</div>
+      </div>
+      <div class="field" id="255">
+        <div>・F:GameLib.UI.DialogWindow.LEFT_KEY　
+                    このクラスのオブジェクトで アイテムのフォーカスを左方向に移動 を意味するキー</div>
+      </div>
+      <div class="field" id="256">
+        <div>・F:GameLib.UI.DialogWindow.RIGHT_KEY　
+                    このクラスのオブジェクトで アイテムのフォーカスを右方向に移動 を意味するキー</div>
+      </div>
+      <div class="field" id="257">
+        <div>・F:GameLib.UI.DialogWindow.forcusItemDraw　
+                    フォーカスされているアイテムに対する書式設定</div>
+      </div>
+      <div class="field" id="258">
+        <div>・F:GameLib.UI.DialogWindow.blinkInterval　
+                    forcusItemDraw が ForcusedDialogItemDrawStyle.BLINK の時の点滅スピード</div>
+      </div>
+      <div class="field" id="259">
+        <div>・F:GameLib.UI.DialogWindow.mark　
+                    forcusItemDraw が ForcusedDialogItemDrawStyle.MARK の時に使用するマーク</div>
+      </div>
+      <div class="field" id="260">
+        <div>・F:GameLib.UI.DialogWindow.enable　
+                    このダイアログの有効無効を示す</div>
+      </div>
+      <div class="field" id="261">
+        <div>・F:GameLib.UI.DialogWindow.mouseEnable　
+                    このダイアログがマウス操作を受け付けるかを示す</div>
+      </div>
+      <div class="field" id="262">
+        <div>・F:GameLib.UI.DialogWindow.items　
+                    描画するアイテム</div>
+      </div>
+      <div class="field" id="263">
+        <div>・F:GameLib.UI.DialogWindow.selectX　
+                    選択中のアイテムが左からいくつめにあるか</div>
+      </div>
+      <div class="field" id="264">
+        <div>・F:GameLib.UI.DialogWindow.selectY　
+                    選択中のアイテムが上からいくつめにあるか</div>
+      </div>
+      <div class="field" id="265">
+        <div>・F:GameLib.UI.DialogWindow.blinkCnt　
+                    点滅のカウンター</div>
+      </div>
+      <div class="field" id="266">
+        <div>・F:GameLib.UI.DialogWindow.hItemNum　
+                    縦に並べるアイテムの数</div>
+      </div>
+      <div class="field" id="267">
+        <div>・F:GameLib.UI.DialogWindow.wItemNum　
+                    横に並べるアイテムの数</div>
+      </div>
+      <div class="field" id="268">
+        <div>・F:GameLib.UI.DialogWindow.itemWidth　
+                    並べるアイテムの横幅</div>
+      </div>
+      <div class="field" id="269">
+        <div>・F:GameLib.UI.DialogWindow.itemHeight　
+                    並べるアイテムの縦幅</div>
+      </div>
+      <div class="method" id="270">
+        <h3>M:GameLib.UI.DialogWindow.#ctor(System.Drawing.Rectangle,GameLib.UI.DialogWindowItem[],System.Int32,System.Int32,GameLib.UI.DialogCloseType)</h3>
+        <p>コンストラクタ</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>rect　このオブジェクト領域</li>
+            <li>items　このオブジェクトが持つアイテム</li>
+            <li>hItemNum　縦に並べるアイテム数</li>
+            <li>wItemNum　横に並べるアイテム数</li>
+            <li>closeType　閉じる条件</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="271">
+        <h3>M:GameLib.UI.DialogWindow.draw(System.Drawing.Graphics)</h3>
+        <p>描画関数。オーバーライド可能。Actorクラスから継承</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>g　描画に使用するグラフィクス</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="272">
+        <h3>M:GameLib.UI.DialogWindow.update(GameLib.GameInformations.Input,System.Nullable{System.Drawing.Point})</h3>
+        <p>毎フレーム呼び出される関数。オーバーライド可能。Actorクラスから継承</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>input　入力情報を保持しているInputオブジェクト</li>
+            <li>clickPoint　クリックされた座標。されて無い時はnull</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="273">
+        <h3>M:GameLib.UI.DialogWindow.mouseEnter(System.Drawing.Point)</h3>
+        <p>マウスがこのオブジェクトに入っている時に呼び出される関数。Actorクラスから継承</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>p　マウス座標</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="274">
+        <h3>M:GameLib.UI.DialogWindow.clicked(System.Drawing.Point)</h3>
+        <p>このオブジェクトがクリックされた時に呼び出される関数。Actorクラスから継承</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>p　マウス座標</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="275">
+        <h3>M:GameLib.UI.DialogWindow.destroy</h3>
+        <p>Actorクラスからの継承。リソースを開放しながらdestroyをします。</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="276">
+        <h3>M:GameLib.UI.DialogWindow.drawHighlight(System.Drawing.Graphics)</h3>
+        <p>フォーカスされているアイテムをハイライト表示する際に呼び出される関数。オーバーライド可能</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="277">
+        <h3>M:GameLib.UI.DialogWindow.drawMark(System.Drawing.Graphics,System.Drawing.PointF)</h3>
+        <p>フォーカスされているアイテムにマークを表示する際に呼び出される関数。オーバーライド可能</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="278">
+        <h3>M:GameLib.UI.DialogWindow.drawBorder(System.Drawing.Graphics)</h3>
+        <p>フォーカスされているアイテムに枠線を表示する際に呼び出される関数。オーバーライド可能</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="279">
+        <h3>M:GameLib.UI.DialogWindow.drawBlink(System.Drawing.Graphics)</h3>
+        <p>フォーカスされているアイテムを点滅表示する際に呼び出される関数。オーバーライド可能</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="280">
+        <h3>M:GameLib.UI.DialogWindow.Dispose(System.Boolean)</h3>
+        <p>リソースを開放します</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>disposing　デストラクタから呼ばれたらfalse</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="281">
+        <h3>M:GameLib.UI.DialogWindow.Dispose</h3>
+        <p>リソースを開放します</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="282">
+        <h3>M:GameLib.UI.DialogWindow.setFont(System.Drawing.Font)</h3>
+        <p>描画に使用するフォントをセットします</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>value　描画に使用するフォント</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="283">
+        <h3>M:GameLib.UI.DialogWindow.getFont</h3>
+        <p>描画に使用するフォントをゲットします</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>Font型。描画に使用しているフォント</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="284">
+        <h3>M:GameLib.UI.DialogWindow.setBgBrush(System.Drawing.Brush)</h3>
+        <p>背景色をセットします</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>value　指定する背景色Brush</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="285">
+        <h3>M:GameLib.UI.DialogWindow.getBgBrush</h3>
+        <p>背景色をゲットします</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>Brush型。背景色Brush</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="286">
+        <h3>M:GameLib.UI.DialogWindow.setHightlightBrush(System.Drawing.Brush)</h3>
+        <p>forcusItemDraw が ForcusedDialogItemDrawStyle.HIGHLIGHT、 ForcusedDialogItemDrawStyle.BLINK の時に使用する色を指定します</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>value　指定するBrush</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="287">
+        <h3>M:GameLib.UI.DialogWindow.getHighlightBrush</h3>
+        <p>forcusItemDraw が ForcusedDialogItemDrawStyle.HIGHLIGHT、 ForcusedDialogItemDrawStyle.BLINK の時に使用する色を取得します</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>Brush型。使用されるBrush</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="288">
+        <h3>M:GameLib.UI.DialogWindow.setBorderPen(System.Drawing.Pen)</h3>
+        <p>枠線色をセットします</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>value　セットする枠線Pen</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="289">
+        <h3>M:GameLib.UI.DialogWindow.getBorderPen</h3>
+        <p>枠線色を取得します</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>Pen型。枠線色Pen</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="290">
+        <h3>M:GameLib.UI.DialogWindow.setSelectBorder(System.Drawing.Pen)</h3>
+        <p>forcusItemDraw が ForcusedDialogItemDrawStyle.BORDER の時に使用する枠線色をセットします</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>value　forcusItemDraw が ForcusedDialogItemDrawStyle.BORDER の時に使用する枠線色Brush</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="291">
+        <h3>M:GameLib.UI.DialogWindow.getSelectBorder</h3>
+        <p>forcusItemDraw が ForcusedDialogItemDrawStyle.BORDER の時に使用する枠線色をゲットします</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>Brush型。forcusItemDraw が ForcusedDialogItemDrawStyle.BORDER の時に使用する枠線色Brush</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="property" id="292">
+        <div>・P:GameLib.UI.DialogWindow.font　
+                    このオブジェクトに属しているDialogWindowItemで使用するフォント</div>
+      </div>
+      <div class="property" id="293">
+        <div>・P:GameLib.UI.DialogWindow.bgBrush　
+                    背景色</div>
+      </div>
+      <div class="property" id="294">
+        <div>・P:GameLib.UI.DialogWindow.highlight　
+                    forcusItemDraw が ForcusedDialogItemDrawStyle.HIGHLIGHT、 ForcusedDialogItemDrawStyle.BLINK の時に使用する色</div>
+      </div>
+      <div class="property" id="295">
+        <div>・P:GameLib.UI.DialogWindow.borderPen　
+                    枠線色</div>
+      </div>
+      <div class="property" id="296">
+        <div>・P:GameLib.UI.DialogWindow.selectBorder　
+                    forcusItemDraw が ForcusedDialogItemDrawStyle.BORDER の時に使用する枠線色</div>
+      </div>
+      <div class="event" id="297">
+        <div>
+          <h3>E:GameLib.UI.DialogWindow.OK</h3>DialogWindow でアイテムが選択されたときのイベント</div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="event" id="298">
+        <div>
+          <h3>E:GameLib.UI.DialogWindow.NG</h3>DialogWindow でアイテムが選択されなかったときのイベント</div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <hr>
+      <div class="class" id="299">
+        <h2>T:GameLib.UI.DialogWindowItem</h2>
+        <p>DialogWindowに表示するアイテム</p>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="300">
+        <h3>M:GameLib.UI.DialogWindowItem.#ctor(System.String)</h3>
+        <p>コンストラクタ</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>str　このオブジェクトの名前、表示テキスト。</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="301">
+        <h3>M:GameLib.UI.DialogWindowItem.draw(System.Drawing.Graphics,System.Drawing.Font,System.Drawing.RectangleF)</h3>
+        <p>描画関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>g　描画に使用するグラフィクス</li>
+            <li>font　このアイテムが属している DialogWindow オブジェクトで設定されているフォント</li>
+            <li>area　このアイテムが描画に使用できるRectangleF</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>SizeF型。描画に使用した領域のサイズ</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="302">
+        <h3>M:GameLib.UI.DialogWindowItem.onToggleSelected(System.Boolean)</h3>
+        <p>選択状態を切り替える関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>selected　選択状態</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="303">
+        <h3>M:GameLib.UI.DialogWindowItem.setName(System.String)</h3>
+        <p>このアイテムの名前、表示テキストを変更します</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>name　このアイテムの名前、表示テキスト</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="304">
+        <h3>M:GameLib.UI.DialogWindowItem.Dispose(System.Boolean)</h3>
+        <p>リソースを開放します</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>disposing　デストラクタから呼ばれるとfalse</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="305">
+        <h3>M:GameLib.UI.DialogWindowItem.Dispose</h3>
+        <p>リソースを開放します</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="property" id="306">
+        <div>・P:GameLib.UI.DialogWindowItem.name　
+                    このオブジェクトの名前、表示テキスト。</div>
+      </div>
+      <div class="property" id="307">
+        <div>・P:GameLib.UI.DialogWindowItem.isSelected　
+                    このオブジェクトがフォーカスされているかを示す。</div>
+      </div>
+      <div class="event" id="308">
+        <div>
+          <h3>E:GameLib.UI.DialogWindowItem.toggleSelected</h3>DialogWindowItem のフォーカスが変わった時のイベント</div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <hr>
+      <div class="class" id="309">
+        <h2>T:GameLib.UI.OkEventHandler</h2>
+        <p>DialogWindow でアイテムが選択されたときのイベントの Delegate。　void OkEventHandler(DialogWindow sender, DialogWindowOKEventArgs e)</p>
+        <pre class="code"><code></code></pre>
+      </div>
+      <hr>
+      <div class="class" id="310">
+        <h2>T:GameLib.UI.NgEventHandler</h2>
+        <p>DialogWindow でアイテムが選択されなかったときのイベントの Delegate。　void NgEventHandler(DialogWindow sender, DialogWindowNGEventArgs e)</p>
+        <pre class="code"><code></code></pre>
+      </div>
+      <hr>
+      <div class="class" id="311">
+        <h2>T:GameLib.UI.ToggleSelectedEventHandler</h2>
+        <p>DialogWindowItem のフォーカスが変わった時のイベント Delegate。　void ToggleSelectedEventHandler(DialogWindowItem sender, EventArgs e)</p>
+        <pre class="code"><code></code></pre>
+      </div>
+      <hr>
+      <div class="class" id="312">
+        <h2>T:GameLib.UI.EventArgs.DialogWindowOKEventArgs</h2>
+        <p>DialogWindow でアイテムが選択されたときのイベントの引数クラス</p>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="field" id="313">
+        <div>・F:GameLib.UI.EventArgs.DialogWindowOKEventArgs.selectedItem　
+                    DialogWindow で選択されたアイテム</div>
+      </div>
+      <div class="method" id="314">
+        <h3>M:GameLib.UI.EventArgs.DialogWindowOKEventArgs.#ctor(GameLib.UI.DialogWindowItem)</h3>
+        <p>コンストラクタ</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>selectedItem　DialogWindow で選択されたアイテム</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <hr>
+      <div class="class" id="315">
+        <h2>T:GameLib.UI.EventArgs.DialogWindowNGEventArgs</h2>
+        <p>DialogWindow でアイテムが選択されなかったときのイベントの引数クラス</p>
+        <pre class="code"><code></code></pre>
+      </div>
+      <hr>
+      <div class="class" id="316">
+        <h2>T:GameLib.Util.Coords</h2>
+        <p>座標データクラス</p>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="317">
+        <h3>M:GameLib.Util.Coords.#ctor(System.Int32,System.Int32)</h3>
+        <p>コンストラクタ</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>x　x座標</li>
+            <li>y　y座標</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="318">
+        <h3>M:GameLib.Util.Coords.#ctor(System.Int32,System.Int32,System.Int32)</h3>
+        <p>コンストラクタ</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>x　x座標</li>
+            <li>y　y座標</li>
+            <li>z　z座標</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="319">
+        <h3>M:GameLib.Util.Coords.ToString</h3>
+        <p>文字列表現を返します。object 型 からのオーバーライド</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="property" id="320">
+        <div>・P:GameLib.Util.Coords.x　
+                    x座標プロパティ</div>
+      </div>
+      <div class="property" id="321">
+        <div>・P:GameLib.Util.Coords.y　
+                    y座標プロパティ</div>
+      </div>
+      <div class="property" id="322">
+        <div>・P:GameLib.Util.Coords.z　
+                    z座標プロパティ</div>
+      </div>
+      <hr>
+      <div class="class" id="323">
+        <h2>T:GameLib.Util.Easing</h2>
+        <p>イージング関数群クラス</p>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="324">
+        <h3>M:GameLib.Util.Easing.inSine(System.Double)</h3>
+        <p>イージング関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>x　0.0~1.0 の値</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="325">
+        <h3>M:GameLib.Util.Easing.outSine(System.Double)</h3>
+        <p>イージング関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>x　0.0~1.0 の値</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="326">
+        <h3>M:GameLib.Util.Easing.inOutSine(System.Double)</h3>
+        <p>イージング関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>x　0.0~1.0 の値</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="327">
+        <h3>M:GameLib.Util.Easing.inQuad(System.Double)</h3>
+        <p>イージング関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>x　0.0~1.0 の値</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="328">
+        <h3>M:GameLib.Util.Easing.outQuad(System.Double)</h3>
+        <p>イージング関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>x　0.0~1.0 の値</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="329">
+        <h3>M:GameLib.Util.Easing.inOutQuad(System.Double)</h3>
+        <p>イージング関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>x　0.0~1.0 の値</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="330">
+        <h3>M:GameLib.Util.Easing.inCubic(System.Double)</h3>
+        <p>イージング関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>x　0.0~1.0 の値</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="331">
+        <h3>M:GameLib.Util.Easing.outCubic(System.Double)</h3>
+        <p>イージング関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>x　0.0~1.0 の値</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="332">
+        <h3>M:GameLib.Util.Easing.inOutCubic(System.Double)</h3>
+        <p>イージング関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>x　0.0~1.0 の値</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="333">
+        <h3>M:GameLib.Util.Easing.inQuard(System.Double)</h3>
+        <p>イージング関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>x　0.0~1.0 の値</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="334">
+        <h3>M:GameLib.Util.Easing.outQuard(System.Double)</h3>
+        <p>イージング関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>x　0.0~1.0 の値</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="335">
+        <h3>M:GameLib.Util.Easing.inOutQuard(System.Double)</h3>
+        <p>イージング関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>x　0.0~1.0 の値</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="336">
+        <h3>M:GameLib.Util.Easing.inQuint(System.Double)</h3>
+        <p>イージング関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>x　0.0~1.0 の値</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="337">
+        <h3>M:GameLib.Util.Easing.outQuint(System.Double)</h3>
+        <p>イージング関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>x　0.0~1.0 の値</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="338">
+        <h3>M:GameLib.Util.Easing.inOutQuint(System.Double)</h3>
+        <p>イージング関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>x　0.0~1.0 の値</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="339">
+        <h3>M:GameLib.Util.Easing.inExpo(System.Double)</h3>
+        <p>イージング関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>x　0.0~1.0 の値</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="340">
+        <h3>M:GameLib.Util.Easing.outExpo(System.Double)</h3>
+        <p>イージング関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>x　0.0~1.0 の値</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="341">
+        <h3>M:GameLib.Util.Easing.inOutExpo(System.Double)</h3>
+        <p>イージング関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>x　0.0~1.0 の値</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="342">
+        <h3>M:GameLib.Util.Easing.inCirc(System.Double)</h3>
+        <p>イージング関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>x　0.0~1.0 の値</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="343">
+        <h3>M:GameLib.Util.Easing.outCirc(System.Double)</h3>
+        <p>イージング関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>x　0.0~1.0 の値</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="344">
+        <h3>M:GameLib.Util.Easing.inOutCirc(System.Double)</h3>
+        <p>イージング関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>x　0.0~1.0 の値</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="345">
+        <h3>M:GameLib.Util.Easing.inBack(System.Double)</h3>
+        <p>イージング関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>x　0.0~1.0 の値</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="346">
+        <h3>M:GameLib.Util.Easing.outBack(System.Double)</h3>
+        <p>イージング関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>x　0.0~1.0 の値</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="347">
+        <h3>M:GameLib.Util.Easing.inOutBack(System.Double)</h3>
+        <p>イージング関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>x　0.0~1.0 の値</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="348">
+        <h3>M:GameLib.Util.Easing.inElastic(System.Double)</h3>
+        <p>イージング関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>x　0.0~1.0 の値</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="349">
+        <h3>M:GameLib.Util.Easing.outElastic(System.Double)</h3>
+        <p>イージング関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>x　0.0~1.0 の値</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="350">
+        <h3>M:GameLib.Util.Easing.inOutElastic(System.Double)</h3>
+        <p>イージング関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>x　0.0~1.0 の値</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="351">
+        <h3>M:GameLib.Util.Easing.inBounce(System.Double)</h3>
+        <p>イージング関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>x　0.0~1.0 の値</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="352">
+        <h3>M:GameLib.Util.Easing.outBounce(System.Double)</h3>
+        <p>イージング関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>x　0.0~1.0 の値</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="353">
+        <h3>M:GameLib.Util.Easing.inOutBounce(System.Double)</h3>
+        <p>イージング関数</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>x　0.0~1.0 の値</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <hr>
+      <div class="class" id="354">
+        <h2>T:GameLib.Util.Vector</h2>
+        <p>二次元ベクトルを表すクラス</p>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="field" id="355">
+        <div>・F:GameLib.Util.Vector.x　
+                    x成分</div>
+      </div>
+      <div class="field" id="356">
+        <div>・F:GameLib.Util.Vector.y　
+                    y成分</div>
+      </div>
+      <div class="method" id="357">
+        <h3>M:GameLib.Util.Vector.#ctor(System.Double,System.Double)</h3>
+        <p>コンストラクタ</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="358">
+        <h3>M:GameLib.Util.Vector.add(GameLib.Util.Vector)</h3>
+        <p>ベクトルを足す</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>vec　このオブジェクトに足されるベクトル</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="359">
+        <h3>M:GameLib.Util.Vector.sub(GameLib.Util.Vector)</h3>
+        <p>ベクトルを引く</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>vec　このオブジェクトから引かれるベクトル</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="360">
+        <h3>M:GameLib.Util.Vector.mul(System.Double)</h3>
+        <p>ベクトルをかける</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>n　このオブジェクトにかけられる数値</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>void型</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="361">
+        <h3>M:GameLib.Util.Vector.getLength</h3>
+        <p>このベクトルの長さを取得</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>double型。ベクトルの長さ</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="362">
+        <h3>M:GameLib.Util.Vector.getDegree</h3>
+        <p>このベクトルの角度を取得</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>double型。このベクトルの角度。度数</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="363">
+        <h3>M:GameLib.Util.Vector.getRadian</h3>
+        <p>このベクトルの角度を取得</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>double型。このベクトルの角度。Radian度数</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="364">
+        <h3>M:GameLib.Util.Vector.op_Addition(GameLib.Util.Vector,GameLib.Util.Vector)</h3>
+        <p>オペレーターオーバーロード</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="365">
+        <h3>M:GameLib.Util.Vector.op_Subtraction(GameLib.Util.Vector,GameLib.Util.Vector)</h3>
+        <p>オペレーターオーバーロード</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="366">
+        <h3>M:GameLib.Util.Vector.op_Multiply(GameLib.Util.Vector,System.Double)</h3>
+        <p>オペレーターオーバーロード</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="367">
+        <h3>M:GameLib.Util.Vector.op_Division(GameLib.Util.Vector,System.Double)</h3>
+        <p>オペレーターオーバーロード</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <hr>
+      <div class="class" id="368">
+        <h2>T:GameLib.Util.PositionVector</h2>
+        <p>位置ベクトルを表すクラス</p>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="field" id="369">
+        <div>・F:GameLib.Util.PositionVector.point　
+                    この位置ベクトルの原点座標</div>
+      </div>
+      <div class="field" id="370">
+        <div>・F:GameLib.Util.PositionVector.vector　
+                    この位置ベクトルのベクトル</div>
+      </div>
+      <div class="method" id="371">
+        <h3>M:GameLib.Util.PositionVector.#ctor(System.Drawing.Point,GameLib.Util.Vector)</h3>
+        <p>コンストラクタ</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>p　この位置ベクトルの原点座標</li>
+            <li>vec　この位置ベクトルのベクトル</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="372">
+        <h3>M:GameLib.Util.PositionVector.#ctor(System.Drawing.Point,System.Drawing.Point)</h3>
+        <p>コンストラクタ</p>
+        <div>
+                    引数：
+                    <ul>
+            <li>start　この位置ベクトルの原点座標</li>
+            <li>end　この位置ベクトルの終点座標</li>
+          </ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>
+            </li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="373">
+        <h3>M:GameLib.Util.PositionVector.getBeginX</h3>
+        <p>この位置ベルトルの原点X座標を取得する</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>double型。この位置ベルトルの原点X座標</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="374">
+        <h3>M:GameLib.Util.PositionVector.getBeginY</h3>
+        <p>この位置ベルトルの原点y座標を取得する</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>double型。この位置ベルトルの原点Y座標</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="375">
+        <h3>M:GameLib.Util.PositionVector.getEndX</h3>
+        <p>この位置ベルトルの終点X座標を取得する</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>double型。この位置ベルトルの終点X座標</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div>
+      <div class="method" id="376">
+        <h3>M:GameLib.Util.PositionVector.getEndY</h3>
+        <p>この位置ベルトルの終点y座標を取得する</p>
+        <div>
+                    引数：
+                    <ul></ul>
+        </div>
+        <div>
+                    戻り値：
+                    <ul>
+            <li>double型。この位置ベルトルの終点y座標</li>
+          </ul>
+        </div>
+        <pre class="code"><code></code></pre>
+      </div></main></body>
+</html>
